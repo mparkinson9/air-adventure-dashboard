@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Air Adventure — Availability</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sand: #F5EFE4;
+  --ochre: #C8833A;
+  --deep: #1A1410;
+  --dust: #A89880;
+  --sage: #6B8C6E;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:var(--deep);
+  color:var(--sand);
+  font-family:'Cormorant Garamond',Georgia,serif;
+  min-height:100vh;
+}
+.wrap { max-width:960px; margin:0 auto; padding:2.5rem 1.5rem 5rem; }
+
+header {
+  display:flex; align-items:flex-end; justify-content:space-between;
+  flex-wrap:wrap; gap:1rem;
+  padding-bottom:1.5rem;
+  border-bottom:1px solid rgba(200,131,58,0.25);
+  margin-bottom:1.5rem;
+}
+.brand-sub { font-family:'DM Mono',monospace; font-size:0.58rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--ochre); margin-bottom:0.3rem; }
+h1 { font-size:clamp(1.6rem,4vw,2.4rem); font-weight:300; }
+h1 em { font-style:italic; color:var(--ochre); }
+.hdr-right { display:flex; flex-direction:column; align-items:flex-end; gap:0.5rem; }
+.updated { font-family:'DM Mono',monospace; font-size:0.58rem; color:var(--dust); letter-spacing:0.08em; }
+.btn {
+  background:transparent; border:1px solid var(--ochre); color:var(--ochre);
+  font-family:'DM Mono',monospace; font-size:0.58rem; letter-spacing:0.12em;
+  text-transform:uppercase; padding:0.45rem 0.9rem; cursor:pointer; transition:all 0.2s;
+}
+.btn:hover { background:var(--ochre); color:var(--deep); }
+.btn:disabled { opacity:0.4; cursor:not-allowed; }
+
+.stats {
+  display:flex; gap:1.5rem; flex-wrap:wrap; align-items:center;
+  padding-bottom:1.5rem; border-bottom:1px solid rgba(200,131,58,0.1);
+  margin-bottom:1.5rem;
+}
+.stat { display:flex; flex-direction:column; gap:0.1rem; }
+.stat-lbl { font-family:'DM Mono',monospace; font-size:0.52rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--dust); }
+.stat-val { font-size:1.5rem; font-weight:300; line-height:1; }
+.div { width:1px; height:2rem; background:rgba(200,131,58,0.2); }
+.legend { display:flex; gap:1rem; margin-left:auto; flex-wrap:wrap; }
+.leg { display:flex; align-items:center; gap:0.3rem; font-family:'DM Mono',monospace; font-size:0.52rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--dust); }
+.dot { width:7px; height:7px; border-radius:50%; }
+.pulse-wrap { display:flex; align-items:center; gap:0.4rem; font-family:'DM Mono',monospace; font-size:0.52rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--dust); }
+.pdot { width:6px; height:6px; border-radius:50%; background:var(--sage); animation:pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.3;transform:scale(0.6)} }
+
+/* State */
+.state { padding:5rem 0; text-align:center; display:flex; flex-direction:column; align-items:center; gap:1.2rem; }
+.spinner { width:34px; height:34px; border:1px solid rgba(200,131,58,0.2); border-top-color:var(--ochre); border-radius:50%; animation:spin 1s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+.state-txt { font-style:italic; color:var(--dust); font-size:1rem; }
+.err-txt { color:#E07060; font-family:'DM Mono',monospace; font-size:0.68rem; line-height:1.8; max-width:480px; }
+
+/* Cards */
+.card { border:1px solid rgba(200,131,58,0.12); margin-bottom:2px; transition:border-color 0.2s; }
+.card:hover { border-color:rgba(200,131,58,0.28); }
+.card-head { padding:1.2rem 1.5rem; display:flex; align-items:center; justify-content:space-between; gap:1rem; cursor:pointer; user-select:none; }
+.card-left { flex:1; min-width:0; }
+.pcode { font-family:'DM Mono',monospace; font-size:0.52rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--ochre); margin-bottom:0.2rem; }
+.pname { font-size:1.1rem; font-weight:300; line-height:1.25; }
+.pprice { font-family:'DM Mono',monospace; font-size:0.62rem; color:var(--dust); margin-top:0.2rem; }
+.card-right { display:flex; align-items:center; gap:1.2rem; flex-shrink:0; }
+.cnt { text-align:right; }
+.cnt-num { font-size:1.25rem; font-weight:300; display:block; line-height:1; }
+.cnt-lbl { font-family:'DM Mono',monospace; font-size:0.5rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--dust); }
+.chev { width:13px; height:13px; border-right:1px solid var(--dust); border-bottom:1px solid var(--dust); transform:rotate(45deg); transition:transform 0.3s; margin-top:-5px; flex-shrink:0; }
+.card.open .chev { transform:rotate(-135deg); margin-top:4px; }
+
+.panel { max-height:0; overflow:hidden; transition:max-height 0.4s ease; }
+.card.open .panel { max-height:4000px; }
+.panel-in { border-top:1px solid rgba(200,131,58,0.1); padding:0 1.5rem 1.2rem; }
+.no-sess { padding:1.5rem 0; font-style:italic; color:var(--dust); font-size:0.88rem; }
+
+table { width:100%; border-collapse:collapse; margin-top:0.8rem; }
+th { font-family:'DM Mono',monospace; font-size:0.52rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--dust); text-align:left; padding:0.5rem 0; border-bottom:1px solid rgba(200,131,58,0.1); }
+th:last-child,td:last-child { text-align:right; }
+td { padding:0.6rem 0; font-size:0.88rem; font-weight:300; border-bottom:1px solid rgba(255,255,255,0.03); color:var(--sand); }
+td.mono { font-family:'DM Mono',monospace; font-size:0.65rem; color:var(--dust); }
+
+.pill { display:inline-flex; align-items:center; font-family:'DM Mono',monospace; font-size:0.62rem; padding:0.15rem 0.5rem; border-radius:2px; }
+.avail { background:rgba(107,140,110,0.15); color:#8FBF92; border:1px solid rgba(107,140,110,0.3); }
+.limited { background:rgba(200,131,58,0.12); color:var(--ochre); border:1px solid rgba(200,131,58,0.3); }
+.critical { background:rgba(192,57,43,0.12); color:#E07060; border:1px solid rgba(192,57,43,0.3); }
+.sold { background:rgba(100,100,100,0.1); color:var(--dust); border:1px solid rgba(100,100,100,0.2); }
+
+.next { font-family:'DM Mono',monospace; font-size:0.55rem; color:var(--dust); letter-spacing:0.08em; }
+.next span { color:var(--ochre); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <div class="brand-sub">Air Adventure Australia</div>
+      <h1>Tour <em>Availability</em></h1>
+    </div>
+    <div class="hdr-right">
+      <div class="updated" id="updatedAt">Not yet loaded</div>
+      <div class="next" id="nextRef" style="display:none">Next refresh in <span id="countdown">—</span></div>
+      <button class="btn" id="refreshBtn" onclick="load()">↻ Refresh Now</button>
+    </div>
+  </header>
+
+  <div class="stats" id="stats" style="display:none">
+    <div class="stat"><span class="stat-lbl">Tours</span><span class="stat-val" id="sTours">—</span></div>
+    <div class="div"></div>
+    <div class="stat"><span class="stat-lbl">Sessions</span><span class="stat-val" id="sSess">—</span></div>
+    <div class="div"></div>
+    <div class="stat"><span class="stat-lbl">Seats Open</span><span class="stat-val" id="sSeats">—</span></div>
+    <div class="legend">
+      <div class="leg"><div class="dot" style="background:#8FBF92"></div>Available</div>
+      <div class="leg"><div class="dot" style="background:var(--ochre)"></div>Limited</div>
+      <div class="leg"><div class="dot" style="background:#E07060"></div>Critical</div>
+    </div>
+    <div class="pulse-wrap"><div class="pdot"></div>Live</div>
+  </div>
+
+  <div id="content">
+    <div class="state">
+      <div class="spinner"></div>
+      <div class="state-txt">Retrieving your tour availability…</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const REFRESH_MS = 3 * 60 * 60 * 1000;
+let nextTime = null;
+let cdTimer = null;
+
+function fDate(s) {
+  if (!s) return '—';
+  const d = new Date(s.replace(' ','T'));
+  return isNaN(d) ? s : d.toLocaleDateString('en-AU',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+}
+function fTime(s) {
+  if (!s) return '';
+  const d = new Date(s.replace(' ','T'));
+  return isNaN(d) ? '' : d.toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit',hour12:true});
+}
+function pillCls(seats, total) {
+  if (seats===0) return 'sold';
+  if (seats<=2) return 'critical';
+  if (total && seats/total<0.35) return 'limited';
+  if (seats<=5) return 'limited';
+  return 'avail';
+}
+function pillLbl(seats) {
+  return seats===0 ? 'Sold Out' : seats+' seat'+(seats===1?'':'s');
+}
+function toggle(i) {
+  document.getElementById('c'+i).classList.toggle('open');
+}
+function fCountdown(ms) {
+  const h=Math.floor(ms/3600000),m=Math.floor((ms%3600000)/60000),s=Math.floor((ms%60000)/1000);
+  if(h>0) return h+'h '+m+'m';
+  if(m>0) return m+'m '+s+'s';
+  return s+'s';
+}
+function startCountdown() {
+  if(cdTimer) clearInterval(cdTimer);
+  const el=document.getElementById('countdown');
+  document.getElementById('nextRef').style.display='block';
+  cdTimer=setInterval(()=>{
+    const rem=nextTime-Date.now();
+    el.textContent=rem<=0?'now':fCountdown(rem);
+  },1000);
+}
+
+async function load() {
+  const btn=document.getElementById('refreshBtn');
+  btn.disabled=true; btn.textContent='↻ Loading…';
+  document.getElementById('stats').style.display='none';
+  document.getElementById('content').innerHTML=`<div class="state"><div class="spinner"></div><div class="state-txt">Retrieving your tour availability…</div></div>`;
+
+  try {
+    const res = await fetch('/.netlify/functions/availability');
+    if (!res.ok) throw new Error('Server error '+res.status);
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+
+    const products = data.products || [];
+    let totalSess=0, totalSeats=0;
+    products.forEach(p=>{
+      totalSess+=(p.sessions||[]).length;
+      totalSeats+=(p.sessions||[]).reduce((s,x)=>s+(x.seatsAvailable||0),0);
+    });
+
+    document.getElementById('sTours').textContent=products.length;
+    document.getElementById('sSess').textContent=totalSess;
+    document.getElementById('sSeats').textContent=totalSeats;
+    document.getElementById('stats').style.display='flex';
+
+    const now=new Date();
+    document.getElementById('updatedAt').textContent='Updated '+now.toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit',hour12:true})+' · '+now.toLocaleDateString('en-AU',{weekday:'short',day:'numeric',month:'short'});
+
+    if (!products.length) {
+      document.getElementById('content').innerHTML='<div class="state"><div class="state-txt">No products found on this account.</div></div>';
+      return;
+    }
+
+    const html=products.map((p,i)=>{
+      const sessions=p.sessions||[];
+      const seats=sessions.reduce((s,x)=>s+(x.seatsAvailable||0),0);
+      const body=sessions.length===0
+        ?'<div class="no-sess">No upcoming sessions scheduled.</div>'
+        :`<table><thead><tr><th>Date</th><th>Time</th><th>Capacity</th><th>Availability</th></tr></thead><tbody>`
+          +sessions.map(s=>`<tr>
+            <td>${fDate(s.startTimeLocal)}</td>
+            <td class="mono">${fTime(s.startTimeLocal)}</td>
+            <td class="mono">${s.totalCapacity||'—'}</td>
+            <td><span class="pill ${pillCls(s.seatsAvailable||0,s.totalCapacity)}">${pillLbl(s.seatsAvailable||0)}</span></td>
+          </tr>`).join('')
+          +'</tbody></table>';
+      return `<div class="card" id="c${i}">
+        <div class="card-head" onclick="toggle(${i})">
+          <div class="card-left">
+            <div class="pcode">${p.productCode||''}</div>
+            <div class="pname">${p.name}</div>
+            ${p.advertisedPrice?`<div class="pprice">From AUD ${Number(p.advertisedPrice).toLocaleString('en-AU')}</div>`:''}
+          </div>
+          <div class="card-right">
+            <div class="cnt"><span class="cnt-num">${sessions.length}</span><span class="cnt-lbl">Sessions</span></div>
+            <div class="cnt"><span class="cnt-num">${seats}</span><span class="cnt-lbl">Seats</span></div>
+            <div class="chev"></div>
+          </div>
+        </div>
+        <div class="panel"><div class="panel-in">${body}</div></div>
+      </div>`;
+    }).join('');
+
+    document.getElementById('content').innerHTML=html;
+    nextTime=Date.now()+REFRESH_MS;
+    startCountdown();
+    setTimeout(load, REFRESH_MS);
+
+  } catch(err) {
+    document.getElementById('content').innerHTML=`<div class="state"><div class="state-txt">Unable to load availability</div><div class="err-txt">${err.message}</div></div>`;
+  } finally {
+    btn.disabled=false; btn.textContent='↻ Refresh Now';
+  }
+}
+
+load();
+</script>
+</body>
+</html>
