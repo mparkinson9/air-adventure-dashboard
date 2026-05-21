@@ -1,6 +1,18 @@
 const REZDY_KEY = process.env.REZDY_API_KEY;
 const BASE = 'https://api.rezdy.com/v1';
 
+const ALLOWED_PRODUCTS = [
+  'CYGPZD1AV',    // Cape York and The Gulf
+  'LEIFPPGYFF',   // Lake Eyre in Flood ex Adelaide
+  'LEIFPRJ91F',   // Lake Eyre in Flood ex Melbourne
+  'WWPQKTAT',     // Western Wedge Wildflower Safari
+  'BOBSPPQE8C',   // Best of Bass Strait
+  'SOIHPAGRS3',   // Southern Ocean Island Hop
+  'EEPVK0WM',     // Ediacaran Expedition
+  'WSS1PTD5DT',   // Wet Season Spectacular
+  'GSEPAXC50',    // Great Southern Edge
+];
+
 exports.handler = async () => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
@@ -12,7 +24,8 @@ exports.handler = async () => {
     const prodRes = await fetch(`${BASE}/products?apiKey=${REZDY_KEY}&limit=100&offset=0`);
     if (!prodRes.ok) throw new Error(`Products fetch failed: ${prodRes.status}`);
     const prodData = await prodRes.json();
-    const products = prodData.products || [];
+    const allProducts = prodData.products || [];
+    const products = allProducts.filter(p => ALLOWED_PRODUCTS.includes(p.productCode));
 
     // Date range: today → 12 months out
     const now = new Date();
