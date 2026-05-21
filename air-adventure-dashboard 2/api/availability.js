@@ -1,11 +1,6 @@
-exports.handler = async function(event, context) {
+export default async function handler(req, res) {
   const REZDY_KEY = process.env.REZDY_API_KEY;
   const BASE = 'https://api.rezdy.com/v1';
-
-  const ALLOWED_CODES = [
-    'CYGPZD1AV','LEIFPPGYFF','LEIFPRJ91F','WWPQKTAT',
-    'BOBSPPQE8C','SOIHPAGRS3','EEPVK0WM','WSS1PTD5DT','GSEPAXC50',
-  ];
 
   const NAMES = {
     'CYGPZD1AV':  'Cape York & The Gulf',
@@ -19,6 +14,8 @@ exports.handler = async function(event, context) {
     'GSEPAXC50':  'Great Southern Edge',
   };
 
+  const ALLOWED_CODES = Object.keys(NAMES);
+
   try {
     const now = new Date();
     const future = new Date();
@@ -29,8 +26,8 @@ exports.handler = async function(event, context) {
     const results = await Promise.all(
       ALLOWED_CODES.map(async (code) => {
         try {
-          const avUrl = `${BASE}/availability?apiKey=${REZDY_KEY}&productCode=${code}&startTimeLocal=${encodeURIComponent(start)}&endTimeLocal=${encodeURIComponent(end)}&limit=50`;
-          const avRes = await fetch(avUrl);
+          const url = `${BASE}/availability?apiKey=${REZDY_KEY}&productCode=${code}&startTimeLocal=${encodeURIComponent(start)}&endTimeLocal=${encodeURIComponent(end)}&limit=50`;
+          const avRes = await fetch(url);
           const avData = avRes.ok ? await avRes.json() : {};
           const sessions = (avData.availability || []).map(s => ({
             startTimeLocal: s.startTimeLocal,
@@ -44,16 +41,9 @@ exports.handler = async function(event, context) {
       })
     );
 
-    return {
-      statusCode: 200,
-      headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
-      body: JSON.stringify({ products: results, fetchedAt: new Date().toISOString() }),
-    };
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.status(200).json({ products: results, fetchedAt: new Date().toISOString() });
   } catch (err) {
-    return {
-      statusCode: 500,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ error: err.message }),
-    };
+    res.status(500).json({ error: err.message });
   }
-};
+}
