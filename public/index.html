@@ -197,7 +197,7 @@ async function load() {
       const seats=sessions.reduce((s,x)=>s+(x.seatsAvailable||0),0);
       const rows=sessions.length===0
         ?'<div class="no-sess">No upcoming sessions scheduled.</div>'
-        :'<table><thead><tr><th>Date</th><th>Time</th><th>Capacity</th><th>Availability</th></tr></thead><tbody>'
+        :'<table><thead><tr><th>Date</th><th>Time</th><th>Capacity</th><th>Booked</th><th>Availability</th></tr></thead><tbody>'
           +sessions.map(s=>'<tr><td>'+fDate(s.startTimeLocal)+'</td><td class="mono">'+fTime(s.startTimeLocal)+'</td><td class="mono">'+(s.totalCapacity||'—')+'</td><td><span class="pill '+pillCls(s.seatsAvailable||0,s.totalCapacity)+'">'+pillLbl(s.seatsAvailable||0)+'</span></td></tr>').join('')
           +'</tbody></table>';
       return '<div class="card" id="c'+i+'"><div class="card-head" onclick="toggle('+i+')"><div class="card-left"><div class="pcode">'+(p.productCode||'')+'</div><div class="pname">'+p.name+'</div>'+(p.advertisedPrice?'<div class="pprice">From AUD '+Number(p.advertisedPrice).toLocaleString('en-AU')+'</div>':'')+'</div><div class="card-right"><div class="cnt"><span class="cnt-num">'+sessions.length+'</span><span class="cnt-lbl">Sessions</span></div><div class="cnt"><span class="cnt-num">'+seats+'</span><span class="cnt-lbl">Seats</span></div><div class="chev"></div></div></div><div class="panel"><div class="panel-in">'+rows+'</div></div></div>';
