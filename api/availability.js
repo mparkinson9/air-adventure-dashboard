@@ -15,18 +15,28 @@ export default async function handler(req, res) {
   };
 
   try {
-    const start = '2026-01-01T00:00:00';
+    const start = '2026-01-01';
     const future = new Date();
     future.setFullYear(future.getFullYear() + 1);
-    const end = future.toISOString().slice(0,10) + 'T00:00:00';
+    const end = future.toISOString().slice(0,10);
 
     const results = await Promise.all(
       Object.entries(TOURS).map(async ([code, name]) => {
         try {
-          const url = `${BASE}/products/${code}/sessions?apiKey=${REZDY_KEY}&startTime=${encodeURIComponent(start)}&endTime=${encodeURIComponent(end)}&limit=50`;
-          const sessRes = await fetch(url);
+          // Try the availability endpoint with date format Rezdy uses
+          const url = `${BASE}/availability?apiKey=${REZDY_KEY}&productCode=${code}&startTimeLocal=${start}+00%3A00%3A00&endTimeLocal=${end}+00%3A00%3A00&limit=50`;
+          const avRes = await fetch(url);
+          const avData = avRes.ok ? await avRes.json() : {};
+          
+          // Also try sessions endpoint
+          const sessUrl = `${BASE}/products/${code}/sessions?apiKey=${REZDY_KEY}&startTime=${start}&endTime=${end}&limit=50`;
+          const sessRes = await fetch(sessUrl);
           const sessData = sessRes.ok ? await sessRes.json() : {};
-          const sessions = (sessData.sessions || []).map(s => {
+
+          const sessions = [
+            ...(avData.availability || []),
+            ...(sessData.sessions || []),
+          ].map(s => {
             const total = s.totalCapacity ?? null;
             const available = s.seatsAvailable ?? 0;
             const booked = total !== null ? total - available : null;
@@ -37,9 +47,10 @@ export default async function handler(req, res) {
               totalCapacity: total,
             };
           });
-          return { productCode: code, name, sessions };
-        } catch {
-          return { productCode: code, name, sessions: [] };
+
+          return { productCode: code, name, sessions, debug: { avCount: (avData.availability||[]).length, sessCount: (sessData.sessions||[]).length } };
+        } catch(e) {
+          return { productCode: code, name, sessions: [], error: e.message };
         }
       })
     );
