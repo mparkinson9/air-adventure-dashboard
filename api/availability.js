@@ -42,4 +42,8 @@ export default async function handler(req, res) {
     );
 
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.status(200).json({ products: results, fetchedAt: ne
+    res.status(200).json({ products: results, fetchedAt: new Date().toISOString() });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+}
