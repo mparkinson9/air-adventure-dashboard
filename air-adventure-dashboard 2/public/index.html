@@ -188,7 +188,7 @@ async function load() {
   document.getElementById('content').innerHTML=`<div class="state"><div class="spinner"></div><div class="state-txt">Retrieving your tour availability…</div></div>`;
 
   try {
-    const res = await fetch('/.netlify/functions/availability');
+    const res = await fetch('/api/availability');
     if (!res.ok) throw new Error('Server error '+res.status);
     const data = await res.json();
     if (data.error) throw new Error(data.error);
