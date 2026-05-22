@@ -15,30 +15,36 @@ export default async function handler(req, res) {
   };
 
   try {
+    const start = '2026-01-01 00:00:00';
+    const end = '2028-12-31 00:00:00';
+
     const results = await Promise.all(
       Object.entries(TOURS).map(async ([code, name]) => {
         try {
-          // Try sessions endpoint with no date filter first
-          const url = `${BASE}/products/${code}/sessions?apiKey=${REZDY_KEY}&limit=50`;
-          const sessRes = await fetch(url);
-          const sessData = sessRes.ok ? await sessRes.json() : {};
-          
-          return {
-            productCode: code,
-            name,
-            sessKeys: Object.keys(sessData),
-            sessCount: (sessData.sessions || []).length,
-            firstSession: (sessData.sessions || [])[0] || null,
-            rawSample: JSON.stringify(sessData).slice(0, 200),
-          };
-        } catch(e) {
-          return { productCode: code, name, error: e.message };
+          const url = `${BASE}/availability?apiKey=${REZDY_KEY}&productCode=${code}&startTimeLocal=${encodeURIComponent(start)}&endTimeLocal=${encodeURIComponent(end)}&limit=50`;
+          const avRes = await fetch(url);
+          const avData = avRes.ok ? await avRes.json() : {};
+          const sessions = (avData.availability || []).map(s => {
+            const total = s.totalCapacity ?? null;
+            const available = s.seatsAvailable ?? 0;
+            const booked = total !== null ? total - available : null;
+            return {
+              startTimeLocal: s.startTimeLocal,
+              endTimeLocal: s.endTimeLocal,
+              seatsAvailable: available,
+              seatsBooked: booked,
+              totalCapacity: total,
+            };
+          });
+          return { productCode: code, name, sessions };
+        } catch {
+          return { productCode: code, name, sessions: [] };
         }
       })
     );
 
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.status(200).json({ results, fetchedAt: new Date().toISOString() });
+    res.status(200).json({ products: results, fetchedAt: new Date().toISOString() });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
