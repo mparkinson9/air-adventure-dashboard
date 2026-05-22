@@ -15,36 +15,18 @@ export default async function handler(req, res) {
   };
 
   try {
-    const start = '2026-01-01 00:00:00';
-    const end = '2028-12-31 00:00:00';
-
-    const results = await Promise.all(
-      Object.entries(TOURS).map(async ([code, name]) => {
-        try {
-          const url = `${BASE}/availability?apiKey=${REZDY_KEY}&productCode=${code}&startTimeLocal=${encodeURIComponent(start)}&endTimeLocal=${encodeURIComponent(end)}&limit=50`;
-          const avRes = await fetch(url);
-          const avData = avRes.ok ? await avRes.json() : {};
-          const sessions = (avData.availability || []).map(s => {
-            const total = s.totalCapacity ?? null;
-            const available = s.seatsAvailable ?? 0;
-            const booked = total !== null ? total - available : null;
-            return {
-              startTimeLocal: s.startTimeLocal,
-              endTimeLocal: s.endTimeLocal,
-              seatsAvailable: available,
-              seatsBooked: booked,
-              totalCapacity: total,
-            };
-          });
-          return { productCode: code, name, sessions };
-        } catch {
-          return { productCode: code, name, sessions: [] };
-        }
-      })
-    );
+    // Fetch bookings from Jan 2026 to Jan 2028
+    const url = `${BASE}/orders?apiKey=${REZDY_KEY}&startTimeLocal=${encodeURIComponent('2026-01-01 00:00:00')}&endTimeLocal=${encodeURIComponent('2028-01-01 00:00:00')}&limit=100&offset=0`;
+    const ordersRes = await fetch(url);
+    const ordersData = ordersRes.ok ? await ordersRes.json() : {};
 
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.status(200).json({ products: results, fetchedAt: new Date().toISOString() });
+    res.status(200).json({
+      orderKeys: Object.keys(ordersData),
+      orderCount: (ordersData.orders || []).length,
+      firstOrder: (ordersData.orders || [])[0] || null,
+      fetchedAt: new Date().toISOString(),
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
