@@ -3,413 +3,796 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Air Adventure Australia — Booking Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<title>Outback Call List · Air Adventure Australia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --bg: #0d0f0e; --surface: #141714; --surface2: #1a1d1a; --border: #2a2f2a;
-    --accent: #c8a96e; --accent-dim: #7a6540; --text: #e8e4dc; --text-muted: #7a7d79;
-    --text-dim: #4a4d4a; --red: #c47060; --green: #7aad8a; --amber: #c8a96e; --blue: #6e9eb5;
+    --sand:    #F5EFE0;
+    --ochre:   #C8873A;
+    --rust:    #A84E2A;
+    --dusk:    #2C2419;
+    --slate:   #4A3F35;
+    --mist:    #E8E0D0;
+    --sage:    #7A8C6E;
+    --sky:     #4A7B9D;
+    --cream:   #FAF7F2;
+    --warn:    #D4862A;
+    --danger:  #B03020;
+    --success: #4A7A4A;
+    --border:  rgba(44,36,25,0.12);
+    --shadow:  0 2px 16px rgba(44,36,25,0.10);
   }
-  body { font-family: 'DM Mono', monospace; background: var(--bg); color: var(--text); min-height: 100vh; font-size: 13px; line-height: 1.6; }
-  header { border-bottom: 1px solid var(--border); padding: 20px 32px; display: flex; align-items: center; justify-content: space-between; background: var(--surface); }
-  .brand { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 300; letter-spacing: 0.12em; color: var(--accent); text-transform: uppercase; }
-  .brand span { color: var(--text-muted); font-style: italic; }
-  .header-meta { display: flex; align-items: center; gap: 20px; color: var(--text-muted); font-size: 11px; letter-spacing: 0.05em; }
-  .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); display: inline-block; margin-right: 6px; animation: pulse 2s infinite; }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-  .api-config { background: var(--surface); border-bottom: 1px solid var(--border); padding: 14px 32px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
-  .btn { background: var(--accent); color: var(--bg); border: none; padding: 8px 20px; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: opacity 0.2s; white-space: nowrap; }
-  .btn:hover { opacity: 0.85; } .btn:disabled { opacity: 0.4; cursor: not-allowed; }
-  .btn-secondary { background: transparent; color: var(--text-muted); border: 1px solid var(--border); }
-  .btn-secondary:hover { border-color: var(--accent-dim); color: var(--accent); opacity: 1; }
-  .last-refresh { color: var(--text-muted); font-size: 11px; margin-left: auto; }
-  .main { padding: 28px 32px; display: flex; flex-direction: column; gap: 28px; }
-  .section-label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
-  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
-  .stat-card { background: var(--surface); padding: 20px 24px; }
-  .stat-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
-  .stat-value { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 300; color: var(--text); line-height: 1; }
-  .stat-sub { font-size: 10px; color: var(--text-dim); margin-top: 4px; }
-  .stat-value.warn { color: var(--red); } .stat-value.ok { color: var(--green); } .stat-value.amber { color: var(--amber); }
-  .tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
-  .tab { padding: 10px 22px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; background: none; border-top: none; border-left: none; border-right: none; font-family: 'DM Mono', monospace; }
-  .tab:hover { color: var(--text); } .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
-  .table-wrap { overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; font-size: 12px; }
-  thead tr { border-bottom: 1px solid var(--border); }
-  th { text-align: left; padding: 8px 16px; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); font-weight: 400; white-space: nowrap; }
-  tbody tr { border-bottom: 1px solid #1e211e; transition: background 0.1s; }
-  tbody tr:hover { background: var(--surface2); }
-  td { padding: 11px 16px; vertical-align: middle; color: var(--text); }
-  .badge { display: inline-block; padding: 2px 8px; font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; border-radius: 2px; }
-  .badge-red { background: rgba(196,112,96,0.15); color: var(--red); }
-  .badge-green { background: rgba(122,173,138,0.15); color: var(--green); }
-  .badge-amber { background: rgba(200,169,110,0.15); color: var(--amber); }
-  .badge-blue { background: rgba(110,158,181,0.15); color: var(--blue); }
-  .badge-grey { background: rgba(122,125,121,0.12); color: var(--text-muted); }
-  .avail-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1px; background: var(--border); }
-  .avail-card { background: var(--surface); padding: 20px 22px; }
-  .avail-tour-name { font-family: 'Cormorant Garamond', serif; font-size: 16px; font-weight: 400; color: var(--text); margin-bottom: 4px; line-height: 1.3; }
-  .avail-date { font-size: 11px; color: var(--text-muted); margin-bottom: 14px; }
-  .seat-bar-label { display: flex; justify-content: space-between; font-size: 10px; color: var(--text-muted); margin-bottom: 5px; }
-  .seat-bar { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; margin-bottom: 10px; }
-  .seat-bar-fill { height: 100%; border-radius: 2px; background: var(--green); }
-  .seat-bar-fill.half { background: var(--amber); } .seat-bar-fill.full { background: var(--red); }
-  .seat-counts { display: flex; gap: 16px; font-size: 11px; }
-  .seat-sold { color: var(--accent); } .seat-avail { color: var(--text-muted); }
-  .state-msg { padding: 60px 0; text-align: center; color: var(--text-dim); font-size: 12px; letter-spacing: 0.05em; }
-  .state-msg .big { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 300; color: var(--text-muted); display: block; margin-bottom: 8px; }
-  .spinner { display: inline-block; width: 14px; height: 14px; border: 1px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 6px; vertical-align: middle; }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--cream);
+    color: var(--dusk);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  header {
+    background: var(--dusk);
+    color: var(--sand);
+    padding: 0 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 2px solid var(--ochre);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    gap: 1rem;
+  }
+
+  .header-left { display: flex; align-items: baseline; gap: 1rem; }
+
+  .brand {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.1rem;
+    color: var(--ochre);
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+
+  .header-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: rgba(245,239,224,0.5);
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+
+  .header-right { display: flex; align-items: center; gap: 1rem; }
+
+  #last-updated {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: rgba(245,239,224,0.4);
+    white-space: nowrap;
+  }
+
+  #refresh-btn {
+    background: var(--ochre);
+    color: var(--dusk);
+    border: none;
+    border-radius: 6px;
+    padding: 7px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.03em;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.15s, transform 0.1s;
+    white-space: nowrap;
+  }
+
+  #refresh-btn:hover { background: #d9933f; }
+  #refresh-btn:active { transform: scale(0.97); }
+  #refresh-btn:disabled { opacity: 0.6; pointer-events: none; }
+
   @keyframes spin { to { transform: rotate(360deg); } }
-  .error-msg { background: rgba(196,112,96,0.08); border: 1px solid rgba(196,112,96,0.2); color: var(--red); padding: 14px 18px; font-size: 12px; margin-bottom: 16px; }
-  .td-name { font-family: 'Cormorant Garamond', serif; font-size: 14px; }
-  .td-mono { font-family: 'DM Mono', monospace; font-size: 11px; }
-  .filter-row { display: flex; gap: 10px; margin-bottom: 16px; align-items: center; flex-wrap: wrap; }
-  .filter-row select { background: var(--surface); border: 1px solid var(--border); color: var(--text-muted); padding: 6px 12px; font-family: 'DM Mono', monospace; font-size: 11px; outline: none; }
-  .count-label { margin-left: auto; color: var(--text-dim); font-size: 11px; }
+  .spinning { display: inline-block; animation: spin 0.8s linear infinite; }
+
+  main {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 1.5rem;
+  }
+
+  .stat-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+
+  .stat-card.s-priority::before   { background: var(--rust); }
+  .stat-card.s-clicked::before    { background: var(--ochre); }
+  .stat-card.s-opens::before      { background: var(--sage); }
+  .stat-card.s-uncontacted::before{ background: var(--sky); }
+
+  .stat-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--slate);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .stat-value {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2rem;
+    color: var(--dusk);
+    line-height: 1;
+  }
+
+  .stat-sub {
+    font-size: 0.68rem;
+    color: var(--slate);
+    margin-top: 4px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .legend {
+    display: flex;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.25rem;
+    padding: 10px 14px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.72rem;
+    color: var(--slate);
+  }
+
+  .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+  .window-bar {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--slate);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .window-bar span {
+    background: var(--mist);
+    padding: 3px 10px;
+    border-radius: 4px;
+  }
+
+  #contact-list { display: flex; flex-direction: column; gap: 10px; }
+
+  .contact-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    transition: box-shadow 0.15s, border-color 0.15s;
+    animation: fadeUp 0.3s ease both;
+  }
+
+  .contact-card:hover {
+    box-shadow: var(--shadow);
+    border-color: rgba(200,135,58,0.3);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .priority-stripe {
+    width: 4px;
+    border-radius: 4px;
+    align-self: stretch;
+    flex-shrink: 0;
+    min-height: 48px;
+  }
+
+  .avatar {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Serif Display', serif;
+    font-size: 0.95rem;
+    flex-shrink: 0;
+    letter-spacing: 0.02em;
+  }
+
+  .card-body { flex: 1; min-width: 0; }
+
+  .card-top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+
+  .contact-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.05rem;
+    color: var(--dusk);
+    text-decoration: none;
+    letter-spacing: 0.01em;
+  }
+
+  .contact-name:hover { color: var(--ochre); }
+
+  .score-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.04em;
+  }
+
+  .badge {
+    font-size: 0.67rem;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+  }
+
+  .badge-form     { background: #FDECEA; color: var(--danger); }
+  .badge-new-unc  { background: #FEF3E2; color: var(--warn); }
+  .badge-unc      { background: #EBF3FA; color: var(--sky); }
+  .badge-new      { background: #EBF5EB; color: var(--success); }
+  .badge-clicked  { background: #FEF7E8; color: #9A6A10; }
+  .badge-opens    { background: #F2F0EC; color: var(--slate); }
+  .badge-repeat   { background: #F0EDE8; color: var(--slate); }
+  .badge-visit    { background: #FEF3E2; color: var(--warn); }
+  .badge-persist  { background: #F5EDFF; color: #6B3F9A; }
+
+  .card-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 4px 16px;
+  }
+
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    color: var(--slate);
+  }
+
+  .meta-icon {
+    font-size: 0.8rem;
+    color: var(--ochre);
+    flex-shrink: 0;
+    width: 14px;
+    text-align: center;
+  }
+
+  .hs-link {
+    color: var(--slate);
+    flex-shrink: 0;
+    transition: color 0.15s;
+    margin-top: 2px;
+    font-size: 1.1rem;
+    text-decoration: none;
+  }
+
+  .hs-link:hover { color: var(--ochre); }
+
+  .state-screen {
+    text-align: center;
+    padding: 4rem 2rem;
+  }
+
+  .state-screen h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.5rem;
+    color: var(--dusk);
+    margin-bottom: 0.75rem;
+  }
+
+  .state-screen p {
+    font-size: 0.82rem;
+    color: var(--slate);
+    font-family: 'DM Mono', monospace;
+    line-height: 1.6;
+    max-width: 420px;
+    margin: 0 auto;
+  }
+
+  .notice-box {
+    background: #FEF7E8;
+    border: 1px solid #E8C870;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 0 auto 1.5rem;
+    max-width: 560px;
+    text-align: left;
+  }
+
+  .notice-box strong {
+    font-size: 0.82rem;
+    color: #7A5010;
+    display: block;
+    margin-bottom: 6px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .notice-box p {
+    font-size: 0.78rem;
+    color: #9A6A20;
+    font-family: 'DM Mono', monospace;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .loader {
+    width: 36px; height: 36px;
+    border: 3px solid var(--mist);
+    border-top-color: var(--ochre);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    margin: 0 auto 1.25rem;
+  }
+
+  .retry-info {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--slate);
+    margin-top: 0.75rem;
+  }
+
+  .footer-note {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--slate);
+    text-align: right;
+    margin-top: 1.25rem;
+    opacity: 0.7;
+  }
+
+  @media (max-width: 640px) {
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    header { padding: 0 1rem; }
+    main { padding: 1.25rem 1rem 3rem; }
+    .brand { font-size: 0.9rem; }
+    .header-date { display: none; }
+  }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="brand">Air Adventure <span>Outback</span> &mdash; Booking Intelligence</div>
-  <div class="header-meta">
-    <span><span class="status-dot"></span>Live</span>
-    <span id="headerTime"></span>
+  <div class="header-left">
+    <span class="brand">Air Adventure Outback</span>
+    <span class="header-date" id="header-date"></span>
+  </div>
+  <div class="header-right">
+    <span id="last-updated">Not yet loaded</span>
+    <button id="refresh-btn" onclick="runDashboard()">↻ Refresh</button>
   </div>
 </header>
 
-<div class="api-config">
-  <button class="btn" id="loadBtn" onclick="loadAll()">Load Data</button>
-  <button class="btn btn-secondary" id="refreshBtn" onclick="loadAll()" style="display:none">Refresh Now</button>
-  <span class="last-refresh" id="lastRefresh"></span>
-</div>
-
-<div class="main">
-  <div>
-    <div class="section-label">Overview</div>
-    <div class="stats-row">
-      <div class="stat-card"><div class="stat-label">Available Tours</div><div class="stat-value" id="statTours">—</div><div class="stat-sub">with open availability</div></div>
-      <div class="stat-card"><div class="stat-label">Total Bookings</div><div class="stat-value" id="statBookings">—</div><div class="stat-sub">active bookings</div></div>
-      <div class="stat-card"><div class="stat-label">No Deposit</div><div class="stat-value warn" id="statUnpaid">—</div><div class="stat-sub">bookings &gt;2 days old</div></div>
-      <div class="stat-card"><div class="stat-label">Fully Paid</div><div class="stat-value ok" id="statPaid">—</div><div class="stat-sub">bookings</div></div>
+<main>
+  <div class="stats-row">
+    <div class="stat-card s-priority">
+      <div class="stat-label">Priority Tier</div>
+      <div class="stat-value" id="stat-p1">—</div>
+      <div class="stat-sub">high intent</div>
+    </div>
+    <div class="stat-card s-clicked">
+      <div class="stat-label">Clicked 4 Days</div>
+      <div class="stat-value" id="stat-click">—</div>
+      <div class="stat-sub">rolling window</div>
+    </div>
+    <div class="stat-card s-opens">
+      <div class="stat-label">9+ Opens</div>
+      <div class="stat-value" id="stat-opens">—</div>
+      <div class="stat-sub">high engagement</div>
+    </div>
+    <div class="stat-card s-uncontacted">
+      <div class="stat-label">Never Called</div>
+      <div class="stat-value" id="stat-unc">—</div>
+      <div class="stat-sub">no call logged</div>
     </div>
   </div>
 
-  <div>
-    <div class="tabs">
-      <button class="tab active" id="tab-btn-availability" onclick="switchTab('availability', this)">Availability</button>
-      <button class="tab" id="tab-btn-payments" onclick="switchTab('payments', this)">Payment Status</button>
-      <button class="tab" id="tab-btn-all" onclick="switchTab('all', this)">All Bookings</button>
-    </div>
+  <div class="legend">
+    <div class="legend-item"><span class="dot" style="background:var(--rust)"></span>Form 48h</div>
+    <div class="legend-item"><span class="dot" style="background:var(--warn)"></span>Never contacted · new</div>
+    <div class="legend-item"><span class="dot" style="background:var(--sky)"></span>Never contacted</div>
+    <div class="legend-item"><span class="dot" style="background:var(--success)"></span>New this week</div>
+    <div class="legend-item"><span class="dot" style="background:#6B3F9A"></span>Persistent high intent</div>
+    <div class="legend-item"><span class="dot" style="background:var(--slate)"></span>Standard</div>
+  </div>
 
-    <div id="errorBox" style="display:none" class="error-msg"></div>
+  <div class="window-bar">
+    <span id="window-label">Rolling click window: 4 days · Opens: >9 · Score: >35</span>
+    <span id="contact-count">—</span>
+  </div>
 
-    <div id="tab-availability">
-      <div class="state-msg" id="availState"><span class="big">Enter your API key above to load data.</span>Availability and seat counts will appear here.</div>
-      <div class="avail-grid" id="availGrid" style="display:none"></div>
-    </div>
-
-    <div id="tab-payments" style="display:none">
-      <div class="filter-row">
-        <select id="payFilter" onchange="renderPayments()">
-          <option value="all">All payment statuses</option>
-          <option value="unpaid">No deposit (&gt;2 days old)</option>
-          <option value="partial">Partial payment</option>
-          <option value="paid">Fully paid</option>
-        </select>
-        <span class="count-label" id="payCount"></span>
-      </div>
-      <div class="state-msg" id="payState">Load data to see payment report.</div>
-      <div class="table-wrap" id="payTable" style="display:none">
-        <table>
-          <thead><tr><th>Booking Ref</th><th>Guest</th><th>Tour</th><th>Booked On</th><th>Travel Date</th><th>Total</th><th>Paid</th><th>Balance</th><th>Status</th></tr></thead>
-          <tbody id="payBody"></tbody>
-        </table>
-      </div>
-    </div>
-
-    <div id="tab-all" style="display:none">
-      <div class="filter-row">
-        <select id="allFilter" onchange="renderAll()">
-          <option value="all">All statuses</option>
-          <option value="CONFIRMED">Confirmed</option>
-          <option value="PENDING">Pending</option>
-          <option value="CANCELLED">Cancelled</option>
-        </select>
-        <span class="count-label" id="allCount"></span>
-      </div>
-      <div class="state-msg" id="allState">Load data to see all bookings.</div>
-      <div class="table-wrap" id="allTable" style="display:none">
-        <table>
-          <thead><tr><th>Ref</th><th>Guest</th><th>Tour</th><th>Session Date</th><th>Guests</th><th>Total</th><th>Status</th></tr></thead>
-          <tbody id="allBody"></tbody>
-        </table>
-      </div>
+  <div id="contact-list">
+    <div class="state-screen">
+      <div class="loader"></div>
+      <h2>Loading your call list</h2>
+      <p>Fetching live data from HubSpot…</p>
     </div>
   </div>
-</div>
+
+  <div class="footer-note" id="footer-note"></div>
+</main>
 
 <script>
-  let bookings = [];
-  let sessions = [];
-  let products = [];
-  let refreshInterval = null;
+// ─── CONSTANTS ────────────────────────────────────────────────────────────────
 
-  function updateTime() {
-    document.getElementById('headerTime').textContent =
-      new Date().toLocaleString('en-AU', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
-  }
-  setInterval(updateTime, 1000);
-  updateTime();
+const CLOSED_LOST = new Set([
+  "Penelope Cross","Valerie Elkington","Marty Mac","Maureen Riggs",
+  "Roslyn Taylor","Carole Corr","Ivanka Svrta Carmen","Verity Orr",
+  "Milton Heinjus","Jenine Thomson"
+]);
 
-  function switchTab(tab, btn) {
-    ['availability','payments','all'].forEach(t => {
-      document.getElementById('tab-' + t).style.display = t === tab ? '' : 'none';
-      document.getElementById('tab-btn-' + t).classList.toggle('active', t === tab);
-    });
-  }
+const HUBSPOT_PORTAL = "44807382";
+const MAX_RETRIES    = 3;
+const RETRY_DELAY_MS = 4000;
 
-  async function rezdyFetch(endpoint) {
-    // Parse path and existing query params from endpoint
-    const [path, qs] = endpoint.split('?');
-    const params = new URLSearchParams(qs || '');
-    params.set('path', path);
-    const res = await fetch('/api/rezdy?' + params.toString(), {
-      signal: AbortSignal.timeout(15000)
-    });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    return res.json();
-  }
+// ─── TIME ─────────────────────────────────────────────────────────────────────
 
-  async function loadAll() {
-    showError('');
-    const btn = document.getElementById('loadBtn');
-    btn.disabled = true;
-    btn.innerHTML = '<span class="spinner"></span>Loading...';
+const MS = 86400000;
+const now = () => new Date();
+const cutoff = d => new Date(now() - d * MS);
 
-    try {
-      await Promise.all([fetchProducts(), fetchBookings()]);
-      renderStats();
-      renderAvailability();
-      renderPayments();
-      renderAll();
-      document.getElementById('lastRefresh').textContent = 'Refreshed ' + new Date().toLocaleTimeString('en-AU');
-      document.getElementById('refreshBtn').style.display = '';
-      if (refreshInterval) clearInterval(refreshInterval);
-      refreshInterval = setInterval(loadAll, 24 * 60 * 60 * 1000);
-    } catch(e) {
-      showError('Could not connect to Rezdy. This may be a network/proxy issue — try again in a moment. (' + e.message + ')');
-    }
+function daysSince(ds) {
+  if(!ds) return "—";
+  const d = Math.floor((now() - new Date(ds)) / MS);
+  if(d === 0) return "Today";
+  if(d === 1) return "Yesterday";
+  return `${d} days ago`;
+}
 
-    btn.disabled = false;
-    btn.textContent = 'Load Data';
-  }
+function formatDate(ds) {
+  if(!ds) return "—";
+  return new Date(ds).toLocaleDateString("en-AU",{day:"numeric",month:"short",year:"numeric"});
+}
 
-  function isOutbackProduct(name) {
-    return !/(golf)/i.test(name || '');
-  }
+// ─── QUALIFICATION LOGIC ──────────────────────────────────────────────────────
 
-  async function fetchProducts() {
-    const data = await rezdyFetch('/products?limit=100&offset=0');
-    products = data.products || [];
-    const now = new Date();
-    const future = new Date(now.getTime() + 365 * 24 * 60 * 60 * 1000);
-    const fmt = d => d.toISOString().replace(/[-:]/g, '').split('.')[0];
-    sessions = [];
-    // Only Outback products (exclude anything with Golf in the name)
-    const outbackProducts = products.filter(p => isOutbackProduct(p.name));
-    await Promise.all(outbackProducts.map(async p => {
-      try {
-        const sd = await rezdyFetch('/availability?productCode=' + p.productCode + '&startTime=' + fmt(now) + '&endTime=' + fmt(future) + '&limit=50');
-        (sd.sessions || []).forEach(s => {
-          // Include session if availableTo date is still in the future (or not set)
-          const availTo = s.availableTo || s.endTimeLocal || null;
-          const stillOpen = !availTo || new Date(availTo) > now;
-          if (stillOpen) sessions.push({ ...s, productName: p.name, productCode: p.productCode, availableTo: availTo });
-        });
-      } catch(e) {}
-    }));
-  }
+function qualifies(c) {
+  if(CLOSED_LOST.has(c.name)) return false;
+  if(c.departure && c.departure !== "" && new Date(c.departure) > now()) return false;
+  const clickedRecently = c.lastClick && new Date(c.lastClick) > cutoff(4);
+  const highOpener = c.opens > 9 && c.lastOpen && new Date(c.lastOpen) > cutoff(12);
+  if(!clickedRecently && !highOpener) return false;
+  if((c.score || 0) < 35) return false;
+  if(c.lastContacted && new Date(c.lastContacted) > cutoff(3)) return false;
+  return true;
+}
 
-  async function fetchBookings() {
-    const from = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString().split('.')[0];
-    const data = await rezdyFetch('/bookings?limit=100&offset=0&createdSince=' + from);
-    bookings = data.bookings || [];
-  }
+const isFormRecent  = c => c.convDate && new Date(c.convDate) > cutoff(2);
+const isNewWeek     = c => new Date(c.created) > cutoff(7);
+const isUncontacted = c => !c.lastContacted;
+const isRecentVisit = c => c.lastVisit && new Date(c.lastVisit) > cutoff(1);
+const isRepeat      = c => c.lifecycle === "customer";
+const isClicked4d   = c => c.lastClick && new Date(c.lastClick) > cutoff(4);
+const isHighOpener  = c => (c.opens || 0) > 9;
+const isPersistent  = c => !c.lastContacted &&
+  (c.lastClick || c.lastOpen) &&
+  new Date(c.lastClick || c.lastOpen) < cutoff(1) &&
+  ((c.opens || 0) > 20 || (c.clicks || 0) > 5);
 
-  function renderStats() {
-    const twoDaysAgo = Date.now() - 2 * 24 * 60 * 60 * 1000;
-    const active = bookings.filter(b => b.status !== 'CANCELLED');
-    const outbackActive = active.filter(b => {
-      const item = (b.items || [])[0];
-      const name = item?.productName || b.productName || '';
-      return isOutbackProduct(name);
-    });
-    const unpaid = outbackActive.filter(b => {
-      const created = new Date(b.dateCreated || b.createdDate || 0).getTime();
-      return created < twoDaysAgo && !(b.totalPaid > 0);
-    }).length;
-    const paid = outbackActive.filter(b => {
-      const total = b.totalAmount || b.totalDue || 0;
-      return total > 0 && (b.totalPaid || 0) >= total;
-    }).length;
-    const uniqueTours = new Set(sessions.map(s => s.productCode)).size;
-    document.getElementById('statTours').textContent = uniqueTours;
-    document.getElementById('statBookings').textContent = outbackActive.length;
-    document.getElementById('statUnpaid').textContent = unpaid;
-    document.getElementById('statPaid').textContent = paid;
+function priorityTier(c) {
+  if(isFormRecent(c))                     return 0;
+  if(isUncontacted(c) && isNewWeek(c))    return 1;
+  if(isUncontacted(c))                    return 2;
+  if(isNewWeek(c))                        return 3;
+  if(isPersistent(c))                     return 4;
+  return 5;
+}
+
+// ─── RENDER ──────────────────────────────────────────────────────────────────
+
+const STRIPES = ["var(--rust)","var(--warn)","var(--sky)","var(--success)","#6B3F9A","var(--slate)"];
+const AVATARS = [
+  {bg:"#FEF0E0",tx:"#9A5A10"},{bg:"#E8F0F8",tx:"#2A5A80"},
+  {bg:"#EBF5EB",tx:"#2A5A2A"},{bg:"#F5EBF0",tx:"#7A2A5A"},
+  {bg:"#F0EDE8",tx:"#4A3F35"},
+];
+
+const initials = n => n.split(" ").slice(0,2).map(p=>p[0]||"").join("").toUpperCase();
+
+function scoreStyle(s) {
+  if(s >= 70) return "background:#FDECEA;color:var(--danger);";
+  if(s >= 50) return "background:#FEF7E8;color:#9A6A10;";
+  return "background:#F2F0EC;color:var(--slate);";
+}
+
+function stageStyle(s) {
+  if(s === "opportunity") return "background:#EBF3FA;color:var(--sky);";
+  if(s === "customer")    return "background:#EBF5EB;color:var(--success);";
+  return "background:#F2F0EC;color:var(--slate);";
+}
+
+function hsUrl(id) {
+  return `https://app.hubspot.com/contacts/${HUBSPOT_PORTAL}/record/0-1/${id}?utm_source=aao_calldash&utm_medium=dashboard`;
+}
+
+function renderCards(contacts) {
+  const list = document.getElementById("contact-list");
+
+  if(contacts.length === 0) {
+    list.innerHTML = `<div class="state-screen"><h2>No contacts today</h2><p>No qualifying contacts match today's criteria.</p></div>`;
+    return;
   }
 
-  function renderAvailability() {
-    const grid = document.getElementById('availGrid');
-    const state = document.getElementById('availState');
-    if (!sessions.length) {
-      state.style.display = ''; grid.style.display = 'none';
-      state.innerHTML = '<span class="big">No Outback tours with active availability found.</span>Tours will appear here once their availability window is open in Rezdy.';
-      return;
-    }
-    state.style.display = 'none'; grid.style.display = 'grid';
-    // Group sessions by product so each tour appears once with its availability window
-    const byProduct = {};
-    sessions.forEach(s => {
-      const code = s.productCode;
-      if (!byProduct[code]) byProduct[code] = { productName: s.productName, productCode: code, sessions: [], availableTo: s.availableTo };
-      byProduct[code].sessions.push(s);
-      // Keep the latest availableTo date across sessions
-      if (s.availableTo && (!byProduct[code].availableTo || new Date(s.availableTo) > new Date(byProduct[code].availableTo))) {
-        byProduct[code].availableTo = s.availableTo;
-      }
-    });
-    const tours = Object.values(byProduct).sort((a,b) => a.productName.localeCompare(b.productName));
-    const TOTAL_SEATS = 8;
-    grid.innerHTML = tours.map(t => {
-      const sessionCount = t.sessions.length;
-      const availToStr = t.availableTo
-        ? new Date(t.availableTo).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })
-        : 'Open';
-      const daysLeft = t.availableTo
-        ? Math.ceil((new Date(t.availableTo) - Date.now()) / (1000 * 60 * 60 * 24))
-        : null;
-      const urgency = daysLeft !== null && daysLeft <= 30 ? 'var(--amber)' : 'var(--green)';
-      // Seat counts: sum booked guests across sessions for this product
-      const soldSeats = bookings
-        .filter(b => b.status !== 'CANCELLED')
-        .filter(b => (b.items || []).some(i => i.productCode === t.productCode))
-        .reduce((sum, b) => {
-          return sum + (b.items || [])
-            .filter(i => i.productCode === t.productCode)
-            .reduce((s, i) => s + (i.quantities || []).reduce((a, q) => a + (q.value || 0), 0), 0);
-        }, 0);
-      const availSeats = Math.max(0, TOTAL_SEATS - soldSeats);
-      const pct = Math.min(100, (soldSeats / TOTAL_SEATS) * 100);
-      const fillClass = pct >= 100 ? 'full' : pct >= 50 ? 'half' : '';
-      return `<div class="avail-card">
-        <div class="avail-tour-name">${t.productName}</div>
-        <div class="avail-date">${sessionCount} session${sessionCount !== 1 ? 's' : ''} scheduled</div>
-        <div class="seat-bar-label" style="margin-top:12px"><span>Seats sold</span><span>${soldSeats} / ${TOTAL_SEATS}</span></div>
-        <div class="seat-bar" style="margin-bottom:8px"><div class="seat-bar-fill ${fillClass}" style="width:${pct}%"></div></div>
-        <div class="seat-counts" style="margin-bottom:12px">
-          <span class="seat-sold">${soldSeats} sold</span>
-          <span class="seat-avail">${availSeats} available</span>
+  list.innerHTML = "";
+
+  contacts.forEach((c, i) => {
+    const tier = priorityTier(c);
+    const av   = AVATARS[i % AVATARS.length];
+    const card = document.createElement("div");
+    card.className = "contact-card";
+    card.style.animationDelay = `${i * 45}ms`;
+
+    const badges = [];
+    if(isFormRecent(c))                         badges.push(`<span class="badge badge-form">Form ${daysSince(c.convDate).toLowerCase()}</span>`);
+    if(isUncontacted(c) && isNewWeek(c))        badges.push(`<span class="badge badge-new-unc">Never contacted · new this week</span>`);
+    else if(isUncontacted(c))                   badges.push(`<span class="badge badge-unc">Never contacted</span>`);
+    else if(isNewWeek(c))                       badges.push(`<span class="badge badge-new">New this week</span>`);
+    if(isPersistent(c))                         badges.push(`<span class="badge badge-persist">Persistent high intent</span>`);
+    if(isClicked4d(c))                          badges.push(`<span class="badge badge-clicked">Clicked ${daysSince(c.lastClick).toLowerCase()}</span>`);
+    if(isHighOpener(c))                         badges.push(`<span class="badge badge-opens">${c.opens} opens</span>`);
+    if(isRepeat(c))                             badges.push(`<span class="badge badge-repeat">Repeat guest</span>`);
+    if(isRecentVisit(c))                        badges.push(`<span class="badge badge-visit">Site visit today</span>`);
+
+    const phone = c.phone && c.phone !== "0" ? c.phone : "No phone on file";
+
+    card.innerHTML = `
+      <div class="priority-stripe" style="background:${STRIPES[Math.min(tier,5)]}"></div>
+      <div class="avatar" style="background:${av.bg};color:${av.tx}">${initials(c.name)}</div>
+      <div class="card-body">
+        <div class="card-top">
+          <a class="contact-name" href="${hsUrl(c.id)}" target="_blank" rel="noopener">${c.name}</a>
+          <span class="score-badge" style="${scoreStyle(c.score)}">Score ${c.score}</span>
+          <span class="badge" style="${stageStyle(c.stage)}">${c.stage}</span>
+          ${badges.join("")}
         </div>
-        <div class="seat-bar-label"><span>Available until</span><span style="color:${urgency}">${availToStr}</span></div>
-        <div style="font-size:10px;color:${urgency};margin-top:3px">${daysLeft !== null ? daysLeft + ' day' + (daysLeft !== 1 ? 's' : '') + ' remaining' : 'No end date set'}</div>
+        <div class="card-meta">
+          <div class="meta-item"><span class="meta-icon">📞</span>${phone}</div>
+          <div class="meta-item"><span class="meta-icon">📅</span>Created: ${formatDate(c.created)}</div>
+          <div class="meta-item"><span class="meta-icon">📨</span>Opened ${daysSince(c.lastOpen)} · ${c.opens} total</div>
+          <div class="meta-item"><span class="meta-icon">🖱</span>Clicked ${daysSince(c.lastClick)} · ${c.clicks} total</div>
+          ${c.lastEmail ? `<div class="meta-item"><span class="meta-icon">✉</span>${c.lastEmail}</div>` : ""}
+          <div class="meta-item"><span class="meta-icon">📋</span>Last called: ${c.lastContacted ? daysSince(c.lastContacted) : "Never"}</div>
+          ${isRecentVisit(c) ? `<div class="meta-item"><span class="meta-icon">🌐</span>Site visit: ${daysSince(c.lastVisit)}</div>` : ""}
+        </div>
+      </div>
+      <a class="hs-link" href="${hsUrl(c.id)}" target="_blank" rel="noopener" title="Open in HubSpot">↗</a>
+    `;
+    list.appendChild(card);
+  });
+}
+
+function updateStats(contacts) {
+  document.getElementById("stat-p1").textContent    = contacts.filter(c => priorityTier(c) <= 1).length;
+  document.getElementById("stat-click").textContent  = contacts.filter(isClicked4d).length;
+  document.getElementById("stat-opens").textContent  = contacts.filter(isHighOpener).length;
+  document.getElementById("stat-unc").textContent    = contacts.filter(isUncontacted).length;
+  document.getElementById("contact-count").textContent = `${contacts.length} contacts shown`;
+  const c4 = cutoff(4);
+  document.getElementById("window-label").textContent =
+    `Rolling click window: ${c4.toLocaleDateString("en-AU",{day:"numeric",month:"short"})} – today · Opens: >9 · Score: >35`;
+  document.getElementById("footer-note").textContent =
+    `Last refreshed ${now().toLocaleTimeString("en-AU",{hour:"2-digit",minute:"2-digit"})} · ${contacts.length} contacts shown`;
+}
+
+// ─── API WITH RETRY ──────────────────────────────────────────────────────────
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+async function fetchWithRetry(attempt = 1) {
+  const list = document.getElementById("contact-list");
+  const c4ms  = cutoff(4).getTime();
+  const c12ms = cutoff(12).getTime();
+
+  if(attempt > 1) {
+    list.innerHTML = `
+      <div class="state-screen">
+        <div class="loader"></div>
+        <h2>Retrying…</h2>
+        <p>Attempt ${attempt} of ${MAX_RETRIES}. The API was busy — trying again now.</p>
       </div>`;
-    }).join('');
   }
 
-  function renderPayments() {
-    const body = document.getElementById('payBody');
-    const state = document.getElementById('payState');
-    const table = document.getElementById('payTable');
-    const filter = document.getElementById('payFilter').value;
-    const twoDaysAgo = Date.now() - 2 * 24 * 60 * 60 * 1000;
-    const fmt = v => Number(v||0).toLocaleString('en-AU', { style:'currency', currency:'AUD' });
-    const fmtD = d => new Date(d).toLocaleDateString('en-AU', { day:'numeric', month:'short', year:'numeric' });
+  const payload = {
+    model: "claude-sonnet-4-20250514",
+    max_tokens: 1000,
+    system: `You are a HubSpot data assistant. Use the HubSpot MCP tools to fetch contacts matching the given criteria. Return ONLY a valid JSON array — no markdown, no explanation, no preamble. Each object must have these exact keys: id, name, phone, score, stage, lifecycle, lastOpen, lastClick, opens, clicks, lastEmail, convDate, lastContacted, departure, created, lastVisit. Use null for missing values. All dates as ISO strings.`,
+    messages: [{
+      role: "user",
+      content: `Search HubSpot contacts with these criteria using search_crm_objects:
 
-    let rows = bookings.filter(b => b.status !== 'CANCELLED').map(b => {
-      const created = new Date(b.dateCreated || b.createdDate || Date.now());
-      const total = b.totalAmount || b.totalDue || 0;
-      const paid = b.totalPaid || 0;
-      const balance = Math.max(0, total - paid);
-      const isOld = created.getTime() < twoDaysAgo;
-      let ps = paid === 0 ? (isOld ? 'unpaid' : 'unpaid_new') : (balance > 0 ? 'partial' : 'paid');
-      return { b, created, total, paid, balance, ps };
-    });
+Filter: outback_ai_engagement_score > 35
+Filter group 1: hs_email_last_click_date > ${c4ms}
+Filter group 2: hs_email_open > 9 AND hs_email_last_open_date > ${c12ms}
+Exclude: departure_dates__outback_ is set and not empty
 
-    if (filter === 'unpaid') rows = rows.filter(r => r.ps === 'unpaid');
-    else if (filter === 'partial') rows = rows.filter(r => r.ps === 'partial');
-    else if (filter === 'paid') rows = rows.filter(r => r.ps === 'paid');
+Properties: firstname, lastname, phone, mobilephone, outback_ai_engagement_score, hs_email_last_open_date, hs_email_last_click_date, hs_email_open, hs_email_click, hs_email_last_email_name, recent_conversion_event_name, recent_conversion_date, lifecyclestage, notes_last_contacted, departure_dates__outback_, createdate, hs_analytics_last_visit_timestamp
 
-    document.getElementById('payCount').textContent = rows.length + ' bookings';
+Sort: hs_email_last_click_date DESCENDING. Limit: 50.
 
-    if (!rows.length) {
-      state.style.display = ''; table.style.display = 'none';
-      state.innerHTML = '<span class="big">No bookings match this filter.</span>';
-      return;
+Return ONLY a JSON array where each element is:
+{
+  id: string (HubSpot contact ID),
+  name: firstname + " " + lastname,
+  phone: mobilephone if set else phone,
+  score: outback_ai_engagement_score as integer,
+  stage: lifecyclestage,
+  lifecycle: lifecyclestage,
+  lastOpen: hs_email_last_open_date,
+  lastClick: hs_email_last_click_date,
+  opens: hs_email_open as integer,
+  clicks: hs_email_click as integer,
+  lastEmail: hs_email_last_email_name (remove "Outback - " prefix if present),
+  convDate: recent_conversion_date,
+  lastContacted: notes_last_contacted,
+  departure: departure_dates__outback_,
+  created: createdate,
+  lastVisit: hs_analytics_last_visit_timestamp
+}`
+    }],
+    mcp_servers: [{
+      type: "url",
+      url: "https://mcp.hubspot.com/anthropic",
+      name: "hubspot"
+    }]
+  };
+
+  const res = await fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  });
+
+  // Rate limited — retry after delay
+  if(res.status === 529 || res.status === 429) {
+    if(attempt < MAX_RETRIES) {
+      const waitSec = RETRY_DELAY_MS * attempt / 1000;
+      list.innerHTML = `
+        <div class="state-screen">
+          <div class="loader"></div>
+          <h2>API is busy</h2>
+          <p>Waiting ${waitSec}s before retry ${attempt + 1} of ${MAX_RETRIES}…</p>
+        </div>`;
+      await sleep(RETRY_DELAY_MS * attempt);
+      return fetchWithRetry(attempt + 1);
     }
-    state.style.display = 'none'; table.style.display = '';
-
-    body.innerHTML = rows.map(({ b, created, total, paid, balance, ps }) => {
-      const item = (b.items || [])[0];
-      const tourName = item?.productName || b.productName || '—';
-      const travelDate = item?.startTimeLocal ? fmtD(item.startTimeLocal) : '—';
-      const guest = b.customer ? [b.customer.firstName, b.customer.lastName].filter(Boolean).join(' ') : '—';
-      const badge = { unpaid:'<span class="badge badge-red">No Deposit</span>', unpaid_new:'<span class="badge badge-amber">Awaiting Deposit</span>', partial:'<span class="badge badge-blue">Partial</span>', paid:'<span class="badge badge-green">Paid</span>' }[ps];
-      return `<tr>
-        <td class="td-mono">${b.orderNumber || b.id || '—'}</td>
-        <td class="td-name">${guest}</td>
-        <td class="td-name">${tourName}</td>
-        <td class="td-mono">${fmtD(created)}</td>
-        <td class="td-mono">${travelDate}</td>
-        <td class="td-mono">${fmt(total)}</td>
-        <td class="td-mono">${fmt(paid)}</td>
-        <td class="td-mono" style="color:${balance > 0 ? 'var(--red)' : 'var(--green)'}">${fmt(balance)}</td>
-        <td>${badge}</td>
-      </tr>`;
-    }).join('');
+    throw new Error(`API rate limited after ${MAX_RETRIES} attempts. Please wait a moment and click Refresh.`);
   }
 
-  function renderAll() {
-    const body = document.getElementById('allBody');
-    const state = document.getElementById('allState');
-    const table = document.getElementById('allTable');
-    const filter = document.getElementById('allFilter').value;
-    const fmt = v => Number(v||0).toLocaleString('en-AU', { style:'currency', currency:'AUD' });
-    const rows = bookings.filter(b => filter === 'all' || b.status === filter);
-    document.getElementById('allCount').textContent = rows.length + ' bookings';
-    if (!rows.length) {
-      state.style.display = ''; table.style.display = 'none';
-      state.innerHTML = '<span class="big">No bookings found.</span>'; return;
-    }
-    state.style.display = 'none'; table.style.display = '';
-    body.innerHTML = rows.map(b => {
-      const item = (b.items || [])[0];
-      const tourName = item?.productName || b.productName || '—';
-      const travelDate = item?.startTimeLocal ? new Date(item.startTimeLocal).toLocaleDateString('en-AU', { day:'numeric', month:'short' }) : '—';
-      const guest = b.customer ? [b.customer.firstName, b.customer.lastName].filter(Boolean).join(' ') : '—';
-      const guests = (b.items || []).reduce((s, i) => s + (i.quantities || []).reduce((a, q) => a + (q.value || 0), 0), 0);
-      const badge = ({ CONFIRMED:'<span class="badge badge-green">Confirmed</span>', PENDING:'<span class="badge badge-amber">Pending</span>', CANCELLED:'<span class="badge badge-red">Cancelled</span>' })[b.status] || `<span class="badge badge-grey">${b.status||'—'}</span>`;
-      return `<tr>
-        <td class="td-mono">${b.orderNumber || b.id || '—'}</td>
-        <td class="td-name">${guest}</td>
-        <td class="td-name">${tourName}</td>
-        <td class="td-mono">${travelDate}</td>
-        <td class="td-mono">${guests || '—'}</td>
-        <td class="td-mono">${fmt(b.totalAmount || b.totalDue)}</td>
-        <td>${badge}</td>
-      </tr>`;
-    }).join('');
-  }
+  if(!res.ok) throw new Error(`API error ${res.status} — please try refreshing.`);
 
-  function showError(msg) {
-    const box = document.getElementById('errorBox');
-    box.style.display = msg ? '' : 'none';
-    box.textContent = msg;
+  const data = await res.json();
+  const text = data.content.filter(b => b.type === "text").map(b => b.text).join("");
+  const clean = text.replace(/```json|```/g,"").trim();
+  const s = clean.indexOf("["), e = clean.lastIndexOf("]");
+  if(s === -1 || e === -1) throw new Error("Unexpected response format from API.");
+  return JSON.parse(clean.slice(s, e + 1));
+}
+
+// ─── MAIN ─────────────────────────────────────────────────────────────────────
+
+async function runDashboard() {
+  const btn  = document.getElementById("refresh-btn");
+  const list = document.getElementById("contact-list");
+
+  btn.disabled = true;
+  btn.innerHTML = `<span class="spinning">↻</span> Loading…`;
+  document.getElementById("last-updated").textContent = "Refreshing…";
+
+  list.innerHTML = `
+    <div class="state-screen">
+      <div class="loader"></div>
+      <h2>Pulling your call list</h2>
+      <p>Fetching live data from HubSpot…</p>
+    </div>`;
+
+  try {
+    const raw = await fetchWithRetry();
+
+    const seen = new Set();
+    const contacts = raw
+      .filter(c => { if(seen.has(c.id)) return false; seen.add(c.id); return qualifies(c); })
+      .sort((a,b) => {
+        const td = priorityTier(a) - priorityTier(b);
+        if(td !== 0) return td;
+        if(isClicked4d(a) && !isClicked4d(b)) return -1;
+        if(!isClicked4d(a) && isClicked4d(b)) return 1;
+        return (b.score||0) - (a.score||0);
+      })
+      .slice(0, 15);
+
+    renderCards(contacts);
+    updateStats(contacts);
+    document.getElementById("last-updated").textContent =
+      `Updated ${now().toLocaleTimeString("en-AU",{hour:"2-digit",minute:"2-digit"})}`;
+
+  } catch(err) {
+    const isRateLimit = err.message.includes("rate limited") || err.message.includes("busy");
+    list.innerHTML = `
+      <div class="state-screen">
+        <h2>${isRateLimit ? "API is busy" : "Could not load contacts"}</h2>
+        ${isRateLimit ? `
+          <div class="notice-box">
+            <strong>Too many requests</strong>
+            <p>The Anthropic API is temporarily rate limited. Wait 30–60 seconds then click Refresh. This is normal when the dashboard is opened many times in quick succession.</p>
+          </div>` : ""}
+        <p>${err.message}</p>
+      </div>`;
+    document.getElementById("last-updated").textContent = "Load failed";
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = `↻ Refresh`;
   }
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+
+document.getElementById("header-date").textContent =
+  now().toLocaleDateString("en-AU",{weekday:"long",day:"numeric",month:"long",year:"numeric"}).toUpperCase();
+
+runDashboard();
 </script>
 </body>
 </html>
