@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Air Adventure Outback — Seat Availability</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 14px;
+    color: #1a1a1a;
+    background: #f5f5f4;
+    padding: 24px;
+  }
+
+  .header {
+    margin-bottom: 24px;
+  }
+
+  .header-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .header h1 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #111;
+    margin-bottom: 4px;
+  }
+
+  .last-updated {
+    font-size: 12px;
+    color: #888;
+  }
+
+  .refresh-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    background: #44403c;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: background 0.15s;
+  }
+
+  .refresh-btn:hover { background: #292524; }
+  .refresh-btn svg { width: 14px; height: 14px; }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 24px;
+    border-bottom: 2px solid #d1cfc9;
+    padding-bottom: 0;
+  }
+
+  .tab-btn {
+    padding: 8px 24px;
+    border: none;
+    background: none;
+    font-size: 15px;
+    font-weight: 500;
+    color: #888;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    transition: color 0.15s;
+  }
+
+  .tab-btn.active {
+    color: #1a1a1a;
+    border-bottom-color: #b45309;
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* Tour blocks */
+  .tour-block {
+    background: #fff;
+    border-radius: 6px;
+    border: 1px solid #e5e3de;
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+
+  .tour-name {
+    padding: 10px 16px;
+    font-weight: 600;
+    font-size: 13px;
+    color: #fff;
+    background: #44403c;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .no-departures {
+    padding: 12px 16px;
+    color: #aaa;
+    font-size: 13px;
+    font-style: italic;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  thead th {
+    padding: 8px 12px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #888;
+    background: #faf9f7;
+    border-bottom: 1px solid #e5e3de;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid #f0ede8;
+  }
+
+  tbody tr:last-child { border-bottom: none; }
+
+  tbody tr:hover { background: #faf9f7; }
+
+  td {
+    padding: 9px 12px;
+    vertical-align: middle;
+    font-size: 13px;
+  }
+
+  .num { text-align: right; }
+
+  /* Departed rows */
+  .departed-row td {
+    color: #bbb;
+  }
+
+  .departed-badge {
+    display: inline-block;
+    margin-left: 8px;
+    padding: 1px 6px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    background: #f0ede8;
+    color: #aaa;
+    border-radius: 3px;
+    letter-spacing: 0.04em;
+    vertical-align: middle;
+  }
+
+  /* Fill bars */
+  .fill-cell {
+    width: 120px;
+    padding-right: 8px;
+  }
+
+  .fill-bar-wrap {
+    background: #f0ede8;
+    border-radius: 3px;
+    height: 8px;
+    overflow: hidden;
+  }
+
+  .fill-bar {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.3s;
+  }
+
+  .fill-low   { background: #4ade80; }
+  .fill-mid   { background: #f59e0b; }
+  .fill-high  { background: #f97316; }
+  .fill-full  { background: #ef4444; }
+
+  .fill-pct {
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+    min-width: 60px;
+  }
+
+  .fill-pct.fill-low  { color: #16a34a; }
+  .fill-pct.fill-mid  { color: #b45309; }
+  .fill-pct.fill-high { color: #c2410c; }
+  .fill-pct.fill-full { color: #b91c1c; }
+
+  .departed-row .fill-bar { opacity: 0.3; }
+  .departed-row .fill-pct { color: #bbb; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-row">
+    <div>
+      <h1>Air Adventure Outback — Seat Availability</h1>
+      <div class="last-updated">Last updated: 17 June 2026, 1:32 AM</div>
+    </div>
+    <button class="refresh-btn" onclick="window.location.reload()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+      Reload page
+    </button>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('2026', this)">2026</button>
+  <button class="tab-btn" onclick="showTab('2027', this)">2027</button>
+</div>
+
+<div id="tab-2026" class="tab-content active">
+<div class="tour-block">
+  <div class="tour-name">Best of Bass Strait</div>
+  <table>
+    <thead><tr><th>Departure date</th><th>Seats sold</th><th>Seats available</th><th>Capacity</th><th>Fill level</th><th></th></tr></thead>
+    <tbody>
+    <tr class="departed-row">
+      <td>3 Apr 2026<span class="departed-badge">Departed</span></td>
+      <td class="num">8</td>
+      <td class="num">0</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td>
+      <td class="fill-pct fill-full">Sold out</td>
+    </tr>
+    <tr class="">
+      <td>29 Nov 2026</td>
+      <td class="num">8</td>
+      <td class="num">0</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td>
+      <td class="fill-pct fill-full">Sold out</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<div class="tour-block">
+  <div class="tour-name">Cape York & The Gulf</div>
+  <table>
+    <thead><tr><th>Departure date</th><th>Seats sold</th><th>Seats available</th><th>Capacity</th><th>Fill level</th><th></th></tr></thead>
+    <tbody>
+    <tr class="departed-row">
+      <td>6 Jun 2026<span class="departed-badge">Departed</span></td>
+      <td class="num">5</td>
+      <td class="num">3</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-mid" style="width:62%"></div></div></td>
+      <td class="fill-pct fill-mid">62% full</td>
+    </tr>
+    <tr class="departed-row">
+      <td>13 Jun 2026<span class="departed-badge">Departed</span></td>
+      <td class="num">8</td>
+      <td class="num">0</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td>
+      <td class="fill-pct fill-full">Sold out</td>
+    </tr>
+    <tr class="">
+      <td>11 Jul 2026</td>
+      <td class="num">8</td>
+      <td class="num">0</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td>
+      <td class="fill-pct fill-full">Sold out</td>
+    </tr>
+    <tr class="">
+      <td>25 Jul 2026</td>
+      <td class="num">8</td>
+      <td class="num">0</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td>
+      <td class="fill-pct fill-full">Sold out</td>
+    </tr>
+    <tr class="">
+      <td>5 Aug 2026</td>
+      <td class="num">8</td>
+      <td class="num">0</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td>
+      <td class="fill-pct fill-full">Sold out</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<div class="tour-block">
+  <div class="tour-name">Conservation in Action</div>
+  <div class="no-departures">No scheduled departures</div>
+</div>
+<div class="tour-block">
+  <div class="tour-name">Ediacaran Expedition</div>
+  <table>
+    <thead><tr><th>Departure date</th><th>Seats sold</th><th>Seats available</th><th>Capacity</th><th>Fill level</th><th></th></tr></thead>
+    <tbody>
+    <tr class="">
+      <td>14 Jul 2026</td>
+      <td class="num">8</td>
+      <td class="num">0</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td>
+      <td class="fill-pct fill-full">Sold out</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<div class="tour-block">
+  <div class="tour-name">Flyaway Faraway</div>
+  <div class="no-departures">No scheduled departures</div>
+</div>
+<div class="tour-block">
+  <div class="tour-name">Great Southern Edge</div>
+  <table>
+    <thead><tr><th>Departure date</th><th>Seats sold</th><th>Seats available</th><th>Capacity</th><th>Fill level</th><th></th></tr></thead>
+    <tbody>
+    <tr class="">
+      <td>1 Jul 2026</td>
+      <td class="num">8</td>
+      <td class="num">0</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td>
+      <td class="fill-pct fill-full">Sold out</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<div class="tour-block">
+  <div class="tour-name">Lake Eyre In Flood</div>
+  <table>
+    <thead><tr><th>Departure date</th><th>Seats sold</th><th>Seats available</th><th>Capacity</th><th>Fill level</th><th></th></tr></thead>
+    <tbody>
+    <tr class="departed-row">
+      <td>18 Apr 2026<span class="departed-badge">Departed</span></td>
+      <td class="num">8</td>
+      <td class="num">0</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td>
+      <td class="fill-pct fill-full">Sold out</td>
+    </tr>
+    <tr class="departed-row">
+      <td>23 Apr 2026<span class="departed-badge">Departed</span></td>
+      <td class="num">8</td>
+      <td class="num">0</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td>
+      <td class="fill-pct fill-full">Sold out</td>
+    </tr>
+    <tr class="departed-row">
+      <td>9 May 2026<span class="departed-badge">Departed</span></td>
+      <td class="num">8</td>
+      <td class="num">0</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td>
+      <td class="fill-pct fill-full">Sold out</td>
+    </tr>
+    <tr class="departed-row">
+      <td>12 May 2026<span class="departed-badge">Departed</span></td>
+      <td class="num">8</td>
+      <td class="num">0</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td>
+      <td class="fill-pct fill-full">Sold out</td>
+    </tr>
+    <tr class="departed-row">
+      <td>8 Jun 2026<span class="departed-badge">Departed</span></td>
+      <td class="num">8</td>
+      <td class="num">0</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td>
+      <td class="fill-pct fill-full">Sold out</td>
+    </tr>
+    <tr class="">
+      <td>18 Jun 2026</td>
+      <td class="num">8</td>
+      <td class="num">0</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td>
+      <td class="fill-pct fill-full">Sold out</td>
+    </tr>
+    <tr class="">
+      <td>23 Jun 2026</td>
+      <td class="num">8</td>
+      <td class="num">0</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td>
+      <td class="fill-pct fill-full">Sold out</td>
+    </tr>
+    <tr class="">
+      <td>2 Jul 2026</td>
+      <td class="num">8</td>
+      <td class="num">0</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td>
+      <td class="fill-pct fill-full">Sold out</td>
+    </tr>
+    <tr class="">
+      <td>4 Jul 2026</td>
+      <td class="num">8</td>
+      <td class="num">0</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td>
+      <td class="fill-pct fill-full">Sold out</td>
+    </tr>
+    <tr class="">
+      <td>11 Jul 2026</td>
+      <td class="num">8</td>
+      <td class="num">0</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td>
+      <td class="fill-pct fill-full">Sold out</td>
+    </tr>
+    <tr class="">
+      <td>20 Jul 2026</td>
+      <td class="num">8</td>
+      <td class="num">0</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td>
+      <td class="fill-pct fill-full">Sold out</td>
+    </tr>
+    <tr class="">
+      <td>30 Jul 2026</td>
+      <td class="num">7</td>
+      <td class="num">1</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-high" style="width:87%"></div></div></td>
+      <td class="fill-pct fill-high">88% full</td>
+    </tr>
+    <tr class="">
+      <td>6 Aug 2026</td>
+      <td class="num">8</td>
+      <td class="num">0</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td>
+      <td class="fill-pct fill-full">Sold out</td>
+    </tr>
+    <tr class="">
+      <td>19 Aug 2026</td>
+      <td class="num">8</td>
+      <td class="num">0</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td>
+      <td class="fill-pct fill-full">Sold out</td>
+    </tr>
+    <tr class="">
+      <td>7 Sep 2026</td>
+      <td class="num">8</td>
+      <td class="num">0</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td>
+      <td class="fill-pct fill-full">Sold out</td>
+    </tr>
+    <tr class="">
+      <td>10 Sep 2026</td>
+      <td class="num">8</td>
+      <td class="num">0</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td>
+      <td class="fill-pct fill-full">Sold out</td>
+    </tr>
+    <tr class="">
+      <td>15 Sep 2026</td>
+      <td class="num">8</td>
+      <td class="num">0</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td>
+      <td class="fill-pct fill-full">Sold out</td>
+    </tr>
+    <tr class="">
+      <td>18 Sep 2026</td>
+      <td class="num">7</td>
+      <td class="num">1</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-high" style="width:87%"></div></div></td>
+      <td class="fill-pct fill-high">88% full</td>
+    </tr>
+    <tr class="">
+      <td>28 Sep 2026</td>
+      <td class="num">8</td>
+      <td class="num">0</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td>
+      <td class="fill-pct fill-full">Sold out</td>
+    </tr>
+    <tr class="">
+      <td>7 Oct 2026</td>
+      <td class="num">4</td>
+      <td class="num">4</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-mid" style="width:50%"></div></div></td>
+      <td class="fill-pct fill-mid">50% full</td>
+    </tr>
+    <tr class="">
+      <td>16 Oct 2026</td>
+      <td class="num">4</td>
+      <td class="num">4</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-mid" style="width:50%"></div></div></td>
+      <td class="fill-pct fill-mid">50% full</td>
+    </tr>
+    <tr class="">
+      <td>19 Oct 2026</td>
+      <td class="num">5</td>
+      <td class="num">3</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-mid" style="width:62%"></div></div></td>
+      <td class="fill-pct fill-mid">62% full</td>
+    </tr>
+    <tr class="">
+      <td>23 Oct 2026</td>
+      <td class="num">0</td>
+      <td class="num">8</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td>
+      <td class="fill-pct fill-low">0% full</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<div class="tour-block">
+  <div class="tour-name">Lake Eyre, Dig Tree & The Prairie</div>
+  <div class="no-departures">No scheduled departures</div>
+</div>
+<div class="tour-block">
+  <div class="tour-name">Southern Ocean Island Hop</div>
+  <table>
+    <thead><tr><th>Departure date</th><th>Seats sold</th><th>Seats available</th><th>Capacity</th><th>Fill level</th><th></th></tr></thead>
+    <tbody>
+    <tr class="departed-row">
+      <td>24 Apr 2026<span class="departed-badge">Departed</span></td>
+      <td class="num">8</td>
+      <td class="num">0</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td>
+      <td class="fill-pct fill-full">Sold out</td>
+    </tr>
+    <tr class="">
+      <td>4 Oct 2026</td>
+      <td class="num">8</td>
+      <td class="num">0</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td>
+      <td class="fill-pct fill-full">Sold out</td>
+    </tr>
+    <tr class="">
+      <td>22 Oct 2026</td>
+      <td class="num">8</td>
+      <td class="num">0</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td>
+      <td class="fill-pct fill-full">Sold out</td>
+    </tr>
+    <tr class="">
+      <td>4 Dec 2026</td>
+      <td class="num">8</td>
+      <td class="num">0</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td>
+      <td class="fill-pct fill-full">Sold out</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<div class="tour-block">
+  <div class="tour-name">Tassie All Over</div>
+  <div class="no-departures">No scheduled departures</div>
+</div>
+<div class="tour-block">
+  <div class="tour-name">The Greatest Escape!</div>
+  <table>
+    <thead><tr><th>Departure date</th><th>Seats sold</th><th>Seats available</th><th>Capacity</th><th>Fill level</th><th></th></tr></thead>
+    <tbody>
+    <tr class="">
+      <td>13 Aug 2026</td>
+      <td class="num">8</td>
+      <td class="num">0</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td>
+      <td class="fill-pct fill-full">Sold out</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<div class="tour-block">
+  <div class="tour-name">The Outback Explorer</div>
+  <div class="no-departures">No scheduled departures</div>
+</div>
+<div class="tour-block">
+  <div class="tour-name">Western Wedge / Wildflower Safari</div>
+  <table>
+    <thead><tr><th>Departure date</th><th>Seats sold</th><th>Seats available</th><th>Capacity</th><th>Fill level</th><th></th></tr></thead>
+    <tbody>
+    <tr class="">
+      <td>29 Aug 2026</td>
+      <td class="num">8</td>
+      <td class="num">0</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td>
+      <td class="fill-pct fill-full">Sold out</td>
+    </tr>
+    <tr class="">
+      <td>31 Aug 2026</td>
+      <td class="num">8</td>
+      <td class="num">0</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td>
+      <td class="fill-pct fill-full">Sold out</td>
+    </tr>
+    <tr class="">
+      <td>16 Sep 2026</td>
+      <td class="num">8</td>
+      <td class="num">0</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td>
+      <td class="fill-pct fill-full">Sold out</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<div class="tour-block">
+  <div class="tour-name">Wet Season Spectacular</div>
+  <table>
+    <thead><tr><th>Departure date</th><th>Seats sold</th><th>Seats available</th><th>Capacity</th><th>Fill level</th><th></th></tr></thead>
+    <tbody>
+    <tr class="departed-row">
+      <td>28 Mar 2026<span class="departed-badge">Departed</span></td>
+      <td class="num">8</td>
+      <td class="num">0</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td>
+      <td class="fill-pct fill-full">Sold out</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+</div>
+
+<div id="tab-2027" class="tab-content">
+<div class="tour-block">
+  <div class="tour-name">Best of Bass Strait</div>
+  <div class="no-departures">No scheduled departures</div>
+</div>
+<div class="tour-block">
+  <div class="tour-name">Cape York & The Gulf</div>
+  <table>
+    <thead><tr><th>Departure date</th><th>Seats sold</th><th>Seats available</th><th>Capacity</th><th>Fill level</th><th></th></tr></thead>
+    <tbody>
+    <tr class="">
+      <td>19 Jun 2027</td>
+      <td class="num">0</td>
+      <td class="num">8</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td>
+      <td class="fill-pct fill-low">0% full</td>
+    </tr>
+    <tr class="">
+      <td>10 Jul 2027</td>
+      <td class="num">1</td>
+      <td class="num">7</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:12%"></div></div></td>
+      <td class="fill-pct fill-low">12% full</td>
+    </tr>
+    <tr class="">
+      <td>17 Jul 2027</td>
+      <td class="num">6</td>
+      <td class="num">2</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-high" style="width:75%"></div></div></td>
+      <td class="fill-pct fill-high">75% full</td>
+    </tr>
+    <tr class="">
+      <td>7 Aug 2027</td>
+      <td class="num">0</td>
+      <td class="num">8</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td>
+      <td class="fill-pct fill-low">0% full</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<div class="tour-block">
+  <div class="tour-name">Conservation in Action</div>
+  <div class="no-departures">No scheduled departures</div>
+</div>
+<div class="tour-block">
+  <div class="tour-name">Ediacaran Expedition</div>
+  <div class="no-departures">No scheduled departures</div>
+</div>
+<div class="tour-block">
+  <div class="tour-name">Flyaway Faraway</div>
+  <div class="no-departures">No scheduled departures</div>
+</div>
+<div class="tour-block">
+  <div class="tour-name">Great Southern Edge</div>
+  <div class="no-departures">No scheduled departures</div>
+</div>
+<div class="tour-block">
+  <div class="tour-name">Lake Eyre In Flood</div>
+  <div class="no-departures">No scheduled departures</div>
+</div>
+<div class="tour-block">
+  <div class="tour-name">Lake Eyre, Dig Tree & The Prairie</div>
+  <div class="no-departures">No scheduled departures</div>
+</div>
+<div class="tour-block">
+  <div class="tour-name">Southern Ocean Island Hop</div>
+  <div class="no-departures">No scheduled departures</div>
+</div>
+<div class="tour-block">
+  <div class="tour-name">Tassie All Over</div>
+  <div class="no-departures">No scheduled departures</div>
+</div>
+<div class="tour-block">
+  <div class="tour-name">The Greatest Escape!</div>
+  <table>
+    <thead><tr><th>Departure date</th><th>Seats sold</th><th>Seats available</th><th>Capacity</th><th>Fill level</th><th></th></tr></thead>
+    <tbody>
+    <tr class="">
+      <td>12 Aug 2027</td>
+      <td class="num">8</td>
+      <td class="num">1</td>
+      <td class="num">9</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-high" style="width:88%"></div></div></td>
+      <td class="fill-pct fill-high">89% full</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<div class="tour-block">
+  <div class="tour-name">The Outback Explorer</div>
+  <div class="no-departures">No scheduled departures</div>
+</div>
+<div class="tour-block">
+  <div class="tour-name">Western Wedge / Wildflower Safari</div>
+  <div class="no-departures">No scheduled departures</div>
+</div>
+<div class="tour-block">
+  <div class="tour-name">Wet Season Spectacular</div>
+  <div class="no-departures">No scheduled departures</div>
+</div>
+
+</div>
+
+<script>
+function showTab(year, btn) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + year).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+
+</body>
+</html>
