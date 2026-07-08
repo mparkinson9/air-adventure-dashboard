@@ -100,7 +100,6 @@
   .tour-name {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     padding: 10px 16px;
     font-weight: 600;
     font-size: 13px;
@@ -109,6 +108,10 @@
     letter-spacing: 0.02em;
     text-transform: uppercase;
     gap: 12px;
+  }
+
+  .tour-name-text {
+    flex-shrink: 0;
   }
 
   .pricing-badge {
@@ -258,6 +261,29 @@
     color: #ccc;
   }
 
+  .brochure-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 500;
+    color: #f5efe0;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+    letter-spacing: 0.01em;
+    transition: background 0.12s;
+    text-transform: none;
+    margin-left: auto;
+  }
+
+  .brochure-btn:hover { background: rgba(255,255,255,0.22); }
+  .brochure-btn.copied { background: rgba(74,222,128,0.25); border-color: rgba(74,222,128,0.5); color: #a7f3c0; }
+
   /* Bookings dropdown row */
   .bookings-row td {
     padding: 0;
@@ -305,7 +331,7 @@
   <div class="header-row">
     <div>
       <h1>Air Adventure Outback — Seat Availability</h1>
-      <div class="last-updated">Last updated: 8 July 2026, 12:18 PM AEST</div>
+      <div class="last-updated">Last updated: 9 July 2026, 9:13 AM AEST</div>
     </div>
     <button class="refresh-btn" onclick="window.location.reload()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
@@ -321,7 +347,7 @@
 
 <div id="tab-2026" class="tab-content active">
 <div class="tour-block">
-  <div class="tour-name">Best of Bass Strait<span class="pricing-badge">From $4,668 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $269</span></div>
+  <div class="tour-name"><span class="tour-name-text">Best of Bass Strait</span><span class="pricing-badge">From $4,668 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $269</span></div>
   <table>
     <thead><tr><th>Departure date</th><th>Sold</th><th>Available</th><th>Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
     <tbody>
@@ -357,7 +383,7 @@
   </table>
 </div>
 <div class="tour-block">
-  <div class="tour-name">Cape York & The Gulf<span class="pricing-badge">From $29,989 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $5,250</span></div>
+  <div class="tour-name"><span class="tour-name-text">Cape York & The Gulf</span><span class="pricing-badge">From $29,989 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $5,250</span></div>
   <table>
     <thead><tr><th>Departure date</th><th>Sold</th><th>Available</th><th>Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
     <tbody>
@@ -435,11 +461,11 @@
   </table>
 </div>
 <div class="tour-block">
-  <div class="tour-name">Conservation in Action<span class="pricing-badge">From $8,273 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $1,400</span></div>
+  <div class="tour-name"><span class="tour-name-text">Conservation in Action</span><span class="pricing-badge">From $8,273 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $1,400</span></div>
   <div class="no-departures">No scheduled departures</div>
 </div>
 <div class="tour-block">
-  <div class="tour-name">Ediacaran Expedition<span class="pricing-badge">From $4,997 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $440</span></div>
+  <div class="tour-name"><span class="tour-name-text">Ediacaran Expedition</span><span class="pricing-badge">From $4,997 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $440</span></div>
   <table>
     <thead><tr><th>Departure date</th><th>Sold</th><th>Available</th><th>Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
     <tbody>
@@ -461,11 +487,11 @@
   </table>
 </div>
 <div class="tour-block">
-  <div class="tour-name">Flyaway Faraway<span class="pricing-badge">From $39,469 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $4,840</span></div>
+  <div class="tour-name"><span class="tour-name-text">Flyaway Faraway</span><span class="pricing-badge">From $39,469 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $4,840</span></div>
   <div class="no-departures">No scheduled departures</div>
 </div>
 <div class="tour-block">
-  <div class="tour-name">Great Southern Edge<span class="pricing-badge">From $14,585 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $520</span></div>
+  <div class="tour-name"><span class="tour-name-text">Great Southern Edge</span><span class="pricing-badge">From $14,585 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $520</span></div>
   <table>
     <thead><tr><th>Departure date</th><th>Sold</th><th>Available</th><th>Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
     <tbody>
@@ -487,7 +513,7 @@
   </table>
 </div>
 <div class="tour-block">
-  <div class="tour-name">Lake Eyre In Flood<span class="pricing-badge">From $6,550 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $355</span></div>
+  <div class="tour-name"><span class="tour-name-text">Lake Eyre In Flood</span><span class="pricing-badge">From $6,550 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $355</span></div>
   <table>
     <thead><tr><th>Departure date</th><th>Sold</th><th>Available</th><th>Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
     <tbody>
@@ -807,11 +833,11 @@
   </table>
 </div>
 <div class="tour-block">
-  <div class="tour-name">Lake Eyre, Dig Tree & The Prairie<span class="pricing-badge">From $5,950 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $375</span></div>
+  <div class="tour-name"><span class="tour-name-text">Lake Eyre, Dig Tree & The Prairie</span><span class="pricing-badge">From $5,950 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $375</span></div>
   <div class="no-departures">No scheduled departures</div>
 </div>
 <div class="tour-block">
-  <div class="tour-name">Southern Ocean Island Hop<span class="pricing-badge">From $11,222 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $3,329</span></div>
+  <div class="tour-name"><span class="tour-name-text">Southern Ocean Island Hop</span><span class="pricing-badge">From $11,222 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $3,329</span></div>
   <table>
     <thead><tr><th>Departure date</th><th>Sold</th><th>Available</th><th>Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
     <tbody>
@@ -875,11 +901,11 @@
   </table>
 </div>
 <div class="tour-block">
-  <div class="tour-name">Tassie All Over<span class="pricing-badge">From $12,240 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $1,723</span></div>
+  <div class="tour-name"><span class="tour-name-text">Tassie All Over</span><span class="pricing-badge">From $12,240 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $1,723</span></div>
   <div class="no-departures">No scheduled departures</div>
 </div>
 <div class="tour-block">
-  <div class="tour-name">The Greatest Escape!<span class="pricing-badge">From $23,940 pp</span></div>
+  <div class="tour-name"><span class="tour-name-text">The Greatest Escape!</span><span class="pricing-badge">From $23,940 pp</span></div>
   <table>
     <thead><tr><th>Departure date</th><th>Sold</th><th>Available</th><th>Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
     <tbody>
@@ -901,11 +927,11 @@
   </table>
 </div>
 <div class="tour-block">
-  <div class="tour-name">The Outback Explorer<span class="pricing-badge">From $5,950 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $375</span></div>
+  <div class="tour-name"><span class="tour-name-text">The Outback Explorer</span><span class="pricing-badge">From $5,950 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $375</span></div>
   <div class="no-departures">No scheduled departures</div>
 </div>
 <div class="tour-block">
-  <div class="tour-name">Western Wedge / Wildflower Safari<span class="pricing-badge">From $15,680 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $2,997</span></div>
+  <div class="tour-name"><span class="tour-name-text">Western Wedge / Wildflower Safari</span><span class="pricing-badge">From $15,680 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $2,997</span></div>
   <table>
     <thead><tr><th>Departure date</th><th>Sold</th><th>Available</th><th>Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
     <tbody>
@@ -955,7 +981,7 @@
   </table>
 </div>
 <div class="tour-block">
-  <div class="tour-name">Wet Season Spectacular<span class="pricing-badge">From $7,000 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $1,579</span></div>
+  <div class="tour-name"><span class="tour-name-text">Wet Season Spectacular</span><span class="pricing-badge">From $7,000 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $1,579</span></div>
   <table>
     <thead><tr><th>Departure date</th><th>Sold</th><th>Available</th><th>Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
     <tbody>
@@ -981,11 +1007,11 @@
 
 <div id="tab-2027" class="tab-content">
 <div class="tour-block">
-  <div class="tour-name">Best of Bass Strait<span class="pricing-badge">From $4,668 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $269</span></div>
+  <div class="tour-name"><span class="tour-name-text">Best of Bass Strait</span><span class="pricing-badge">From $4,668 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $269</span></div>
   <div class="no-departures">No scheduled departures</div>
 </div>
 <div class="tour-block">
-  <div class="tour-name">Cape York & The Gulf<span class="pricing-badge">From $29,989 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $5,250</span></div>
+  <div class="tour-name"><span class="tour-name-text">Cape York & The Gulf</span><span class="pricing-badge">From $29,989 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $5,250</span><button class="brochure-btn" onclick="copyBrochureLink(this, 'https://capeyorkgulf.airadventure.com.au/?firstname=mitch')" title="https://capeyorkgulf.airadventure.com.au/?firstname=mitch">&#128279; Copy brochure link</button></div>
   <table>
     <thead><tr><th>Departure date</th><th>Sold</th><th>Available</th><th>Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
     <tbody>
@@ -1039,15 +1065,15 @@
   </table>
 </div>
 <div class="tour-block">
-  <div class="tour-name">Conservation in Action<span class="pricing-badge">From $8,273 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $1,400</span></div>
+  <div class="tour-name"><span class="tour-name-text">Conservation in Action</span><span class="pricing-badge">From $8,273 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $1,400</span></div>
   <div class="no-departures">No scheduled departures</div>
 </div>
 <div class="tour-block">
-  <div class="tour-name">Ediacaran Expedition<span class="pricing-badge">From $4,997 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $440</span></div>
+  <div class="tour-name"><span class="tour-name-text">Ediacaran Expedition</span><span class="pricing-badge">From $4,997 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $440</span></div>
   <div class="no-departures">No scheduled departures</div>
 </div>
 <div class="tour-block">
-  <div class="tour-name">Flyaway Faraway<span class="pricing-badge">From $39,469 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $4,840</span></div>
+  <div class="tour-name"><span class="tour-name-text">Flyaway Faraway</span><span class="pricing-badge">From $39,469 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $4,840</span><button class="brochure-btn" onclick="copyBrochureLink(this, 'https://flyawayfaraway.airadventure.com.au/')" title="https://flyawayfaraway.airadventure.com.au/">&#128279; Copy brochure link</button></div>
   <table>
     <thead><tr><th>Departure date</th><th>Sold</th><th>Available</th><th>Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
     <tbody>
@@ -1106,27 +1132,27 @@
   </table>
 </div>
 <div class="tour-block">
-  <div class="tour-name">Great Southern Edge<span class="pricing-badge">From $14,585 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $520</span></div>
+  <div class="tour-name"><span class="tour-name-text">Great Southern Edge</span><span class="pricing-badge">From $14,585 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $520</span></div>
   <div class="no-departures">No scheduled departures</div>
 </div>
 <div class="tour-block">
-  <div class="tour-name">Lake Eyre In Flood<span class="pricing-badge">From $6,550 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $355</span></div>
+  <div class="tour-name"><span class="tour-name-text">Lake Eyre In Flood</span><span class="pricing-badge">From $6,550 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $355</span></div>
   <div class="no-departures">No scheduled departures</div>
 </div>
 <div class="tour-block">
-  <div class="tour-name">Lake Eyre, Dig Tree & The Prairie<span class="pricing-badge">From $5,950 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $375</span></div>
+  <div class="tour-name"><span class="tour-name-text">Lake Eyre, Dig Tree & The Prairie</span><span class="pricing-badge">From $5,950 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $375</span></div>
   <div class="no-departures">No scheduled departures</div>
 </div>
 <div class="tour-block">
-  <div class="tour-name">Southern Ocean Island Hop<span class="pricing-badge">From $11,222 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $3,329</span></div>
+  <div class="tour-name"><span class="tour-name-text">Southern Ocean Island Hop</span><span class="pricing-badge">From $11,222 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $3,329</span></div>
   <div class="no-departures">No scheduled departures</div>
 </div>
 <div class="tour-block">
-  <div class="tour-name">Tassie All Over<span class="pricing-badge">From $12,240 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $1,723</span></div>
+  <div class="tour-name"><span class="tour-name-text">Tassie All Over</span><span class="pricing-badge">From $12,240 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $1,723</span></div>
   <div class="no-departures">No scheduled departures</div>
 </div>
 <div class="tour-block">
-  <div class="tour-name">The Greatest Escape!<span class="pricing-badge">From $23,940 pp</span></div>
+  <div class="tour-name"><span class="tour-name-text">The Greatest Escape!</span><span class="pricing-badge">From $23,940 pp</span></div>
   <table>
     <thead><tr><th>Departure date</th><th>Sold</th><th>Available</th><th>Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
     <tbody>
@@ -1143,15 +1169,15 @@
   </table>
 </div>
 <div class="tour-block">
-  <div class="tour-name">The Outback Explorer<span class="pricing-badge">From $5,950 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $375</span></div>
+  <div class="tour-name"><span class="tour-name-text">The Outback Explorer</span><span class="pricing-badge">From $5,950 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $375</span></div>
   <div class="no-departures">No scheduled departures</div>
 </div>
 <div class="tour-block">
-  <div class="tour-name">Western Wedge / Wildflower Safari<span class="pricing-badge">From $15,680 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $2,997</span></div>
+  <div class="tour-name"><span class="tour-name-text">Western Wedge / Wildflower Safari</span><span class="pricing-badge">From $15,680 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $2,997</span></div>
   <div class="no-departures">No scheduled departures</div>
 </div>
 <div class="tour-block">
-  <div class="tour-name">Wet Season Spectacular<span class="pricing-badge">From $7,000 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $1,579</span></div>
+  <div class="tour-name"><span class="tour-name-text">Wet Season Spectacular</span><span class="pricing-badge">From $7,000 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $1,579</span></div>
   <div class="no-departures">No scheduled departures</div>
 </div>
 
@@ -1163,6 +1189,15 @@ function showTab(year, btn) {
   document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
   document.getElementById('tab-' + year).classList.add('active');
   btn.classList.add('active');
+}
+
+function copyBrochureLink(btn, url) {
+  navigator.clipboard.writeText(url).then(() => {
+    const orig = btn.innerHTML;
+    btn.innerHTML = '&#10003; Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.innerHTML = orig; btn.classList.remove('copied'); }, 2000);
+  });
 }
 
 function toggleBookings(id) {
