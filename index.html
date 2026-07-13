@@ -1406,7 +1406,10 @@ function toggleBookings(id) {
   const row = document.getElementById(id);
   const btn = document.querySelector('[aria-controls="' + id + '"]');
   const isOpen = row.style.display !== 'none';
-  row.style.display = isOpen !bty 2027</td>
-     B2;K MBow.stif (
-  doassLeouAttri></ive'panded="fals',t (Rd) (! !bty )funct></
-functit><  </ta</html>
+  row.style.display = isOpen ? 'none' : 'table-row';
+  if (btn) btn.setAttribute('aria-expanded', String(!isOpen));
+}
+</script>
+
+</body>
+</html>
