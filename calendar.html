@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Air Adventure Outback — Tour Calendar 2026 / 2027</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #f6f3ee;
+  --white: #ffffff;
+  --ink: #1a1a1a;
+  --border: #e6e0d8;
+  --muted: #8a8480;
+  --dim: #c5bfb8;
+  --today: #fffcf0;
+  --radius: 5px;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── HEADER ── */
+.site-header {
+  background: var(--ink);
+  color: #fff;
+  padding: 16px 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.site-header .brand { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.55; }
+.site-header h1 { font-size: 16px; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 4px; }
+.header-actions { display: flex; gap: 10px; align-items: center; }
+.btn-ghost {
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.18);
+  padding: 7px 18px;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: background 0.15s;
+  font-family: inherit;
+}
+.btn-ghost:hover { background: rgba(255,255,255,0.16); }
+.btn-ghost.active { background: rgba(255,255,255,0.22); }
+
+/* ── CONTROLS ── */
+.controls {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 22px 28px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.month-nav { display: flex; align-items: center; gap: 16px; }
+.nav-btn {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  border: 1.5px solid var(--ink);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 15px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.14s;
+  font-family: inherit;
+}
+.nav-btn:hover { background: var(--ink); color: #fff; }
+.nav-btn:disabled { opacity: 0.22; cursor: default; pointer-events: none; }
+.month-label { font-size: 24px; font-weight: 300; letter-spacing: 0.06em; min-width: 240px; text-align: center; }
+.year-toggle {
+  display: flex;
+  border: 1.5px solid var(--ink);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.year-btn {
+  padding: 7px 20px;
+  border: none; background: transparent;
+  font-size: 13px; font-weight: 500; letter-spacing: 0.05em;
+  cursor: pointer; color: var(--ink);
+  transition: all 0.14s;
+  font-family: inherit;
+}
+.year-btn + .year-btn { border-left: 1.5px solid var(--ink); }
+.year-btn.active { background: var(--ink); color: #fff; }
+
+/* ── CALENDAR ── */
+.cal-wrap {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 0 28px 28px;
+}
+.calendar {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+}
+.dow-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  background: var(--ink);
+}
+.dow-cell {
+  text-align: center;
+  padding: 11px 0;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.65);
+}
+.cal-body { position: relative; }
+
+/* ── LEGEND ── */
+.legend-wrap {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 0 28px 24px;
+}
+.legend-hd {
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 11px;
+}
+.legend { display: flex; flex-wrap: wrap; gap: 8px 22px; }
+.legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+.legend-swatch { width: 22px; height: 9px; border-radius: 2px; flex-shrink: 0; }
+.legend-name { color: var(--ink); }
+.legend-dur { color: var(--muted); font-size: 11px; }
+
+/* ── STATUS KEY ── */
+.status-key {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 0 28px 28px;
+  display: flex;
+  gap: 24px;
+  font-size: 11px;
+  color: var(--muted);
+}
+.sk-item { display: flex; align-items: center; gap: 7px; }
+.sk-swatch { width: 22px; height: 9px; border-radius: 2px; background: #777; }
+
+/* ── TOOLTIP ── */
+.tt {
+  position: fixed;
+  background: var(--ink);
+  color: #fff;
+  padding: 11px 15px;
+  border-radius: 4px;
+  font-size: 12px;
+  line-height: 1.65;
+  pointer-events: none;
+  z-index: 9999;
+  display: none;
+  max-width: 250px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.22);
+}
+.tt strong { display: block; font-size: 13px; margin-bottom: 2px; }
+.tt .tt-avail { margin-top: 4px; }
+.tt-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 5px; }
+
+/* ── PRINT ── */
+@media print {
+  body { background: #fff; }
+  .site-header { background: #1a1a1a !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; padding: 12px 20px; }
+  .controls, .header-actions { display: none !important; }
+  .cal-wrap { padding: 0 12px 12px; max-width: 100%; }
+  .legend-wrap, .status-key { padding: 0 12px 12px; max-width: 100%; }
+  .calendar { box-shadow: none; }
+  .dow-row { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .ev-bar { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .cal-body { overflow: visible; }
+  .print-page { page-break-after: always; }
+  .print-month-label {
+    display: block !important;
+    font-size: 18px; font-weight: 300; letter-spacing: 0.07em;
+    padding: 10px 0 8px;
+    color: #1a1a1a;
+  }
+}
+.print-month-label { display: none; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div>
+    <div class="brand">Air Adventure Australia</div>
+    <h1>Outback Tours — 2026 / 2027 Calendar</h1>
+  </div>
+  <div class="header-actions">
+    <button class="btn-ghost" onclick="printAll()">Print all months</button>
+    <button class="btn-ghost" onclick="window.print()">Print this month</button>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="month-nav">
+    <button class="nav-btn" id="prevBtn" onclick="prevMonth()">&#8592;</button>
+    <div class="month-label" id="monthLabel"></div>
+    <button class="nav-btn" id="nextBtn" onclick="nextMonth()">&#8594;</button>
+  </div>
+  <div class="year-toggle">
+    <button class="year-btn" id="btn2026" onclick="jumpYear(2026)">2026</button>
+    <button class="year-btn" id="btn2027" onclick="jumpYear(2027)">2027</button>
+  </div>
+</div>
+
+<div class="cal-wrap">
+  <div class="calendar" id="calendarEl">
+    <div class="dow-row">
+      <div class="dow-cell">Mon</div>
+      <div class="dow-cell">Tue</div>
+      <div class="dow-cell">Wed</div>
+      <div class="dow-cell">Thu</div>
+      <div class="dow-cell">Fri</div>
+      <div class="dow-cell">Sat</div>
+      <div class="dow-cell">Sun</div>
+    </div>
+    <div class="cal-body" id="calBody"></div>
+  </div>
+</div>
+
+<div class="legend-wrap">
+  <div class="legend-hd">Tour legend</div>
+  <div class="legend" id="legend"></div>
+</div>
+
+<div class="status-key">
+  <div class="sk-item">
+    <div class="sk-swatch" style="opacity:1"></div>
+    <span>Seats available</span>
+  </div>
+  <div class="sk-item">
+    <div class="sk-swatch" style="opacity:0.45"></div>
+    <span>Sold out</span>
+  </div>
+</div>
+
+<div class="tt" id="tt"></div>
+
+<div id="printContainer" style="display:none"></div>
+
+<script>
+'use strict';
+
+// ═══════════════════════════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════════════════════════
+
+const TOURS = [
+  {
+    name: 'Wet Season Spectacular',
+    short: 'Wet Season Spectacular',
+    duration: 5,
+    color: '#A0156A',
+    sessions: [
+      { start: '2026-03-28', seats: 0, total: 8 }
+    ]
+  },
+  {
+    name: 'Best of Bass Strait',
+    short: 'Best of Bass Strait',
+    duration: 3,
+    color: '#1255A8',
+    sessions: [
+      { start: '2026-04-03', seats: 0, total: 8 },
+      { start: '2026-11-29', seats: 0, total: 8 }
+    ]
+  },
+  {
+    name: 'Lake Eyre In Flood',
+    short: 'Lake Eyre In Flood',
+    duration: 3,
+    color: '#0277BD',
+    sessions: [
+      { start: '2026-04-18', seats: 0, total: 8 },
+      { start: '2026-04-23', seats: 0, total: 8 },
+      { start: '2026-05-09', seats: 0, total: 8 },
+      { start: '2026-05-12', seats: 0, total: 8 },
+      { start: '2026-06-08', seats: 0, total: 8 },
+      { start: '2026-06-18', seats: 0, total: 8 },
+      { start: '2026-06-23', seats: 0, total: 8 },
+      { start: '2026-07-02', seats: 0, total: 8 },
+      { start: '2026-07-04', seats: 0, total: 8 },
+      { start: '2026-07-11', seats: 0, total: 8 },
+      { start: '2026-07-20', seats: 0, total: 8 },
+      { start: '2026-07-30', seats: 0, total: 8 },
+      { start: '2026-08-06', seats: 0, total: 8 },
+      { start: '2026-08-19', seats: 0, total: 8 },
+      { start: '2026-09-07', seats: 0, total: 8 },
+      { start: '2026-09-10', seats: 0, total: 8 },
+      { start: '2026-09-15', seats: 0, total: 8 },
+      { start: '2026-09-18', seats: 0, total: 8 },
+      { start: '2026-09-28', seats: 0, total: 8 },
+      { start: '2026-10-07', seats: 0, total: 8 },
+      { start: '2026-10-16', seats: 0, total: 8 },
+      { start: '2026-10-19', seats: 0, total: 8 },
+      { start: '2026-10-23', seats: 0, total: 8 }
+    ]
+  },
+  {
+    name: 'Southern Ocean Island Hop',
+    short: 'Southern Ocean Island Hop',
+    duration: 5,
+    color: '#00695C',
+    sessions: [
+      { start: '2026-04-24', seats: 0, total: 8 },
+      { start: '2026-05-16', seats: 0, total: 0 },
+      { start: '2026-10-04', seats: 0, total: 8 },
+      { start: '2026-10-22', seats: 0, total: 8 },
+      { start: '2026-12-04', seats: 0, total: 8 }
+    ]
+  },
+  {
+    name: 'Cape York & The Gulf',
+    short: 'Cape York & The Gulf',
+    duration: 14,
+    color: '#B53A0A',
+    sessions: [
+      { start: '2026-06-06', seats: 3, total: 8 },
+      { start: '2026-06-13', seats: 0, total: 8 },
+      { start: '2026-07-11', seats: 0, total: 8 },
+      { start: '2026-07-25', seats: 0, total: 8 },
+      { start: '2026-08-05', seats: 0, total: 8 },
+      { start: '2027-06-19', seats: 8, total: 8 },
+      { start: '2027-07-10', seats: 5, total: 8 },
+      { start: '2027-07-17', seats: 2, total: 8 },
+      { start: '2027-08-07', seats: 8, total: 8 }
+    ]
+  },
+  {
+    name: 'Great Southern Edge',
+    short: 'Great Southern Edge',
+    duration: 7,
+    color: '#2A6B2E',
+    sessions: [
+      { start: '2026-07-01', seats: 0, total: 8 },
+      { start: '2026-07-27', seats: 0, total: 0 }
+    ]
+  },
+  {
+    name: 'Ediacaran Expedition',
+    short: 'Ediacaran Expedition',
+    duration: 4,
+    color: '#5D1687',
+    sessions: [
+      { start: '2026-07-14', seats: 0, total: 8 }
+    ]
+  },
+  {
+    name: 'The Greatest Escape!',
+    short: 'The Greatest Escape',
+    duration: 14,
+    color: '#C44D00',
+    sessions: [
+      { start: '2026-08-13', seats: 0, total: 8 },
+      { start: '2027-08-12', seats: 0, total: 8 }
+    ]
+  },
+  {
+    name: 'Western Wedge Wildflower Safari',
+    short: 'Wildflower Safari',
+    duration: 14,
+    color: '#4A7A20',
+    sessions: [
+      { start: '2026-08-29', seats: 0, total: 8 },
+      { start: '2026-08-31', seats: 0, total: 8 },
+      { start: '2026-09-16', seats: 0, total: 8 }
+    ]
+  },
+  {
+    name: 'Flyaway Faraway',
+    short: 'Flyaway Faraway',
+    duration: 14,
+    color: '#7B0D4E',
+    sessions: [
+      { start: '2027-06-01', seats: 5, total: 8 },
+      { start: '2027-06-10', seats: 8, total: 8 },
+      { start: '2027-07-01', seats: 7, total: 8 },
+      { start: '2027-07-26', seats: 3, total: 8 }
+    ]
+  }
+];
+
+// ═══════════════════════════════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════════════════════════════
+
+const MONTHS = ['January','February','March','April','May','June',
+                'July','August','September','October','November','December'];
+
+function pd(s) {
+  const [y,m,d] = s.split('-').map(Number);
+  return new Date(y, m-1, d);
+}
+
+function addDays(d, n) {
+  const r = new Date(d); r.setDate(r.getDate() + n); return r;
+}
+
+function daysBetween(a, b) {
+  return Math.round((b - a) / 86400000);
+}
+
+function sameDay(a, b) {
+  return a.getFullYear() === b.getFullYear() &&
+         a.getMonth()    === b.getMonth()    &&
+         a.getDate()     === b.getDate();
+}
+
+function getMondayOf(date) {
+  const d = new Date(date);
+  const dow = d.getDay(); // 0=Sun
+  d.setDate(d.getDate() + (dow === 0 ? -6 : 1 - dow));
+  return d;
+}
+
+function fmtDate(d) {
+  return d.toLocaleDateString('en-AU', { day:'numeric', month:'long', year:'numeric' });
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// BUILD EVENT LIST
+// ═══════════════════════════════════════════════════════════════════════
+
+const EVENTS = [];
+TOURS.forEach(tour => {
+  tour.sessions.forEach(sess => {
+    const start = pd(sess.start);
+    const end   = addDays(start, tour.duration - 1);
+    EVENTS.push({
+      tourName: tour.name,
+      short:    tour.short,
+      color:    tour.color,
+      duration: tour.duration,
+      start, end,
+      seats:    sess.seats,
+      total:    sess.total,
+      soldOut:  sess.seats === 0,
+      lane:     -1
+    });
+  });
+});
+
+EVENTS.sort((a, b) => a.start - b.start);
+
+// ═══════════════════════════════════════════════════════════════════════
+// GLOBAL LANE ASSIGNMENT
+// Ensures the same event keeps its vertical lane across week rows
+// ═══════════════════════════════════════════════════════════════════════
+
+(function assignLanes() {
+  const laneEnd = []; // laneEnd[i] = end date of last event assigned to lane i
+  EVENTS.forEach(ev => {
+    let lane = laneEnd.findIndex(e => e < ev.start);
+    if (lane === -1) { lane = laneEnd.length; laneEnd.push(null); }
+    laneEnd[lane] = ev.end;
+    ev.lane = lane;
+  });
+})();
+
+// ═══════════════════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════════════════
+
+let CY = 2026, CM = 2; // start at March 2026 (first tour)
+
+// ═══════════════════════════════════════════════════════════════════════
+// GET WEEKS FOR A MONTH
+// ═══════════════════════════════════════════════════════════════════════
+
+function getWeeks(year, month) {
+  const first = new Date(year, month, 1);
+  const last  = new Date(year, month + 1, 0);
+  const weeks = [];
+  let d = getMondayOf(first);
+  while (d <= last) {
+    const wk = [];
+    for (let i = 0; i < 7; i++) { wk.push(new Date(d)); d = addDays(d, 1); }
+    weeks.push(wk);
+  }
+  return weeks;
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// RENDER ONE MONTH → returns HTML string
+// ═══════════════════════════════════════════════════════════════════════
+
+const DN_H  = 30;  // day-number area height (px)
+const EV_H  = 22;  // event bar height (px)
+const EV_G  = 3;   // gap between event bars (px)
+const CELL_PAD_B = 10; // bottom padding per cell
+
+function buildMonthHTML(year, month) {
+  const monthStart = new Date(year, month, 1);
+  const monthEnd   = new Date(year, month + 1, 0);
+  const today      = new Date(); today.setHours(0,0,0,0);
+  const weeks      = getWeeks(year, month);
+
+  const monthEvents = EVENTS.filter(ev => ev.start <= monthEnd && ev.end >= monthStart);
+
+  // Max lane in this month → determines row height
+  const maxLane = monthEvents.length ? Math.max(...monthEvents.map(ev => ev.lane)) : 0;
+  const CELL_H  = DN_H + (maxLane + 1) * (EV_H + EV_G) + CELL_PAD_B;
+
+  const nWeeks  = weeks.length;
+  const TOTAL_H = nWeeks * CELL_H;
+
+  // ── day cells grid ──────────────────────────────────────────────────
+  let gridHTML = '';
+  weeks.forEach((wk, wi) => {
+    wk.forEach((day, di) => {
+      const inMonth = day.getMonth() === month;
+      const isToday = sameDay(day, today);
+
+      let bg = '#fff';
+      if (!inMonth) bg = '#faf8f5';
+      if (isToday)  bg = '#fffcf0';
+
+      const br = di < 6 ? '1px solid #ece8e0' : 'none';
+      const bb = wi < nWeeks - 1 ? '1px solid #ece8e0' : 'none';
+
+      const numStyle = isToday
+        ? 'width:22px;height:22px;border-radius:50%;background:#1a1a1a;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;'
+        : `color:${inMonth ? '#555' : '#ccc'};font-size:12.5px;font-weight:${inMonth ? 400 : 300};`;
+
+      gridHTML += `<div style="background:${bg};border-right:${br};border-bottom:${bb};height:${CELL_H}px;padding:7px 8px 0;position:relative;">
+        <span style="${numStyle}">${day.getDate()}</span>
+      </div>`;
+    });
+  });
+
+  // ── events overlay ───────────────────────────────────────────────────
+  let evHTML = '';
+  const shownLabel = new Set();
+
+  monthEvents.forEach((ev, ei) => {
+    const globalIdx = EVENTS.indexOf(ev);
+
+    weeks.forEach((wk, wi) => {
+      const wkStart = wk[0];
+      const wkEnd   = wk[6];
+
+      if (ev.start > wkEnd || ev.end < wkStart) return;
+
+      // Clip segment to this week
+      const segStart = new Date(Math.max(ev.start.getTime(), wkStart.getTime()));
+      const segEnd   = new Date(Math.min(ev.end.getTime(),   wkEnd.getTime()));
+
+      const colStart = daysBetween(wkStart, segStart); // 0–6
+      const colEnd   = daysBetween(wkStart, segEnd);   // 0–6
+      const colSpan  = colEnd - colStart + 1;
+
+      const topPx   = wi * CELL_H + DN_H + ev.lane * (EV_H + EV_G);
+      const leftPct = (colStart / 7) * 100;
+      const widePct = (colSpan  / 7) * 100;
+
+      const isEvStart = sameDay(ev.start, segStart);
+      const isEvEnd   = sameDay(ev.end,   segEnd);
+
+      // Border radius — square on continuing edges
+      const rl = isEvStart ? '3px' : '1px';
+      const rr = isEvEnd   ? '3px' : '1px';
+      const br = `${rl} ${rr} ${rr} ${rl}`;
+
+      // Show label on the first segment we render for this event in this month
+      const showLabel = !shownLabel.has(globalIdx);
+      if (showLabel) shownLabel.add(globalIdx);
+
+      const opacity = ev.soldOut ? '0.55' : '1';
+
+      // Seats tag (only on label segment, if room)
+      let seatTag = '';
+      if (showLabel && colSpan >= 2) {
+        const st = ev.soldOut ? 'Full' : `${ev.seats} left`;
+        seatTag = `<span style="margin-left:6px;font-size:10px;opacity:0.8;font-weight:400;">(${st})</span>`;
+      }
+
+      // Continuation arrows
+      const arrL = !isEvStart ? '<span style="margin-right:5px;opacity:0.7">◂</span>' : '';
+      const arrR = !isEvEnd   ? '<span style="margin-left:5px;opacity:0.7">▸</span>'  : '';
+
+      const labelHTML = showLabel
+        ? `${arrL}<span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${ev.short}${seatTag}</span>${arrR}`
+        : `${arrL}${arrR}`;
+
+      evHTML += `<div
+        class="ev-bar"
+        data-ev="${globalIdx}"
+        style="
+          position:absolute;
+          top:${topPx}px;
+          left:calc(${leftPct}% + 2px);
+          width:calc(${widePct}% - 4px);
+          height:${EV_H}px;
+          background:${ev.color};
+          opacity:${opacity};
+          border-radius:${br};
+          color:#fff;
+          font-size:11px;
+          font-weight:600;
+          letter-spacing:0.02em;
+          padding:0 7px;
+          display:flex;
+          align-items:center;
+          white-space:nowrap;
+          overflow:hidden;
+          pointer-events:all;
+          cursor:default;
+          z-index:${ev.lane + 2};
+          box-shadow:0 1px 4px rgba(0,0,0,0.12);
+        "
+        onmouseenter="ttShow(event,${globalIdx})"
+        onmouseleave="ttHide()"
+        onmousemove="ttMove(event)"
+      >${labelHTML}</div>`;
+    });
+  });
+
+  // No-tours notice
+  const emptyNotice = monthEvents.length === 0
+    ? `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#c5bfb8;font-size:13px;letter-spacing:0.08em;pointer-events:none;">No tours scheduled</div>`
+    : '';
+
+  return `
+    <div style="display:grid;grid-template-columns:repeat(7,1fr);position:relative;height:${TOTAL_H}px;">
+      ${gridHTML}
+      <div style="position:absolute;inset:0;pointer-events:none;">${evHTML}</div>
+      ${emptyNotice}
+    </div>`;
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// RENDER INTERACTIVE VIEW
+// ═══════════════════════════════════════════════════════════════════════
+
+function renderMonth(year, month) {
+  CY = year; CM = month;
+
+  document.getElementById('calBody').innerHTML = buildMonthHTML(year, month);
+  document.getElementById('monthLabel').textContent = `${MONTHS[month]} ${year}`;
+
+  document.getElementById('prevBtn').disabled = (year === 2026 && month === 0);
+  document.getElementById('nextBtn').disabled = (year === 2027 && month === 11);
+
+  document.getElementById('btn2026').classList.toggle('active', year === 2026);
+  document.getElementById('btn2027').classList.toggle('active', year === 2027);
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════════════════════════════
+
+function prevMonth() {
+  let y = CY, m = CM - 1;
+  if (m < 0) { y--; m = 11; }
+  renderMonth(y, m);
+}
+
+function nextMonth() {
+  let y = CY, m = CM + 1;
+  if (m > 11) { y++; m = 0; }
+  renderMonth(y, m);
+}
+
+function jumpYear(year) {
+  renderMonth(year, CM);
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// PRINT ALL MONTHS
+// Opens a new window with all 24 months for PDF export
+// ═══════════════════════════════════════════════════════════════════════
+
+function printAll() {
+  const dowHeader = `<div style="display:grid;grid-template-columns:repeat(7,1fr);background:#1a1a1a;">
+    ${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(d =>
+      `<div style="text-align:center;padding:9px 0;font-size:10px;font-weight:600;letter-spacing:0.13em;text-transform:uppercase;color:rgba(255,255,255,0.65);">${d}</div>`
+    ).join('')}
+  </div>`;
+
+  const legendHTML = TOURS.map(t =>
+    `<span style="display:inline-flex;align-items:center;gap:7px;margin:0 16px 8px 0;font-size:11px;">
+      <span style="width:18px;height:8px;border-radius:2px;background:${t.color};display:inline-block;"></span>
+      ${t.name} <span style="color:#888;font-size:10px;">(${t.duration}d)</span>
+    </span>`
+  ).join('');
+
+  let pages = '';
+  for (let year = 2026; year <= 2027; year++) {
+    for (let month = 0; month < 12; month++) {
+      const bodyHTML = buildMonthHTML(year, month);
+      pages += `
+        <div style="page-break-after:always;padding:16px 20px;">
+          <div style="font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:#888;margin-bottom:4px;">Air Adventure Australia — Outback Tours</div>
+          <div style="font-size:22px;font-weight:300;letter-spacing:0.06em;color:#1a1a1a;margin-bottom:12px;">${MONTHS[month]} ${year}</div>
+          <div style="border:1px solid #ddd;border-radius:5px;overflow:hidden;">
+            ${dowHeader}
+            <div style="position:relative;">${bodyHTML}</div>
+          </div>
+          <div style="margin-top:12px;display:flex;flex-wrap:wrap;">${legendHTML}</div>
+        </div>`;
+    }
+  }
+
+  const win = window.open('', '_blank');
+  win.document.write(`<!DOCTYPE html><html><head>
+    <meta charset="UTF-8">
+    <title>Air Adventure Outback — Tour Calendar 2026/2027</title>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; background: #fff; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      @media print { @page { margin: 0; } body { margin: 0; } }
+      .ev-bar { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    </style>
+  </head><body>${pages}
+  <script>window.onload = function(){ window.print(); }<\/script>
+  </body></html>`);
+  win.document.close();
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// TOOLTIP
+// ═══════════════════════════════════════════════════════════════════════
+
+const ttEl = document.getElementById('tt');
+
+function ttShow(e, idx) {
+  const ev = EVENTS[idx];
+  const seatsHTML = ev.soldOut
+    ? `<span class="tt-dot" style="background:#e74c3c"></span>Sold out`
+    : `<span class="tt-dot" style="background:#2ecc71"></span>${ev.seats} of ${ev.total} seats available`;
+  ttEl.innerHTML = `<strong>${ev.tourName}</strong>
+    ${fmtDate(ev.start)} → ${fmtDate(ev.end)}<br>
+    ${ev.duration} days
+    <div class="tt-avail">${seatsHTML}</div>`;
+  ttEl.style.display = 'block';
+  ttMove(e);
+}
+
+function ttHide() { ttEl.style.display = 'none'; }
+
+function ttMove(e) {
+  let x = e.clientX + 14, y = e.clientY + 14;
+  if (x + 260 > window.innerWidth)  x = e.clientX - 270;
+  if (y + 110 > window.innerHeight) y = e.clientY - 120;
+  ttEl.style.left = x + 'px';
+  ttEl.style.top  = y + 'px';
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// LEGEND
+// ═══════════════════════════════════════════════════════════════════════
+
+document.getElementById('legend').innerHTML = TOURS.map(t => `
+  <div class="legend-item">
+    <div class="legend-swatch" style="background:${t.color}"></div>
+    <span class="legend-name">${t.name}</span>
+    <span class="legend-dur">— ${t.duration} days</span>
+  </div>`).join('');
+
+// ═══════════════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════════════
+
+renderMonth(CY, CM);
+</script>
+</body>
+</html>

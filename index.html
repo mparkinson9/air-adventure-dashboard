@@ -88,6 +88,18 @@
   .tab-content { display: none; }
   .tab-content.active { display: block; }
 
+  /* Calendar iframe tab */
+  #tab-calendar.active {
+    display: block;
+    margin: 0 -24px -24px;
+  }
+  #tab-calendar iframe {
+    display: block;
+    width: 100%;
+    height: calc(100vh - 128px);
+    border: none;
+  }
+
   /* Tour blocks */
   .tour-block {
     background: #fff;
@@ -360,6 +372,7 @@
 <div class="tabs">
   <button class="tab-btn active" onclick="showTab('2026', this)">2026</button>
   <button class="tab-btn" onclick="showTab('2027', this)">2027</button>
+  <button class="tab-btn" onclick="showTab('calendar', this)">Calendar</button>
 </div>
 
 <div id="tab-2026" class="tab-content active">
@@ -1383,6 +1396,10 @@
   </table>
 </div>
 
+</div>
+
+<div id="tab-calendar" class="tab-content">
+  <iframe src="calendar.html" title="Tour Calendar 2026 / 2027"></iframe>
 </div>
 
 <script>
