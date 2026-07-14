@@ -88,18 +88,6 @@
   .tab-content { display: none; }
   .tab-content.active { display: block; }
 
-  /* Calendar iframe tab */
-  #tab-calendar.active {
-    display: block;
-    margin: 0 -24px -24px;
-  }
-  #tab-calendar iframe {
-    display: block;
-    width: 100%;
-    height: calc(100vh - 128px);
-    border: none;
-  }
-
   /* Tour blocks */
   .tour-block {
     background: #fff;
@@ -360,7 +348,7 @@
   <div class="header-row">
     <div>
       <h1>Air Adventure Outback — Seat Availability</h1>
-      <div class="last-updated">Last updated: 14 July 2026, 9:02 AM AEST</div>
+      <div class="last-updated">Last updated: 14 July 2026, 2:03 PM AEST</div>
     </div>
     <button class="refresh-btn" onclick="window.location.reload()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
@@ -372,7 +360,6 @@
 <div class="tabs">
   <button class="tab-btn active" onclick="showTab('2026', this)">2026</button>
   <button class="tab-btn" onclick="showTab('2027', this)">2027</button>
-  <button class="tab-btn" onclick="showTab('calendar', this)">Calendar</button>
 </div>
 
 <div id="tab-2026" class="tab-content active">
@@ -1120,6 +1107,22 @@
       </td>
     </tr>
     <tr class="" id="row-bk-ph-2026-5">
+      <td>Private Holiday - Lake Eyre In Flood, ex Adelaide (JDS Travel)</td>
+      <td class="ph-price">$25,888</td>
+      <td>20 Sep 2026</td>
+      <td class="num">0</td>
+      <td class="num">0</td>
+      <td class="num">0</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td>
+      <td class="fill-pct fill-low"></td>
+      <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-ph-2026-5')" aria-expanded="false" aria-controls="bk-ph-2026-5"><span class="expand-icon">▶</span><span class="expand-label">1 booking</span></button></td>
+    </tr>
+    <tr id="bk-ph-2026-5" class="bookings-row " style="display:none;">
+      <td colspan="9" class="bookings-cell">
+        <div class="bookings-list"><div class="guest-row"><span class="guest-name">Julianne Dalessandro</span><span class="guest-ref">RQX0QHQ</span></div></div>
+      </td>
+    </tr>
+    <tr class="" id="row-bk-ph-2026-6">
       <td>Private Holiday - Wings Over Zimbabwe & Botswana  (Flower & Staines)</td>
       <td class="ph-price">$132,672</td>
       <td>13 Nov 2026</td>
@@ -1128,14 +1131,14 @@
       <td class="num">4</td>
       <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td>
       <td class="fill-pct fill-full">Sold out</td>
-      <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-ph-2026-5')" aria-expanded="false" aria-controls="bk-ph-2026-5"><span class="expand-icon">▶</span><span class="expand-label">2 bookings</span></button></td>
+      <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-ph-2026-6')" aria-expanded="false" aria-controls="bk-ph-2026-6"><span class="expand-icon">▶</span><span class="expand-label">2 bookings</span></button></td>
     </tr>
-    <tr id="bk-ph-2026-5" class="bookings-row " style="display:none;">
+    <tr id="bk-ph-2026-6" class="bookings-row " style="display:none;">
       <td colspan="9" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Margaret Flower</span><span class="guest-ref">RNP1AVP</span></div><div class="guest-row"><span class="guest-name">Peter Hickson</span><span class="guest-ref">R037MGT</span></div></div>
       </td>
     </tr>
-    <tr class="" id="row-bk-ph-2026-6">
+    <tr class="" id="row-bk-ph-2026-7">
       <td>Private Holiday - Southern Ocean Island Hop (Koch)</td>
       <td class="ph-price">$95,960</td>
       <td>23 Nov 2026</td>
@@ -1144,9 +1147,9 @@
       <td class="num">8</td>
       <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td>
       <td class="fill-pct fill-full">Sold out</td>
-      <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-ph-2026-6')" aria-expanded="false" aria-controls="bk-ph-2026-6"><span class="expand-icon">▶</span><span class="expand-label">4 bookings</span></button></td>
+      <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-ph-2026-7')" aria-expanded="false" aria-controls="bk-ph-2026-7"><span class="expand-icon">▶</span><span class="expand-label">4 bookings</span></button></td>
     </tr>
-    <tr id="bk-ph-2026-6" class="bookings-row " style="display:none;">
+    <tr id="bk-ph-2026-7" class="bookings-row " style="display:none;">
       <td colspan="9" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">GRENFELL KOCH</span><span class="guest-ref">RTATXKK</span></div><div class="guest-row"><span class="guest-name">Michael Shakes</span><span class="guest-ref">RY58GZ2</span></div><div class="guest-row"><span class="guest-name">Nadia Murphy</span><span class="guest-ref">RQZ0NAK</span></div><div class="guest-row"><span class="guest-name">Nicolette Grant</span><span class="guest-ref">R2S2WBB</span></div></div>
       </td>
@@ -1396,10 +1399,6 @@
   </table>
 </div>
 
-</div>
-
-<div id="tab-calendar" class="tab-content">
-  <iframe src="calendar.html" title="Tour Calendar 2026 / 2027"></iframe>
 </div>
 
 <script>
