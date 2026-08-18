@@ -105,7 +105,6 @@
     border-radius: 6px;
     border: 1px solid #e5e3de;
     margin-bottom: 16px;
-    overflow: hidden;
   }
 
   .tour-name {
@@ -119,6 +118,7 @@
     letter-spacing: 0.02em;
     text-transform: uppercase;
     gap: 12px;
+    border-radius: 6px 6px 0 0;
   }
 
   .tour-name-text {
@@ -140,6 +140,7 @@
     color: #aaa;
     font-size: 13px;
     font-style: italic;
+    border-radius: 0 0 6px 6px;
   }
 
   table {
@@ -157,6 +158,21 @@
     color: #888;
     background: #faf9f7;
     border-bottom: 1px solid #e5e3de;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+  }
+
+  thead th.num {
+    text-align: right;
+  }
+
+  tr.last-row td:first-child {
+    border-bottom-left-radius: 6px;
+  }
+
+  tr.last-row td:last-child {
+    border-bottom-right-radius: 6px;
   }
 
   tbody tr {
@@ -361,7 +377,7 @@
   <div class="header-row">
     <div>
       <h1>Air Adventure Outback — Seat Availability</h1>
-      <div class="last-updated">Last updated: 18 August 2026, 10:28 AM AEST</div>
+      <div class="last-updated">Last updated: 18 August 2026, 10:52 AM AEST</div>
     </div>
     <button class="refresh-btn" onclick="window.location.reload()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
@@ -380,7 +396,7 @@
 <div class="tour-block">
   <div class="tour-name"><span class="tour-name-text">Best of Bass Strait</span><span class="pricing-badge">From $4,997 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $292</span></div>
   <table>
-    <thead><tr><th>Departure date</th><th>Sold</th><th>Available</th><th>Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
+    <thead><tr><th>Departure date</th><th class="num">Sold</th><th class="num">Available</th><th class="num">Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
     <tbody>
     <tr class="departed-row" id="row-bk-2026-0">
       <td>3 Apr 2026<span class="departed-badge">Departed</span></td>
@@ -396,7 +412,7 @@
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Bob Hynes</span><span class="guest-ref">R5SLTRE</span></div><div class="guest-row"><span class="guest-name">Fred Solomon</span><span class="guest-ref">R26AAWM</span></div><div class="guest-row"><span class="guest-name">Josephine Biggs</span><span class="guest-ref">RJ10G02</span></div><div class="guest-row"><span class="guest-name">Paul Henderson</span><span class="guest-ref">RSUFZKT</span></div><div class="guest-row"><span class="guest-name">Pauline Shirrefs</span><span class="guest-ref">RGRXUHH</span></div><div class="guest-row"><span class="guest-name">Phil Rounsevell</span><span class="guest-ref">RDCDFUV</span></div><div class="guest-row"><span class="guest-name">Robyn McIntyre</span><span class="guest-ref">RQJSBA3</span></div><div class="guest-row"><span class="guest-name">Test Test</span><span class="guest-ref">RTHGWN9</span></div><div class="guest-row"><span class="guest-name">amber pope</span><span class="guest-ref">RL2PT6C</span></div><div class="guest-row"><span class="guest-name">zena Keen</span><span class="guest-ref">RAE5110</span></div></div>
       </td>
     </tr>
-    <tr class="" id="row-bk-2026-1">
+    <tr class="last-row" id="row-bk-2026-1">
       <td>29 Nov 2026</td>
       <td class="num">8</td>
       <td class="num">0</td>
@@ -405,7 +421,7 @@
       <td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2026-1')" aria-expanded="false" aria-controls="bk-2026-1"><span class="expand-icon">▶</span><span class="expand-label">5 bookings</span></button></td>
     </tr>
-    <tr id="bk-2026-1" class="bookings-row " style="display:none;">
+    <tr id="bk-2026-1" class="bookings-row  last-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Jeanette De Silva</span><span class="guest-ref">RXXU9MB</span></div><div class="guest-row"><span class="guest-name">Lynette Hewitson</span><span class="guest-ref">R12NWDG</span></div><div class="guest-row"><span class="guest-name">Michele Adler</span><span class="guest-ref">RQXV9HS</span></div><div class="guest-row"><span class="guest-name">Shane Reiche</span><span class="guest-ref">R0YAVJB</span></div><div class="guest-row"><span class="guest-name">Shirley Mirams</span><span class="guest-ref">RECZG12</span></div></div>
       </td>
@@ -417,7 +433,7 @@
   <div class="tour-name"><span class="tour-name-text">Cape York & The Gulf</span><span class="pricing-badge">From $29,989 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $5,250</span><button class="copy-avail-btn" onclick="copyAvailability(this)" data-availability="Cape York &amp; The Gulf — 2026 Availability
 6 Jun 2026: 3 seats available">&#128203; Copy availability</button></div>
   <table>
-    <thead><tr><th>Departure date</th><th>Sold</th><th>Available</th><th>Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
+    <thead><tr><th>Departure date</th><th class="num">Sold</th><th class="num">Available</th><th class="num">Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
     <tbody>
     <tr class="departed-row" id="row-bk-2026-2">
       <td>6 Jun 2026<span class="departed-badge">Departed</span></td>
@@ -475,7 +491,7 @@
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Jill Martin</span><span class="guest-ref">RSKKYPD</span></div><div class="guest-row"><span class="guest-name">Joanne cox</span><span class="guest-ref">RLBB6Y8</span></div><div class="guest-row"><span class="guest-name">John O'Rourke</span><span class="guest-ref">RK1VG4C</span></div><div class="guest-row"><span class="guest-name">Josephine Biggs</span><span class="guest-ref">R0LWUNJ</span></div><div class="guest-row"><span class="guest-name">Melissa Poynton</span><span class="guest-ref">RXQDPQU</span></div><div class="guest-row"><span class="guest-name">Pamela King</span><span class="guest-ref">RMRMZPL</span></div><div class="guest-row"><span class="guest-name">warren walsh</span><span class="guest-ref">RCCQCA7</span></div></div>
       </td>
     </tr>
-    <tr class="departed-row" id="row-bk-2026-6">
+    <tr class="departed-row last-row" id="row-bk-2026-6">
       <td>5 Aug 2026<span class="departed-badge">Departed</span></td>
       <td class="num">8</td>
       <td class="num">0</td>
@@ -484,7 +500,7 @@
       <td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2026-6')" aria-expanded="false" aria-controls="bk-2026-6"><span class="expand-icon">▶</span><span class="expand-label">8 bookings</span></button></td>
     </tr>
-    <tr id="bk-2026-6" class="bookings-row departed-row" style="display:none;">
+    <tr id="bk-2026-6" class="bookings-row departed-row last-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Bruce Clark</span><span class="guest-ref">RJYKZL5</span></div><div class="guest-row"><span class="guest-name">Jill Martin</span><span class="guest-ref">RKZ9XDC</span></div><div class="guest-row"><span class="guest-name">Jill Scott</span><span class="guest-ref">R5FF1J9</span></div><div class="guest-row"><span class="guest-name">Kevin Pope</span><span class="guest-ref">RQ76FRE</span></div><div class="guest-row"><span class="guest-name">Lavinia Cockram</span><span class="guest-ref">RBEPBMS</span></div><div class="guest-row"><span class="guest-name">Margaret Coleman</span><span class="guest-ref">R454KBX</span></div><div class="guest-row"><span class="guest-name">Prue Barclay</span><span class="guest-ref">RJ1DQ0T</span></div><div class="guest-row"><span class="guest-name">Test Hunt</span><span class="guest-ref">RQSY4A3</span></div></div>
       </td>
@@ -499,9 +515,9 @@
 <div class="tour-block">
   <div class="tour-name"><span class="tour-name-text">Ediacaran Expedition</span><span class="pricing-badge">From $4,997 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $440</span></div>
   <table>
-    <thead><tr><th>Departure date</th><th>Sold</th><th>Available</th><th>Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
+    <thead><tr><th>Departure date</th><th class="num">Sold</th><th class="num">Available</th><th class="num">Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
     <tbody>
-    <tr class="departed-row" id="row-bk-2026-7">
+    <tr class="departed-row last-row" id="row-bk-2026-7">
       <td>14 Jul 2026<span class="departed-badge">Departed</span></td>
       <td class="num">8</td>
       <td class="num">0</td>
@@ -510,7 +526,7 @@
       <td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2026-7')" aria-expanded="false" aria-controls="bk-2026-7"><span class="expand-icon">▶</span><span class="expand-label">5 bookings</span></button></td>
     </tr>
-    <tr id="bk-2026-7" class="bookings-row departed-row" style="display:none;">
+    <tr id="bk-2026-7" class="bookings-row departed-row last-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Carolyn Macafee</span><span class="guest-ref">RXVXD10</span></div><div class="guest-row"><span class="guest-name">David Heggie</span><span class="guest-ref">RZWCRQY</span></div><div class="guest-row"><span class="guest-name">Julie Ryan</span><span class="guest-ref">RU9LFBZ</span></div><div class="guest-row"><span class="guest-name">Prue Atkins</span><span class="guest-ref">R6EQ51B</span></div><div class="guest-row"><span class="guest-name">Wendy Love</span><span class="guest-ref">R28R0M8</span></div></div>
       </td>
@@ -525,9 +541,9 @@
 <div class="tour-block">
   <div class="tour-name"><span class="tour-name-text">Great Southern Edge</span><span class="pricing-badge">From $14,585 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $520</span></div>
   <table>
-    <thead><tr><th>Departure date</th><th>Sold</th><th>Available</th><th>Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
+    <thead><tr><th>Departure date</th><th class="num">Sold</th><th class="num">Available</th><th class="num">Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
     <tbody>
-    <tr class="departed-row" id="row-bk-2026-8">
+    <tr class="departed-row last-row" id="row-bk-2026-8">
       <td>1 Jul 2026<span class="departed-badge">Departed</span></td>
       <td class="num">8</td>
       <td class="num">0</td>
@@ -536,7 +552,7 @@
       <td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2026-8')" aria-expanded="false" aria-controls="bk-2026-8"><span class="expand-icon">▶</span><span class="expand-label">6 bookings</span></button></td>
     </tr>
-    <tr id="bk-2026-8" class="bookings-row departed-row" style="display:none;">
+    <tr id="bk-2026-8" class="bookings-row departed-row last-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Annemarie Hammel</span><span class="guest-ref">R3PSNRR</span></div><div class="guest-row"><span class="guest-name">Beverley Milson</span><span class="guest-ref">RHV3DUA</span></div><div class="guest-row"><span class="guest-name">Jenny Gill</span><span class="guest-ref">RW7M0VB</span></div><div class="guest-row"><span class="guest-name">John Bazzano</span><span class="guest-ref">R2CS0EL</span></div><div class="guest-row"><span class="guest-name">Margaret Wilson</span><span class="guest-ref">R81HQEF</span></div><div class="guest-row"><span class="guest-name">Sue Whitehead</span><span class="guest-ref">R5L09B4</span></div></div>
       </td>
@@ -551,7 +567,7 @@
 2 Nov 2026: 4 seats available
 5 Nov 2026: 6 seats available">&#128203; Copy availability</button><button class="brochure-btn" onclick="copyBrochureLink(this, 'https://lakeeyrebrochure.airadventure.com.au/')" title="https://lakeeyrebrochure.airadventure.com.au/">&#128279; Copy brochure link</button></div>
   <table>
-    <thead><tr><th>Departure date</th><th>Sold</th><th>Available</th><th>Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
+    <thead><tr><th>Departure date</th><th class="num">Sold</th><th class="num">Available</th><th class="num">Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
     <tbody>
     <tr class="departed-row" id="row-bk-2026-9">
       <td>18 Apr 2026<span class="departed-badge">Departed</span></td>
@@ -739,7 +755,7 @@
       <td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2026-22')" aria-expanded="false" aria-controls="bk-2026-22"><span class="expand-icon">▶</span><span class="expand-label">4 bookings</span></button></td>
     </tr>
-    <tr id="bk-2026-22" class="bookings-row " style="display:none;">
+    <tr id="bk-2026-22" class="bookings-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Laurette Houniet</span><span class="guest-ref">RCSK1S1</span></div><div class="guest-row"><span class="guest-name">Lisa Renton</span><span class="guest-ref">RTKB1EM</span></div><div class="guest-row"><span class="guest-name">Merryn Bassett</span><span class="guest-ref">RXLM5QH</span></div><div class="guest-row"><span class="guest-name">Ruth Perrett</span><span class="guest-ref">RBM2DW0</span></div></div>
       </td>
@@ -753,7 +769,7 @@
       <td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2026-23')" aria-expanded="false" aria-controls="bk-2026-23"><span class="expand-icon">▶</span><span class="expand-label">6 bookings</span></button></td>
     </tr>
-    <tr id="bk-2026-23" class="bookings-row " style="display:none;">
+    <tr id="bk-2026-23" class="bookings-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Anne McAvaney</span><span class="guest-ref">RJM4JYK</span></div><div class="guest-row"><span class="guest-name">Carolyn Dodd</span><span class="guest-ref">RUEF08P</span></div><div class="guest-row"><span class="guest-name">Donna Dobson</span><span class="guest-ref">RZXJ1BC</span></div><div class="guest-row"><span class="guest-name">Elizabeth Sutherland</span><span class="guest-ref">RZC0A1R</span></div><div class="guest-row"><span class="guest-name">Heather Edleston</span><span class="guest-ref">RHCBCR0</span></div><div class="guest-row"><span class="guest-name">Neil Duggan</span><span class="guest-ref">RW4XLDU</span></div></div>
       </td>
@@ -767,7 +783,7 @@
       <td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2026-24')" aria-expanded="false" aria-controls="bk-2026-24"><span class="expand-icon">▶</span><span class="expand-label">5 bookings</span></button></td>
     </tr>
-    <tr id="bk-2026-24" class="bookings-row " style="display:none;">
+    <tr id="bk-2026-24" class="bookings-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Edward O'neill</span><span class="guest-ref">RTEFJBF</span></div><div class="guest-row"><span class="guest-name">Elizabeth Cameron</span><span class="guest-ref">RZLH8F9</span></div><div class="guest-row"><span class="guest-name">Jenny Powell</span><span class="guest-ref">R2UP08D</span></div><div class="guest-row"><span class="guest-name">Nicholas Heath</span><span class="guest-ref">RNKXBFL</span></div><div class="guest-row"><span class="guest-name">Robin Jule Wordsworth</span><span class="guest-ref">R9KLEWF</span></div></div>
       </td>
@@ -781,7 +797,7 @@
       <td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2026-25')" aria-expanded="false" aria-controls="bk-2026-25"><span class="expand-icon">▶</span><span class="expand-label">4 bookings</span></button></td>
     </tr>
-    <tr id="bk-2026-25" class="bookings-row " style="display:none;">
+    <tr id="bk-2026-25" class="bookings-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Amanda Ledgerwood</span><span class="guest-ref">R0BX01F</span></div><div class="guest-row"><span class="guest-name">Brian Walker</span><span class="guest-ref">RW1Q4X2</span></div><div class="guest-row"><span class="guest-name">John Knight</span><span class="guest-ref">R6BK0D8</span></div><div class="guest-row"><span class="guest-name">Warren Koopmans</span><span class="guest-ref">RRT09V6</span></div></div>
       </td>
@@ -795,7 +811,7 @@
       <td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2026-26')" aria-expanded="false" aria-controls="bk-2026-26"><span class="expand-icon">▶</span><span class="expand-label">7 bookings</span></button></td>
     </tr>
-    <tr id="bk-2026-26" class="bookings-row " style="display:none;">
+    <tr id="bk-2026-26" class="bookings-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Anne McAvaney</span><span class="guest-ref">RZFGD0M</span></div><div class="guest-row"><span class="guest-name">Debroah McLachlan</span><span class="guest-ref">RX4RHAS</span></div><div class="guest-row"><span class="guest-name">Fiona Pak Poy</span><span class="guest-ref">RBQ4VEY</span></div><div class="guest-row"><span class="guest-name">Marilyn Reid</span><span class="guest-ref">RDPEP7S</span></div><div class="guest-row"><span class="guest-name">Marilyn Reid</span><span class="guest-ref">R5TFS7X</span></div><div class="guest-row"><span class="guest-name">Michael Hussey</span><span class="guest-ref">RFEG2RN</span></div><div class="guest-row"><span class="guest-name">Stuart Thomson</span><span class="guest-ref">RVGESBC</span></div></div>
       </td>
@@ -809,7 +825,7 @@
       <td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2026-27')" aria-expanded="false" aria-controls="bk-2026-27"><span class="expand-icon">▶</span><span class="expand-label">5 bookings</span></button></td>
     </tr>
-    <tr id="bk-2026-27" class="bookings-row " style="display:none;">
+    <tr id="bk-2026-27" class="bookings-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Anna Low</span><span class="guest-ref">RDB5KCT</span></div><div class="guest-row"><span class="guest-name">Anne Johnson</span><span class="guest-ref">RDDQNHK</span></div><div class="guest-row"><span class="guest-name">Helen Masters</span><span class="guest-ref">R7XDR1J</span></div><div class="guest-row"><span class="guest-name">Luke McGuinn</span><span class="guest-ref">RYYJNCP</span></div><div class="guest-row"><span class="guest-name">Sandra Johansen</span><span class="guest-ref">R1LYCZ7</span></div></div>
       </td>
@@ -823,7 +839,7 @@
       <td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2026-28')" aria-expanded="false" aria-controls="bk-2026-28"><span class="expand-icon">▶</span><span class="expand-label">4 bookings</span></button></td>
     </tr>
-    <tr id="bk-2026-28" class="bookings-row " style="display:none;">
+    <tr id="bk-2026-28" class="bookings-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Andrew Kitchen</span><span class="guest-ref">RTQU8JK</span></div><div class="guest-row"><span class="guest-name">Anne Male</span><span class="guest-ref">RZLJNHR</span></div><div class="guest-row"><span class="guest-name">Cheryl Pycroft</span><span class="guest-ref">RE5NQFM</span></div><div class="guest-row"><span class="guest-name">Evelyn Eva</span><span class="guest-ref">RMZJQGD</span></div></div>
       </td>
@@ -837,7 +853,7 @@
       <td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2026-29')" aria-expanded="false" aria-controls="bk-2026-29"><span class="expand-icon">▶</span><span class="expand-label">4 bookings</span></button></td>
     </tr>
-    <tr id="bk-2026-29" class="bookings-row " style="display:none;">
+    <tr id="bk-2026-29" class="bookings-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Alla Mayer</span><span class="guest-ref">RUDYVQW</span></div><div class="guest-row"><span class="guest-name">Brian Francis</span><span class="guest-ref">RUC5MX0</span></div><div class="guest-row"><span class="guest-name">Bronwyn o&#039;sullivan</span><span class="guest-ref">RKTUXKB</span></div><div class="guest-row"><span class="guest-name">Valma Cross</span><span class="guest-ref">RA3K0BX</span></div></div>
       </td>
@@ -851,7 +867,7 @@
       <td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2026-30')" aria-expanded="false" aria-controls="bk-2026-30"><span class="expand-icon">▶</span><span class="expand-label">3 bookings</span></button></td>
     </tr>
-    <tr id="bk-2026-30" class="bookings-row " style="display:none;">
+    <tr id="bk-2026-30" class="bookings-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Lyn Hughes</span><span class="guest-ref">RVFJUHH</span></div><div class="guest-row"><span class="guest-name">Peter Blake</span><span class="guest-ref">RQH5T9R</span></div><div class="guest-row"><span class="guest-name">Sandra Burnett</span><span class="guest-ref">RZA3AHE</span></div></div>
       </td>
@@ -865,7 +881,7 @@
       <td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2026-31')" aria-expanded="false" aria-controls="bk-2026-31"><span class="expand-icon">▶</span><span class="expand-label">5 bookings</span></button></td>
     </tr>
-    <tr id="bk-2026-31" class="bookings-row " style="display:none;">
+    <tr id="bk-2026-31" class="bookings-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Andrew Gilkes</span><span class="guest-ref">RDX8JTP</span></div><div class="guest-row"><span class="guest-name">Jennifer White</span><span class="guest-ref">RKM0YEK</span></div><div class="guest-row"><span class="guest-name">Kim Mason</span><span class="guest-ref">RU55ZED</span></div><div class="guest-row"><span class="guest-name">Michael Wilkinson</span><span class="guest-ref">RCBJQLD</span></div><div class="guest-row"><span class="guest-name">Peter Pettiford</span><span class="guest-ref">R2QD01F</span></div></div>
       </td>
@@ -879,7 +895,7 @@
       <td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2026-32')" aria-expanded="false" aria-controls="bk-2026-32"><span class="expand-icon">▶</span><span class="expand-label">5 bookings</span></button></td>
     </tr>
-    <tr id="bk-2026-32" class="bookings-row " style="display:none;">
+    <tr id="bk-2026-32" class="bookings-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Andrea Volpi</span><span class="guest-ref">R0AHMEZ</span></div><div class="guest-row"><span class="guest-name">Kate Harding</span><span class="guest-ref">RFPY5UA</span></div><div class="guest-row"><span class="guest-name">Mary Benn</span><span class="guest-ref">RPLL3X2</span></div><div class="guest-row"><span class="guest-name">Russell Teece</span><span class="guest-ref">R6LGX79</span></div><div class="guest-row"><span class="guest-name">Shane Reiche</span><span class="guest-ref">RQKM7M9</span></div></div>
       </td>
@@ -893,7 +909,7 @@
       <td class="fill-pct fill-mid">44% full</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2026-33')" aria-expanded="false" aria-controls="bk-2026-33"><span class="expand-icon">▶</span><span class="expand-label">3 bookings</span></button></td>
     </tr>
-    <tr id="bk-2026-33" class="bookings-row " style="display:none;">
+    <tr id="bk-2026-33" class="bookings-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Bruce Adams</span><span class="guest-ref">RV5G3P9</span></div><div class="guest-row"><span class="guest-name">Martine Harvey</span><span class="guest-ref">RBKJVHK</span></div><div class="guest-row"><span class="guest-name">Sue Smith</span><span class="guest-ref">R1YYXZ1</span></div></div>
       </td>
@@ -907,7 +923,7 @@
       <td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2026-34')" aria-expanded="false" aria-controls="bk-2026-34"><span class="expand-icon">▶</span><span class="expand-label">6 bookings</span></button></td>
     </tr>
-    <tr id="bk-2026-34" class="bookings-row " style="display:none;">
+    <tr id="bk-2026-34" class="bookings-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Cherie Little</span><span class="guest-ref">RKCWKX8</span></div><div class="guest-row"><span class="guest-name">David Gibson</span><span class="guest-ref">RRB01N8</span></div><div class="guest-row"><span class="guest-name">Diane Fleetwood</span><span class="guest-ref">RGMCUDY</span></div><div class="guest-row"><span class="guest-name">Elizabeth Duncan</span><span class="guest-ref">RHCKPY2</span></div><div class="guest-row"><span class="guest-name">Geoff Adcock</span><span class="guest-ref">RQPTF3T</span></div><div class="guest-row"><span class="guest-name">John Tavener</span><span class="guest-ref">RBZLXEU</span></div></div>
       </td>
@@ -921,7 +937,7 @@
       <td class="fill-pct fill-high">88% full</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2026-35')" aria-expanded="false" aria-controls="bk-2026-35"><span class="expand-icon">▶</span><span class="expand-label">4 bookings</span></button></td>
     </tr>
-    <tr id="bk-2026-35" class="bookings-row " style="display:none;">
+    <tr id="bk-2026-35" class="bookings-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Fiona O&#039;Donnell</span><span class="guest-ref">RP0UDBB</span></div><div class="guest-row"><span class="guest-name">Ingrid Hebenstreit</span><span class="guest-ref">RHUD6CG</span></div><div class="guest-row"><span class="guest-name">Mark Beutler</span><span class="guest-ref">RT3UQDJ</span></div><div class="guest-row"><span class="guest-name">Robyn Clay</span><span class="guest-ref">R8L7CAL</span></div></div>
       </td>
@@ -935,12 +951,12 @@
       <td class="fill-pct fill-mid">50% full</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2026-36')" aria-expanded="false" aria-controls="bk-2026-36"><span class="expand-icon">▶</span><span class="expand-label">2 bookings</span></button></td>
     </tr>
-    <tr id="bk-2026-36" class="bookings-row " style="display:none;">
+    <tr id="bk-2026-36" class="bookings-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Karen Bradley</span><span class="guest-ref">RQC5RBF</span></div><div class="guest-row"><span class="guest-name">Kerry Chapman</span><span class="guest-ref">RHXAAEV</span></div></div>
       </td>
     </tr>
-    <tr class="" id="row-bk-2026-37">
+    <tr class="last-row" id="row-bk-2026-37">
       <td>5 Nov 2026</td>
       <td class="num">2</td>
       <td class="num">6</td>
@@ -949,7 +965,7 @@
       <td class="fill-pct fill-low">25% full</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2026-37')" aria-expanded="false" aria-controls="bk-2026-37"><span class="expand-icon">▶</span><span class="expand-label">1 booking</span></button></td>
     </tr>
-    <tr id="bk-2026-37" class="bookings-row " style="display:none;">
+    <tr id="bk-2026-37" class="bookings-row  last-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Susan Hill</span><span class="guest-ref">R1S2PFK</span></div></div>
       </td>
@@ -964,7 +980,7 @@
 <div class="tour-block">
   <div class="tour-name"><span class="tour-name-text">Southern Ocean Island Hop</span><span class="pricing-badge">From $11,935 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $3,607</span></div>
   <table>
-    <thead><tr><th>Departure date</th><th>Sold</th><th>Available</th><th>Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
+    <thead><tr><th>Departure date</th><th class="num">Sold</th><th class="num">Available</th><th class="num">Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
     <tbody>
     <tr class="departed-row" id="row-bk-2026-38">
       <td>24 Apr 2026<span class="departed-badge">Departed</span></td>
@@ -989,7 +1005,7 @@
       <td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2026-39')" aria-expanded="false" aria-controls="bk-2026-39"><span class="expand-icon">▶</span><span class="expand-label">6 bookings</span></button></td>
     </tr>
-    <tr id="bk-2026-39" class="bookings-row " style="display:none;">
+    <tr id="bk-2026-39" class="bookings-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Gabrielle Bain</span><span class="guest-ref">RZMNG8Z</span></div><div class="guest-row"><span class="guest-name">Gail Murton</span><span class="guest-ref">RRA7FSU</span></div><div class="guest-row"><span class="guest-name">Lindsay Cracknell</span><span class="guest-ref">RK4RLPH</span></div><div class="guest-row"><span class="guest-name">Lora Starling</span><span class="guest-ref">R8SA42P</span></div><div class="guest-row"><span class="guest-name">Michelle Kostera</span><span class="guest-ref">RUNUHBX</span></div><div class="guest-row"><span class="guest-name">Reg Miller</span><span class="guest-ref">R4Y9C4G</span></div></div>
       </td>
@@ -1003,12 +1019,12 @@
       <td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2026-40')" aria-expanded="false" aria-controls="bk-2026-40"><span class="expand-icon">▶</span><span class="expand-label">5 bookings</span></button></td>
     </tr>
-    <tr id="bk-2026-40" class="bookings-row " style="display:none;">
+    <tr id="bk-2026-40" class="bookings-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Caroline McCombie</span><span class="guest-ref">RW8CNLU</span></div><div class="guest-row"><span class="guest-name">Judith Hough-Davies</span><span class="guest-ref">RAHZYAS</span></div><div class="guest-row"><span class="guest-name">Ralph Treasure</span><span class="guest-ref">R0PY1JJ</span></div><div class="guest-row"><span class="guest-name">Simon Goddard</span><span class="guest-ref">RA82S05</span></div><div class="guest-row"><span class="guest-name">William Irvine</span><span class="guest-ref">RSAGNXA</span></div></div>
       </td>
     </tr>
-    <tr class="" id="row-bk-2026-41">
+    <tr class="last-row" id="row-bk-2026-41">
       <td>4 Dec 2026</td>
       <td class="num">8</td>
       <td class="num">0</td>
@@ -1017,7 +1033,7 @@
       <td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2026-41')" aria-expanded="false" aria-controls="bk-2026-41"><span class="expand-icon">▶</span><span class="expand-label">5 bookings</span></button></td>
     </tr>
-    <tr id="bk-2026-41" class="bookings-row " style="display:none;">
+    <tr id="bk-2026-41" class="bookings-row  last-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Annemarie Hodson</span><span class="guest-ref">R7VRYW1</span></div><div class="guest-row"><span class="guest-name">Naomi Simson</span><span class="guest-ref">RQV48HY</span></div><div class="guest-row"><span class="guest-name">PAULINE CLEARY</span><span class="guest-ref">RVQNL91</span></div><div class="guest-row"><span class="guest-name">Steve Price</span><span class="guest-ref">R1C3JBM</span></div><div class="guest-row"><span class="guest-name">Sue Whitehead</span><span class="guest-ref">RXKYJ0Q</span></div></div>
       </td>
@@ -1032,9 +1048,9 @@
 <div class="tour-block">
   <div class="tour-name"><span class="tour-name-text">The Greatest Escape!</span><span class="pricing-badge">From $23,940 pp</span></div>
   <table>
-    <thead><tr><th>Departure date</th><th>Sold</th><th>Available</th><th>Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
+    <thead><tr><th>Departure date</th><th class="num">Sold</th><th class="num">Available</th><th class="num">Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
     <tbody>
-    <tr class="departed-row" id="row-bk-2026-42">
+    <tr class="departed-row last-row" id="row-bk-2026-42">
       <td>13 Aug 2026<span class="departed-badge">Departed</span></td>
       <td class="num">8</td>
       <td class="num">0</td>
@@ -1043,7 +1059,7 @@
       <td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2026-42')" aria-expanded="false" aria-controls="bk-2026-42"><span class="expand-icon">▶</span><span class="expand-label">6 bookings</span></button></td>
     </tr>
-    <tr id="bk-2026-42" class="bookings-row departed-row" style="display:none;">
+    <tr id="bk-2026-42" class="bookings-row departed-row last-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Judith Merryweather</span><span class="guest-ref">RBXHZJH</span></div><div class="guest-row"><span class="guest-name">Kay Benson</span><span class="guest-ref">RZXKK1G</span></div><div class="guest-row"><span class="guest-name">Lynette McLean</span><span class="guest-ref">RQ6E1CX</span></div><div class="guest-row"><span class="guest-name">Mark O&#39;Brien</span><span class="guest-ref">RTMPUKK</span></div><div class="guest-row"><span class="guest-name">Roger Hunt</span><span class="guest-ref">R00GX0C</span></div><div class="guest-row"><span class="guest-name">Vicki Talbot</span><span class="guest-ref">R8TPLKH</span></div></div>
       </td>
@@ -1058,7 +1074,7 @@
 <div class="tour-block">
   <div class="tour-name"><span class="tour-name-text">Western Wedge / Wildflower Safari</span><span class="pricing-badge">From $15,680 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $3,096</span></div>
   <table>
-    <thead><tr><th>Departure date</th><th>Sold</th><th>Available</th><th>Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
+    <thead><tr><th>Departure date</th><th class="num">Sold</th><th class="num">Available</th><th class="num">Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
     <tbody>
     <tr class="" id="row-bk-2026-43">
       <td>29 Aug 2026</td>
@@ -1069,7 +1085,7 @@
       <td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2026-43')" aria-expanded="false" aria-controls="bk-2026-43"><span class="expand-icon">▶</span><span class="expand-label">6 bookings</span></button></td>
     </tr>
-    <tr id="bk-2026-43" class="bookings-row " style="display:none;">
+    <tr id="bk-2026-43" class="bookings-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Anne Everingham</span><span class="guest-ref">R8HRMER</span></div><div class="guest-row"><span class="guest-name">Emeri DeBortoli</span><span class="guest-ref">RWBGMLS</span></div><div class="guest-row"><span class="guest-name">Helen Pilosio</span><span class="guest-ref">RQGBJ8G</span></div><div class="guest-row"><span class="guest-name">Margery Joyce</span><span class="guest-ref">RPAGMRG</span></div><div class="guest-row"><span class="guest-name">Rhonda Miranda</span><span class="guest-ref">RFUVEV3</span></div><div class="guest-row"><span class="guest-name">Sandra Denman</span><span class="guest-ref">RG7QUF1</span></div></div>
       </td>
@@ -1083,12 +1099,12 @@
       <td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2026-44')" aria-expanded="false" aria-controls="bk-2026-44"><span class="expand-icon">▶</span><span class="expand-label">7 bookings</span></button></td>
     </tr>
-    <tr id="bk-2026-44" class="bookings-row " style="display:none;">
+    <tr id="bk-2026-44" class="bookings-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Delwyn Hocking</span><span class="guest-ref">RYE0BTH</span></div><div class="guest-row"><span class="guest-name">Gerri Griffin</span><span class="guest-ref">RSPB1NY</span></div><div class="guest-row"><span class="guest-name">Leonie Moran</span><span class="guest-ref">RB2MKVE</span></div><div class="guest-row"><span class="guest-name">Pauline Keeley</span><span class="guest-ref">R165X41</span></div><div class="guest-row"><span class="guest-name">Philippa Heard</span><span class="guest-ref">RJSKSZW</span></div><div class="guest-row"><span class="guest-name">Ron Gaydon</span><span class="guest-ref">RPYPVA1</span></div><div class="guest-row"><span class="guest-name">Rosie Mercer</span><span class="guest-ref">RXWZM6X</span></div></div>
       </td>
     </tr>
-    <tr class="" id="row-bk-2026-45">
+    <tr class="last-row" id="row-bk-2026-45">
       <td>16 Sep 2026</td>
       <td class="num">8</td>
       <td class="num">0</td>
@@ -1097,7 +1113,7 @@
       <td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2026-45')" aria-expanded="false" aria-controls="bk-2026-45"><span class="expand-icon">▶</span><span class="expand-label">6 bookings</span></button></td>
     </tr>
-    <tr id="bk-2026-45" class="bookings-row " style="display:none;">
+    <tr id="bk-2026-45" class="bookings-row  last-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">DUNCAN BRIDEL</span><span class="guest-ref">RAMVKHP</span></div><div class="guest-row"><span class="guest-name">Delwyn Hocking</span><span class="guest-ref">RXFGDYV</span></div><div class="guest-row"><span class="guest-name">Elizabeth Chanter</span><span class="guest-ref">RKARU1H</span></div><div class="guest-row"><span class="guest-name">JANETTE SIMMONDS</span><span class="guest-ref">RSGX1CH</span></div><div class="guest-row"><span class="guest-name">Liane Heinke</span><span class="guest-ref">RGU2V7C</span></div><div class="guest-row"><span class="guest-name">Trevor Clues</span><span class="guest-ref">R785UQN</span></div></div>
       </td>
@@ -1108,9 +1124,9 @@
 <div class="tour-block">
   <div class="tour-name"><span class="tour-name-text">Wet Season Spectacular</span><span class="pricing-badge">From $10,895 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $1,579</span></div>
   <table>
-    <thead><tr><th>Departure date</th><th>Sold</th><th>Available</th><th>Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
+    <thead><tr><th>Departure date</th><th class="num">Sold</th><th class="num">Available</th><th class="num">Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
     <tbody>
-    <tr class="departed-row" id="row-bk-2026-46">
+    <tr class="departed-row last-row" id="row-bk-2026-46">
       <td>28 Mar 2026<span class="departed-badge">Departed</span></td>
       <td class="num">8</td>
       <td class="num">0</td>
@@ -1119,7 +1135,7 @@
       <td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2026-46')" aria-expanded="false" aria-controls="bk-2026-46"><span class="expand-icon">▶</span><span class="expand-label">4 bookings</span></button></td>
     </tr>
-    <tr id="bk-2026-46" class="bookings-row departed-row" style="display:none;">
+    <tr id="bk-2026-46" class="bookings-row departed-row last-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Bronwyn Fletcher</span><span class="guest-ref">R67VYYG</span></div><div class="guest-row"><span class="guest-name">Christine Ruff</span><span class="guest-ref">R29UHXZ</span></div><div class="guest-row"><span class="guest-name">NORM HOLLIS</span><span class="guest-ref">RP3Q61G</span></div><div class="guest-row"><span class="guest-name">Therese Finn</span><span class="guest-ref">RBFY891</span></div></div>
       </td>
@@ -1131,9 +1147,9 @@
   <div class="tour-name"><span class="tour-name-text">Wings Over The Outback</span><span class="pricing-badge">From $8,989 pp</span><button class="copy-avail-btn" onclick="copyAvailability(this)" data-availability="Wings Over The Outback — 2026 Availability
 15 Jul 2026: 1 seat available">&#128203; Copy availability</button></div>
   <table>
-    <thead><tr><th>Departure date</th><th>Sold</th><th>Available</th><th>Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
+    <thead><tr><th>Departure date</th><th class="num">Sold</th><th class="num">Available</th><th class="num">Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
     <tbody>
-    <tr class="departed-row" id="row-bk-2026-47">
+    <tr class="departed-row last-row" id="row-bk-2026-47">
       <td>15 Jul 2026<span class="departed-badge">Departed</span></td>
       <td class="num">8</td>
       <td class="num">1</td>
@@ -1142,7 +1158,7 @@
       <td class="fill-pct fill-high">89% full</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2026-47')" aria-expanded="false" aria-controls="bk-2026-47"><span class="expand-icon">▶</span><span class="expand-label">4 bookings</span></button></td>
     </tr>
-    <tr id="bk-2026-47" class="bookings-row departed-row" style="display:none;">
+    <tr id="bk-2026-47" class="bookings-row departed-row last-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Beverley Smith</span><span class="guest-ref">RADMYPA</span></div><div class="guest-row"><span class="guest-name">Hugh Grant</span><span class="guest-ref">RFVF62J</span></div><div class="guest-row"><span class="guest-name">John Shaw</span><span class="guest-ref">RPTXXA6</span></div><div class="guest-row"><span class="guest-name">Laraine Lawton</span><span class="guest-ref">RALXDZ0</span></div></div>
       </td>
@@ -1153,9 +1169,9 @@
 <div class="tour-block">
   <div class="tour-name"><span class="tour-name-text">Wings over the Outback</span><span class="pricing-badge">From $12,827 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $595</span></div>
   <table>
-    <thead><tr><th>Departure date</th><th>Sold</th><th>Available</th><th>Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
+    <thead><tr><th>Departure date</th><th class="num">Sold</th><th class="num">Available</th><th class="num">Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
     <tbody>
-    <tr class="" id="row-bk-2026-48">
+    <tr class="last-row" id="row-bk-2026-48">
       <td>10 Oct 2026</td>
       <td class="num">8</td>
       <td class="num">0</td>
@@ -1164,7 +1180,7 @@
       <td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2026-48')" aria-expanded="false" aria-controls="bk-2026-48"><span class="expand-icon">▶</span><span class="expand-label">1 booking</span></button></td>
     </tr>
-    <tr id="bk-2026-48" class="bookings-row " style="display:none;">
+    <tr id="bk-2026-48" class="bookings-row  last-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Mel Salisbury</span><span class="guest-ref">R51PVNU</span></div></div>
       </td>
@@ -1177,7 +1193,7 @@
 <div class="tour-block">
   <div class="tour-name"><span class="tour-name-text">Private Holidays</span></div>
   <table>
-    <thead><tr><th>Tour Name</th><th>Total price</th><th>Departure Date</th><th>Sold</th><th>Available</th><th>Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
+    <thead><tr><th>Tour Name</th><th>Total price</th><th>Departure Date</th><th class="num">Sold</th><th class="num">Available</th><th class="num">Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
     <tbody>
     <tr class="departed-row" id="row-bk-ph-2026-0">
       <td>Private Holiday - Luxury African Safari (Mackie family)</td>
@@ -1254,7 +1270,7 @@
       <td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-ph-2026-4')" aria-expanded="false" aria-controls="bk-ph-2026-4"><span class="expand-icon">▶</span><span class="expand-label">6 bookings</span></button></td>
     </tr>
-    <tr id="bk-ph-2026-4" class="bookings-row " style="display:none;">
+    <tr id="bk-ph-2026-4" class="bookings-row" style="display:none;">
       <td colspan="9" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Anthony Slater</span><span class="guest-ref">RK1JSTX</span></div><div class="guest-row"><span class="guest-name">John Crawford</span><span class="guest-ref">RV32BCJ</span></div><div class="guest-row"><span class="guest-name">John Marlay</span><span class="guest-ref">R2XUZQE</span></div><div class="guest-row"><span class="guest-name">Judith Marlay</span><span class="guest-ref">RFLHRMN</span></div><div class="guest-row"><span class="guest-name">Lynn Crawford</span><span class="guest-ref">RVKJ1BW</span></div><div class="guest-row"><span class="guest-name">Trevor Bourne</span><span class="guest-ref">R7V0FUX</span></div></div>
       </td>
@@ -1270,7 +1286,7 @@
       <td class="fill-pct fill-low"></td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-ph-2026-5')" aria-expanded="false" aria-controls="bk-ph-2026-5"><span class="expand-icon">▶</span><span class="expand-label">1 booking</span></button></td>
     </tr>
-    <tr id="bk-ph-2026-5" class="bookings-row " style="display:none;">
+    <tr id="bk-ph-2026-5" class="bookings-row" style="display:none;">
       <td colspan="9" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Julianne Dalessandro</span><span class="guest-ref">RQX0QHQ</span></div></div>
       </td>
@@ -1286,12 +1302,12 @@
       <td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-ph-2026-6')" aria-expanded="false" aria-controls="bk-ph-2026-6"><span class="expand-icon">▶</span><span class="expand-label">2 bookings</span></button></td>
     </tr>
-    <tr id="bk-ph-2026-6" class="bookings-row " style="display:none;">
+    <tr id="bk-ph-2026-6" class="bookings-row" style="display:none;">
       <td colspan="9" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Margaret Flower</span><span class="guest-ref">RNP1AVP</span></div><div class="guest-row"><span class="guest-name">Peter Hickson</span><span class="guest-ref">R037MGT</span></div></div>
       </td>
     </tr>
-    <tr class="" id="row-bk-ph-2026-7">
+    <tr class="last-row" id="row-bk-ph-2026-7">
       <td>Private Holiday - Southern Ocean Island Hop (Koch)</td>
       <td class="ph-price">$95,960</td>
       <td>23 Nov 2026</td>
@@ -1302,7 +1318,7 @@
       <td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-ph-2026-7')" aria-expanded="false" aria-controls="bk-ph-2026-7"><span class="expand-icon">▶</span><span class="expand-label">4 bookings</span></button></td>
     </tr>
-    <tr id="bk-ph-2026-7" class="bookings-row " style="display:none;">
+    <tr id="bk-ph-2026-7" class="bookings-row  last-row" style="display:none;">
       <td colspan="9" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">GRENFELL KOCH</span><span class="guest-ref">RTATXKK</span></div><div class="guest-row"><span class="guest-name">Michael Shakes</span><span class="guest-ref">RY58GZ2</span></div><div class="guest-row"><span class="guest-name">Nadia Murphy</span><span class="guest-ref">RQZ0NAK</span></div><div class="guest-row"><span class="guest-name">Nicolette Grant</span><span class="guest-ref">R2S2WBB</span></div></div>
       </td>
@@ -1315,8 +1331,57 @@
 
 <div id="tab-2027" class="tab-content">
 <div class="tour-block">
-  <div class="tour-name"><span class="tour-name-text">Best of Bass Strait</span><span class="pricing-badge">From $4,997 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $292</span><button class="brochure-btn" onclick="copyBrochureLink(this, 'https://bestofbassstrait.airadventure.com.au/')" title="https://bestofbassstrait.airadventure.com.au/">&#128279; Copy brochure link</button></div>
-  <div class="no-departures">No scheduled departures</div>
+  <div class="tour-name"><span class="tour-name-text">Best of Bass Strait</span><span class="pricing-badge">From $4,997 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $292</span><button class="copy-avail-btn" onclick="copyAvailability(this)" data-availability="Best of Bass Strait — 2027 Availability
+9 Apr 2027: 4 seats available
+21 Apr 2027: 8 seats available
+22 Oct 2027: 8 seats available
+11 Nov 2027: 8 seats available">&#128203; Copy availability</button><button class="brochure-btn" onclick="copyBrochureLink(this, 'https://bestofbassstrait.airadventure.com.au/')" title="https://bestofbassstrait.airadventure.com.au/">&#128279; Copy brochure link</button></div>
+  <table>
+    <thead><tr><th>Departure date</th><th class="num">Sold</th><th class="num">Available</th><th class="num">Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
+    <tbody>
+    <tr class="" id="row-bk-2027-0">
+      <td>9 Apr 2027</td>
+      <td class="num">4</td>
+      <td class="num">4</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-mid" style="width:50%"></div></div></td>
+      <td class="fill-pct fill-mid">50% full</td>
+      <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2027-0')" aria-expanded="false" aria-controls="bk-2027-0"><span class="expand-icon">▶</span><span class="expand-label">2 bookings</span></button></td>
+    </tr>
+    <tr id="bk-2027-0" class="bookings-row" style="display:none;">
+      <td colspan="7" class="bookings-cell">
+        <div class="bookings-list"><div class="guest-row"><span class="guest-name">Pam Bennett</span><span class="guest-ref">RXXDQ6U</span></div><div class="guest-row"><span class="guest-name">Tracie McMahon</span><span class="guest-ref">RTWKDZR</span></div></div>
+      </td>
+    </tr>
+    <tr class="" id="row-bk-2027-1">
+      <td>21 Apr 2027</td>
+      <td class="num">0</td>
+      <td class="num">8</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td>
+      <td class="fill-pct fill-low">0% full</td>
+      <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
+    </tr>
+    <tr class="" id="row-bk-2027-2">
+      <td>22 Oct 2027</td>
+      <td class="num">0</td>
+      <td class="num">8</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td>
+      <td class="fill-pct fill-low">0% full</td>
+      <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
+    </tr>
+    <tr class="last-row" id="row-bk-2027-3">
+      <td>11 Nov 2027</td>
+      <td class="num">0</td>
+      <td class="num">8</td>
+      <td class="num">8</td>
+      <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td>
+      <td class="fill-pct fill-low">0% full</td>
+      <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
+    </tr>
+    </tbody>
+  </table>
 </div>
 <div class="tour-block">
   <div class="tour-name"><span class="tour-name-text">Cape York & The Gulf</span><span class="pricing-badge">From $29,989 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $5,250</span><button class="copy-avail-btn" onclick="copyAvailability(this)" data-availability="Cape York &amp; The Gulf — 2027 Availability
@@ -1325,60 +1390,60 @@
 17 Jul 2027: 2 seats available
 7 Aug 2027: 6 seats available">&#128203; Copy availability</button><button class="brochure-btn" onclick="copyBrochureLink(this, 'https://capeyorkgulf.airadventure.com.au/?firstname=mitch')" title="https://capeyorkgulf.airadventure.com.au/?firstname=mitch">&#128279; Copy brochure link</button></div>
   <table>
-    <thead><tr><th>Departure date</th><th>Sold</th><th>Available</th><th>Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
+    <thead><tr><th>Departure date</th><th class="num">Sold</th><th class="num">Available</th><th class="num">Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
     <tbody>
-    <tr class="" id="row-bk-2027-0">
+    <tr class="" id="row-bk-2027-4">
       <td>19 Jun 2027</td>
       <td class="num">1</td>
       <td class="num">7</td>
       <td class="num">8</td>
       <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:12%"></div></div></td>
       <td class="fill-pct fill-low">12% full</td>
-      <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2027-0')" aria-expanded="false" aria-controls="bk-2027-0"><span class="expand-icon">▶</span><span class="expand-label">1 booking</span></button></td>
+      <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2027-4')" aria-expanded="false" aria-controls="bk-2027-4"><span class="expand-icon">▶</span><span class="expand-label">1 booking</span></button></td>
     </tr>
-    <tr id="bk-2027-0" class="bookings-row " style="display:none;">
+    <tr id="bk-2027-4" class="bookings-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Josephine Biggs</span><span class="guest-ref">RYKDAWD</span></div></div>
       </td>
     </tr>
-    <tr class="" id="row-bk-2027-1">
+    <tr class="" id="row-bk-2027-5">
       <td>10 Jul 2027</td>
       <td class="num">7</td>
       <td class="num">1</td>
       <td class="num">8</td>
       <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-high" style="width:87%"></div></div></td>
       <td class="fill-pct fill-high">88% full</td>
-      <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2027-1')" aria-expanded="false" aria-controls="bk-2027-1"><span class="expand-icon">▶</span><span class="expand-label">6 bookings</span></button></td>
+      <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2027-5')" aria-expanded="false" aria-controls="bk-2027-5"><span class="expand-icon">▶</span><span class="expand-label">6 bookings</span></button></td>
     </tr>
-    <tr id="bk-2027-1" class="bookings-row " style="display:none;">
+    <tr id="bk-2027-5" class="bookings-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Alison Lowien</span><span class="guest-ref">R1EX0PA</span></div><div class="guest-row"><span class="guest-name">Catherine Lucas</span><span class="guest-ref">RXEBDVT</span></div><div class="guest-row"><span class="guest-name">Greg Smith</span><span class="guest-ref">RSEB1ZV</span></div><div class="guest-row"><span class="guest-name">STEPHEN HENTY</span><span class="guest-ref">R2R4TSE</span></div><div class="guest-row"><span class="guest-name">Susan Holcombe</span><span class="guest-ref">RZZY8VU</span></div><div class="guest-row"><span class="guest-name">William Phillpot</span><span class="guest-ref">RFUYZ1B</span></div></div>
       </td>
     </tr>
-    <tr class="" id="row-bk-2027-2">
+    <tr class="" id="row-bk-2027-6">
       <td>17 Jul 2027</td>
       <td class="num">6</td>
       <td class="num">2</td>
       <td class="num">8</td>
       <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-high" style="width:75%"></div></div></td>
       <td class="fill-pct fill-high">75% full</td>
-      <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2027-2')" aria-expanded="false" aria-controls="bk-2027-2"><span class="expand-icon">▶</span><span class="expand-label">3 bookings</span></button></td>
+      <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2027-6')" aria-expanded="false" aria-controls="bk-2027-6"><span class="expand-icon">▶</span><span class="expand-label">3 bookings</span></button></td>
     </tr>
-    <tr id="bk-2027-2" class="bookings-row " style="display:none;">
+    <tr id="bk-2027-6" class="bookings-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Joan Blanchard</span><span class="guest-ref">RYWQPE9</span></div><div class="guest-row"><span class="guest-name">Shirley Rampling</span><span class="guest-ref">RWK191Q</span></div><div class="guest-row"><span class="guest-name">Wendy Perkins</span><span class="guest-ref">RJ9Q00X</span></div></div>
       </td>
     </tr>
-    <tr class="" id="row-bk-2027-3">
+    <tr class="last-row" id="row-bk-2027-7">
       <td>7 Aug 2027</td>
       <td class="num">2</td>
       <td class="num">6</td>
       <td class="num">8</td>
       <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:25%"></div></div></td>
       <td class="fill-pct fill-low">25% full</td>
-      <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2027-3')" aria-expanded="false" aria-controls="bk-2027-3"><span class="expand-icon">▶</span><span class="expand-label">1 booking</span></button></td>
+      <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2027-7')" aria-expanded="false" aria-controls="bk-2027-7"><span class="expand-icon">▶</span><span class="expand-label">1 booking</span></button></td>
     </tr>
-    <tr id="bk-2027-3" class="bookings-row " style="display:none;">
+    <tr id="bk-2027-7" class="bookings-row  last-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Michael Betts</span><span class="guest-ref">RKJT0N7</span></div></div>
       </td>
@@ -1401,60 +1466,60 @@
 1 Jul 2027: 7 seats available
 26 Jul 2027: 1 seat available">&#128203; Copy availability</button><button class="brochure-btn" onclick="copyBrochureLink(this, 'https://flyawayfaraway.airadventure.com.au/')" title="https://flyawayfaraway.airadventure.com.au/">&#128279; Copy brochure link</button></div>
   <table>
-    <thead><tr><th>Departure date</th><th>Sold</th><th>Available</th><th>Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
+    <thead><tr><th>Departure date</th><th class="num">Sold</th><th class="num">Available</th><th class="num">Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
     <tbody>
-    <tr class="" id="row-bk-2027-4">
+    <tr class="" id="row-bk-2027-8">
       <td>1 Jun 2027</td>
       <td class="num">7</td>
       <td class="num">1</td>
       <td class="num">8</td>
       <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-high" style="width:87%"></div></div></td>
       <td class="fill-pct fill-high">88% full</td>
-      <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2027-4')" aria-expanded="false" aria-controls="bk-2027-4"><span class="expand-icon">▶</span><span class="expand-label">4 bookings</span></button></td>
+      <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2027-8')" aria-expanded="false" aria-controls="bk-2027-8"><span class="expand-icon">▶</span><span class="expand-label">4 bookings</span></button></td>
     </tr>
-    <tr id="bk-2027-4" class="bookings-row " style="display:none;">
+    <tr id="bk-2027-8" class="bookings-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Barbara Booth</span><span class="guest-ref">RPTWTSZ</span></div><div class="guest-row"><span class="guest-name">Elizabeth Twohy</span><span class="guest-ref">RS75ZQK</span></div><div class="guest-row"><span class="guest-name">Kim garrod</span><span class="guest-ref">RC3Y9AV</span></div><div class="guest-row"><span class="guest-name">Penny Birdsong</span><span class="guest-ref">RD4PX57</span></div></div>
       </td>
     </tr>
-    <tr class="" id="row-bk-2027-5">
+    <tr class="" id="row-bk-2027-9">
       <td>10 Jun 2027</td>
       <td class="num">3</td>
       <td class="num">5</td>
       <td class="num">8</td>
       <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:37%"></div></div></td>
       <td class="fill-pct fill-low">38% full</td>
-      <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2027-5')" aria-expanded="false" aria-controls="bk-2027-5"><span class="expand-icon">▶</span><span class="expand-label">2 bookings</span></button></td>
+      <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2027-9')" aria-expanded="false" aria-controls="bk-2027-9"><span class="expand-icon">▶</span><span class="expand-label">2 bookings</span></button></td>
     </tr>
-    <tr id="bk-2027-5" class="bookings-row " style="display:none;">
+    <tr id="bk-2027-9" class="bookings-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">MAUREEN ROGERS</span><span class="guest-ref">RK89XX7</span></div><div class="guest-row"><span class="guest-name">Margaret O’Brien</span><span class="guest-ref">RN9YGSH</span></div></div>
       </td>
     </tr>
-    <tr class="" id="row-bk-2027-6">
+    <tr class="" id="row-bk-2027-10">
       <td>1 Jul 2027</td>
       <td class="num">1</td>
       <td class="num">7</td>
       <td class="num">8</td>
       <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:12%"></div></div></td>
       <td class="fill-pct fill-low">12% full</td>
-      <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2027-6')" aria-expanded="false" aria-controls="bk-2027-6"><span class="expand-icon">▶</span><span class="expand-label">1 booking</span></button></td>
+      <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2027-10')" aria-expanded="false" aria-controls="bk-2027-10"><span class="expand-icon">▶</span><span class="expand-label">1 booking</span></button></td>
     </tr>
-    <tr id="bk-2027-6" class="bookings-row " style="display:none;">
+    <tr id="bk-2027-10" class="bookings-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">JEDDA DOIDGE</span><span class="guest-ref">RKWT0V7</span></div></div>
       </td>
     </tr>
-    <tr class="" id="row-bk-2027-7">
+    <tr class="last-row" id="row-bk-2027-11">
       <td>26 Jul 2027</td>
       <td class="num">7</td>
       <td class="num">1</td>
       <td class="num">8</td>
       <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-high" style="width:87%"></div></div></td>
       <td class="fill-pct fill-high">88% full</td>
-      <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2027-7')" aria-expanded="false" aria-controls="bk-2027-7"><span class="expand-icon">▶</span><span class="expand-label">5 bookings</span></button></td>
+      <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2027-11')" aria-expanded="false" aria-controls="bk-2027-11"><span class="expand-icon">▶</span><span class="expand-label">5 bookings</span></button></td>
     </tr>
-    <tr id="bk-2027-7" class="bookings-row " style="display:none;">
+    <tr id="bk-2027-11" class="bookings-row  last-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Carol Coffey</span><span class="guest-ref">RPEG5X0</span></div><div class="guest-row"><span class="guest-name">Carole Brown</span><span class="guest-ref">RDFFRGU</span></div><div class="guest-row"><span class="guest-name">Helen Brown</span><span class="guest-ref">RXZHK01</span></div><div class="guest-row"><span class="guest-name">Helen Coles</span><span class="guest-ref">RZP0YY1</span></div><div class="guest-row"><span class="guest-name">Rhonda Brown</span><span class="guest-ref">RY6BZSN</span></div></div>
       </td>
@@ -1481,9 +1546,9 @@
 17 Oct 2027: 8 seats available
 23 Nov 2027: 7 seats available">&#128203; Copy availability</button><button class="brochure-btn" onclick="copyBrochureLink(this, 'https://southernoceanislandhop.airadventure.com.au/')" title="https://southernoceanislandhop.airadventure.com.au/">&#128279; Copy brochure link</button></div>
   <table>
-    <thead><tr><th>Departure date</th><th>Sold</th><th>Available</th><th>Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
+    <thead><tr><th>Departure date</th><th class="num">Sold</th><th class="num">Available</th><th class="num">Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
     <tbody>
-    <tr class="" id="row-bk-2027-8">
+    <tr class="" id="row-bk-2027-12">
       <td>2 Mar 2027</td>
       <td class="num">0</td>
       <td class="num">9</td>
@@ -1492,21 +1557,21 @@
       <td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-bk-2027-9">
+    <tr class="" id="row-bk-2027-13">
       <td>24 Apr 2027</td>
       <td class="num">6</td>
       <td class="num">2</td>
       <td class="num">8</td>
       <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-high" style="width:75%"></div></div></td>
       <td class="fill-pct fill-high">75% full</td>
-      <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2027-9')" aria-expanded="false" aria-controls="bk-2027-9"><span class="expand-icon">▶</span><span class="expand-label">3 bookings</span></button></td>
+      <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2027-13')" aria-expanded="false" aria-controls="bk-2027-13"><span class="expand-icon">▶</span><span class="expand-label">3 bookings</span></button></td>
     </tr>
-    <tr id="bk-2027-9" class="bookings-row " style="display:none;">
+    <tr id="bk-2027-13" class="bookings-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Helen Coles</span><span class="guest-ref">RWZVCXV</span></div><div class="guest-row"><span class="guest-name">Shirley Thomson</span><span class="guest-ref">RR0F30D</span></div><div class="guest-row"><span class="guest-name">Tim Smith</span><span class="guest-ref">RYMVNQ1</span></div></div>
       </td>
     </tr>
-    <tr class="" id="row-bk-2027-10">
+    <tr class="" id="row-bk-2027-14">
       <td>17 Oct 2027</td>
       <td class="num">0</td>
       <td class="num">8</td>
@@ -1515,16 +1580,16 @@
       <td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-bk-2027-11">
+    <tr class="last-row" id="row-bk-2027-15">
       <td>23 Nov 2027</td>
       <td class="num">1</td>
       <td class="num">7</td>
       <td class="num">8</td>
       <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:12%"></div></div></td>
       <td class="fill-pct fill-low">12% full</td>
-      <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2027-11')" aria-expanded="false" aria-controls="bk-2027-11"><span class="expand-icon">▶</span><span class="expand-label">2 bookings</span></button></td>
+      <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2027-15')" aria-expanded="false" aria-controls="bk-2027-15"><span class="expand-icon">▶</span><span class="expand-label">2 bookings</span></button></td>
     </tr>
-    <tr id="bk-2027-11" class="bookings-row " style="display:none;">
+    <tr id="bk-2027-15" class="bookings-row  last-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Eddie Mann</span><span class="guest-ref">RX3HRCV</span></div><div class="guest-row"><span class="guest-name">Eddie Mann</span><span class="guest-ref">RWLRJ03</span></div></div>
       </td>
@@ -1539,18 +1604,18 @@
 <div class="tour-block">
   <div class="tour-name"><span class="tour-name-text">The Greatest Escape!</span><span class="pricing-badge">From $23,940 pp</span></div>
   <table>
-    <thead><tr><th>Departure date</th><th>Sold</th><th>Available</th><th>Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
+    <thead><tr><th>Departure date</th><th class="num">Sold</th><th class="num">Available</th><th class="num">Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
     <tbody>
-    <tr class="" id="row-bk-2027-12">
+    <tr class="last-row" id="row-bk-2027-16">
       <td>12 Aug 2027</td>
       <td class="num">8</td>
       <td class="num">0</td>
       <td class="num">8</td>
       <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td>
       <td class="fill-pct fill-full">Sold out</td>
-      <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2027-12')" aria-expanded="false" aria-controls="bk-2027-12"><span class="expand-icon">▶</span><span class="expand-label">6 bookings</span></button></td>
+      <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2027-16')" aria-expanded="false" aria-controls="bk-2027-16"><span class="expand-icon">▶</span><span class="expand-label">6 bookings</span></button></td>
     </tr>
-    <tr id="bk-2027-12" class="bookings-row " style="display:none;">
+    <tr id="bk-2027-16" class="bookings-row  last-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Anne Male</span><span class="guest-ref">RNWW1XZ</span></div><div class="guest-row"><span class="guest-name">Errol Malta</span><span class="guest-ref">REBGSZS</span></div><div class="guest-row"><span class="guest-name">Heather Haggerty</span><span class="guest-ref">RQSRB2K</span></div><div class="guest-row"><span class="guest-name">Kay Benson</span><span class="guest-ref">R0BDBQ1</span></div><div class="guest-row"><span class="guest-name">Keith Raymond Benson</span><span class="guest-ref">RAERNZ0</span></div><div class="guest-row"><span class="guest-name">Pat Douyere</span><span class="guest-ref">RUL3FP0</span></div></div>
       </td>
@@ -1568,23 +1633,23 @@
 28 Aug 2027: 8 seats available
 11 Sep 2027: 7 seats available">&#128203; Copy availability</button><button class="brochure-btn" onclick="copyBrochureLink(this, 'https://westernwedge.airadventure.com.au/')" title="https://westernwedge.airadventure.com.au/">&#128279; Copy brochure link</button></div>
   <table>
-    <thead><tr><th>Departure date</th><th>Sold</th><th>Available</th><th>Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
+    <thead><tr><th>Departure date</th><th class="num">Sold</th><th class="num">Available</th><th class="num">Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
     <tbody>
-    <tr class="" id="row-bk-2027-13">
+    <tr class="" id="row-bk-2027-17">
       <td>25 Aug 2027</td>
       <td class="num">1</td>
       <td class="num">7</td>
       <td class="num">8</td>
       <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:12%"></div></div></td>
       <td class="fill-pct fill-low">12% full</td>
-      <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2027-13')" aria-expanded="false" aria-controls="bk-2027-13"><span class="expand-icon">▶</span><span class="expand-label">1 booking</span></button></td>
+      <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2027-17')" aria-expanded="false" aria-controls="bk-2027-17"><span class="expand-icon">▶</span><span class="expand-label">1 booking</span></button></td>
     </tr>
-    <tr id="bk-2027-13" class="bookings-row " style="display:none;">
+    <tr id="bk-2027-17" class="bookings-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Louise Scambler</span><span class="guest-ref">RRG0MVW</span></div></div>
       </td>
     </tr>
-    <tr class="" id="row-bk-2027-14">
+    <tr class="" id="row-bk-2027-18">
       <td>28 Aug 2027</td>
       <td class="num">0</td>
       <td class="num">8</td>
@@ -1593,16 +1658,16 @@
       <td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-bk-2027-15">
+    <tr class="last-row" id="row-bk-2027-19">
       <td>11 Sep 2027</td>
       <td class="num">1</td>
       <td class="num">7</td>
       <td class="num">8</td>
       <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:12%"></div></div></td>
       <td class="fill-pct fill-low">12% full</td>
-      <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2027-15')" aria-expanded="false" aria-controls="bk-2027-15"><span class="expand-icon">▶</span><span class="expand-label">1 booking</span></button></td>
+      <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2027-19')" aria-expanded="false" aria-controls="bk-2027-19"><span class="expand-icon">▶</span><span class="expand-label">1 booking</span></button></td>
     </tr>
-    <tr id="bk-2027-15" class="bookings-row " style="display:none;">
+    <tr id="bk-2027-19" class="bookings-row  last-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Susan Weeks</span><span class="guest-ref">RMZKZAJ</span></div></div>
       </td>
@@ -1614,32 +1679,32 @@
   <div class="tour-name"><span class="tour-name-text">Wet Season Spectacular</span><span class="pricing-badge">From $10,895 pp&nbsp;&nbsp;|&nbsp;&nbsp;Single supp $1,579</span><button class="copy-avail-btn" onclick="copyAvailability(this)" data-availability="Wet Season Spectacular — 2027 Availability
 1 Apr 2027: 3 seats available">&#128203; Copy availability</button><button class="brochure-btn" onclick="copyBrochureLink(this, 'https://wetseasonspectacular.airadventure.com.au/')" title="https://wetseasonspectacular.airadventure.com.au/">&#128279; Copy brochure link</button></div>
   <table>
-    <thead><tr><th>Departure date</th><th>Sold</th><th>Available</th><th>Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
+    <thead><tr><th>Departure date</th><th class="num">Sold</th><th class="num">Available</th><th class="num">Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
     <tbody>
-    <tr class="" id="row-bk-2027-16">
+    <tr class="" id="row-bk-2027-20">
       <td>21 Mar 2027</td>
       <td class="num">7</td>
       <td class="num">0</td>
       <td class="num">7</td>
       <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td>
       <td class="fill-pct fill-full">Sold out</td>
-      <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2027-16')" aria-expanded="false" aria-controls="bk-2027-16"><span class="expand-icon">▶</span><span class="expand-label">4 bookings</span></button></td>
+      <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2027-20')" aria-expanded="false" aria-controls="bk-2027-20"><span class="expand-icon">▶</span><span class="expand-label">4 bookings</span></button></td>
     </tr>
-    <tr id="bk-2027-16" class="bookings-row " style="display:none;">
+    <tr id="bk-2027-20" class="bookings-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Heather Haggerty</span><span class="guest-ref">RTPZEAX</span></div><div class="guest-row"><span class="guest-name">JULIE LAMBERT</span><span class="guest-ref">RSL1R2Y</span></div><div class="guest-row"><span class="guest-name">Leo Cummins</span><span class="guest-ref">RVM8GHX</span></div><div class="guest-row"><span class="guest-name">Naomi Simson</span><span class="guest-ref">RZ1C1ME</span></div></div>
       </td>
     </tr>
-    <tr class="" id="row-bk-2027-17">
+    <tr class="last-row" id="row-bk-2027-21">
       <td>1 Apr 2027</td>
       <td class="num">4</td>
       <td class="num">3</td>
       <td class="num">7</td>
       <td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-mid" style="width:57%"></div></div></td>
       <td class="fill-pct fill-mid">57% full</td>
-      <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2027-17')" aria-expanded="false" aria-controls="bk-2027-17"><span class="expand-icon">▶</span><span class="expand-label">2 bookings</span></button></td>
+      <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2027-21')" aria-expanded="false" aria-controls="bk-2027-21"><span class="expand-icon">▶</span><span class="expand-label">2 bookings</span></button></td>
     </tr>
-    <tr id="bk-2027-17" class="bookings-row " style="display:none;">
+    <tr id="bk-2027-21" class="bookings-row  last-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Bronwyn Thomas</span><span class="guest-ref">R7C0DB8</span></div><div class="guest-row"><span class="guest-name">Chris Scott</span><span class="guest-ref">RMBRZYD</span></div></div>
       </td>
@@ -1660,7 +1725,7 @@
 <div class="tour-block">
   <div class="tour-name"><span class="tour-name-text">Private Holidays</span></div>
   <table>
-    <thead><tr><th>Tour Name</th><th>Total price</th><th>Departure Date</th><th>Sold</th><th>Available</th><th>Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
+    <thead><tr><th>Tour Name</th><th>Total price</th><th>Departure Date</th><th class="num">Sold</th><th class="num">Available</th><th class="num">Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
     <tbody>
     <tr class="" id="row-bk-ph-2027-0">
       <td>Private Holiday - Best of Bass Strait (Ryan)</td>
@@ -1673,7 +1738,7 @@
       <td class="fill-pct fill-low">25% full</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-ph-2027-0')" aria-expanded="false" aria-controls="bk-ph-2027-0"><span class="expand-icon">▶</span><span class="expand-label">1 booking</span></button></td>
     </tr>
-    <tr id="bk-ph-2027-0" class="bookings-row " style="display:none;">
+    <tr id="bk-ph-2027-0" class="bookings-row" style="display:none;">
       <td colspan="9" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">elizabeth ryan</span><span class="guest-ref">RKJ091A</span></div></div>
       </td>
@@ -1689,12 +1754,12 @@
       <td class="fill-pct fill-high">80% full</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-ph-2027-1')" aria-expanded="false" aria-controls="bk-ph-2027-1"><span class="expand-icon">▶</span><span class="expand-label">1 booking</span></button></td>
     </tr>
-    <tr id="bk-ph-2027-1" class="bookings-row " style="display:none;">
+    <tr id="bk-ph-2027-1" class="bookings-row" style="display:none;">
       <td colspan="9" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Emerentius van Dijk</span><span class="guest-ref">RN9EYHG</span></div></div>
       </td>
     </tr>
-    <tr class="" id="row-bk-ph-2027-2">
+    <tr class="last-row" id="row-bk-ph-2027-2">
       <td>Private Holidays - Across the Sunburnt Country (Marlay), ex Bankstown</td>
       <td class="ph-price">$338,632</td>
       <td>13 May 2027</td>
@@ -1705,7 +1770,7 @@
       <td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-ph-2027-2')" aria-expanded="false" aria-controls="bk-ph-2027-2"><span class="expand-icon">▶</span><span class="expand-label">5 bookings</span></button></td>
     </tr>
-    <tr id="bk-ph-2027-2" class="bookings-row " style="display:none;">
+    <tr id="bk-ph-2027-2" class="bookings-row  last-row" style="display:none;">
       <td colspan="9" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">John Marlay</span><span class="guest-ref">RY2WPR2</span></div><div class="guest-row"><span class="guest-name">John Marlay</span><span class="guest-ref">RCE0V2Y</span></div><div class="guest-row"><span class="guest-name">Lynn Crawford</span><span class="guest-ref">RZ1GWSY</span></div><div class="guest-row"><span class="guest-name">Tony Slater</span><span class="guest-ref">RABJPRF</span></div><div class="guest-row"><span class="guest-name">Trevor Bourne</span><span class="guest-ref">R09Q1P3</span></div></div>
       </td>
