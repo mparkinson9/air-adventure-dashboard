@@ -377,7 +377,7 @@
   <div class="header-row">
     <div>
       <h1>Air Adventure Outback — Seat Availability</h1>
-      <div class="last-updated">Last updated: 9 October 2026, 8:09 AM AEST</div>
+      <div class="last-updated">Last updated: 12 October 2026, 10:24 AM AEST</div>
     </div>
     <button class="refresh-btn" onclick="window.location.reload()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
@@ -1163,8 +1163,8 @@
   <table>
     <thead><tr><th>Departure date</th><th class="num">Sold</th><th class="num">Available</th><th class="num">Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
     <tbody>
-    <tr class="last-row" id="row-bk-2026-48">
-      <td>10 Oct 2026</td>
+    <tr class="departed-row last-row" id="row-bk-2026-48">
+      <td>10 Oct 2026<span class="departed-badge">Departed</span></td>
       <td class="num">8</td>
       <td class="num">0</td>
       <td class="num">8</td>
@@ -1172,7 +1172,7 @@
       <td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-2026-48')" aria-expanded="false" aria-controls="bk-2026-48"><span class="expand-icon">▶</span><span class="expand-label">1 booking</span></button></td>
     </tr>
-    <tr id="bk-2026-48" class="bookings-row  last-row" style="display:none;">
+    <tr id="bk-2026-48" class="bookings-row departed-row last-row" style="display:none;">
       <td colspan="7" class="bookings-cell">
         <div class="bookings-list"><div class="guest-row"><span class="guest-name">Mel Salisbury</span><span class="guest-ref">R51PVNU</span></div></div>
       </td>
