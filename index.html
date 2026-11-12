@@ -403,6 +403,19 @@
   .golf-desc { font-size: 11px; font-weight: 500; color: #d6c9a8; text-transform: none; letter-spacing: 0.02em; }
   .golf-code { font-family: monospace; font-size: 12px; color: #6b5c3e; white-space: nowrap; }
   .golf-opsonly { font-size: 11px; color: #b45309; white-space: nowrap; }
+  .golf-filter { display: flex; align-items: center; gap: 10px; margin: 0 0 14px; font-size: 13px; color: #44403c; cursor: pointer; user-select: none; }
+  .golf-filter input { position: absolute; opacity: 0; pointer-events: none; }
+  .golf-switch { width: 34px; height: 19px; border-radius: 10px; background: #d6d3cd; position: relative; transition: background .15s; flex-shrink: 0; }
+  .golf-switch::after { content: ""; position: absolute; top: 2px; left: 2px; width: 15px; height: 15px; border-radius: 50%; background: #fff; transition: left .15s; box-shadow: 0 1px 2px rgba(0,0,0,.25); }
+  .golf-filter input:checked + .golf-switch { background: #0f766e; }
+  .golf-filter input:checked + .golf-switch::after { left: 17px; }
+  .golf-filter input:focus-visible + .golf-switch { outline: 2px solid #0f766e; outline-offset: 2px; }
+  .golf-desc-avail, .golf-empty { display: none; }
+  #golf-view.avail-only .golf-desc-all { display: none; }
+  #golf-view.avail-only .golf-desc-avail { display: inline; }
+  #golf-view.avail-only tr[data-avail="0"] { display: none !important; }
+  #golf-view.avail-only .golf-block[data-avail-count="0"] { display: none; }
+  #golf-view.avail-only.none-avail .golf-empty { display: block; }
   .golf-note { font-size: 12px; color: #78716c; font-style: italic; margin: -6px 0 12px 4px; }
   .golf-strip { border-left-color: #0f766e; }
   .golf-strip .rev-strip-value { color: #0f766e; }
@@ -426,7 +439,7 @@
   <div class="header-row">
     <div>
       <h1 id="page-title">Air Adventure Outback — Seat Availability</h1>
-      <div class="last-updated">Last updated: 10 November 2026, 3:40 PM AEST</div>
+      <div class="last-updated">Last updated: 12 November 2026, 3:39 PM AEST</div>
     </div>
     <div class="division-toggle" role="group" aria-label="Division">
       <button class="division-btn active" id="div-outback" onclick="setDivision('outback')">Outback</button>
@@ -2083,60 +2096,62 @@
 
 <div id="golf-view" style="display:none;">
   <div class="tabs"><button class="tab-btn active" type="button">2027</button></div>
-<div class="rev-strip golf-strip"><span class="rev-strip-label">Remaining revenue to sell 2027</span><span class="rev-strip-value">$2,192,409</span><span class="rev-strip-note">587 open seats at the Rezdy price on each overlap departure. 98 of 100 overlap departures matched to live Rezdy availability, 2 listed from the ops sheet only (no availability, not counted). 269 seats sold of 856. Overlap tours only; other golf products are not shown yet.</span></div>
-<div class="tour-block">
-  <div class="tour-name"><span class="tour-name-text">January 2027</span><span class="golf-desc">6 overlap departures | 21 open seats</span><span class="rev-badge">Revenue to sell $74,679</span></div>
+  <label class="golf-filter"><input type="checkbox" id="golf-avail-toggle" onchange="toggleGolfAvail(this.checked)"><span class="golf-switch"></span>Show only tours with availability</label>
+  <div class="no-departures golf-empty">No overlap departures with availability right now.</div>
+<div class="rev-strip golf-strip"><span class="rev-strip-label">Remaining revenue to sell 2027</span><span class="rev-strip-value">$2,198,888</span><span class="rev-strip-note">589 open seats at the Rezdy price on each overlap departure. 98 of 100 overlap departures matched to live Rezdy availability, 2 listed from the ops sheet only (no availability, not counted). 267 seats sold of 856. Overlap tours only; other golf products are not shown yet.</span></div>
+<div class="tour-block golf-block" data-avail-count="3">
+  <div class="tour-name"><span class="tour-name-text">January 2027</span><span class="golf-desc golf-desc-all">6 overlap departures | 21 open seats</span><span class="golf-desc golf-desc-avail">3 departures with availability | 21 open seats</span><span class="rev-badge">Revenue to sell $74,679</span></div>
   <table>
     <thead><tr><th>Departure date</th><th>Trip code</th><th>Overlap code</th><th>Itinerary</th><th>Booked under</th><th class="num">Sold</th><th class="num">Available</th><th class="num">Price pp</th><th class="num">Revenue to sell</th><th class="num">Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
     <tbody>
-    <tr class="" id="row-golf-0">
+    <tr class="" id="row-golf-0" data-avail="0">
       <td>20 Jan 2027</td>
       <td class="golf-code">BBK200127</td><td class="golf-code">OL20JAN27</td>
       <td>Barnbougle Direct, Ex Moorabbin</td><td>Elefantis</td>
       <td class="num">8</td><td class="num">0</td><td class="num">$2,436</td><td class="num rev-cell">&ndash;</td><td class="num">8</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td><td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-golf-0')" aria-expanded="false" aria-controls="bk-golf-0"><span class="expand-icon">▶</span><span class="expand-label">1 booking</span></button></td>
     </tr>
-    <tr id="bk-golf-0" class="bookings-row" style="display:none;">
+    <tr id="bk-golf-0" class="bookings-row" data-avail="0" style="display:none;">
       <td colspan="13" class="bookings-cell"><div class="bookings-list"><div class="guest-row bk-confirmed" title="Confirmed"><span class="guest-name">Jimmy Elefantis</span><span class="guest-ref">RQLFS8B</span></div></div></td>
     </tr>
-    <tr class="" id="row-golf-1">
+    <tr class="" id="row-golf-1" data-avail="1">
       <td>22 Jan 2027</td>
       <td class="golf-code">BBK220127</td><td class="golf-code">OL22JAN27</td>
       <td>Barnbougle &amp; KI</td><td>Hsu / Ancona</td>
       <td class="num">6</td><td class="num">3</td><td class="num">$3,599</td><td class="num rev-cell">$10,797</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-mid" style="width:66%"></div></div></td><td class="fill-pct fill-mid">67% full</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-golf-1')" aria-expanded="false" aria-controls="bk-golf-1"><span class="expand-icon">▶</span><span class="expand-label">2 bookings</span></button></td>
     </tr>
-    <tr id="bk-golf-1" class="bookings-row" style="display:none;">
+    <tr id="bk-golf-1" class="bookings-row" data-avail="1" style="display:none;">
       <td colspan="13" class="bookings-cell"><div class="bookings-list"><div class="guest-row bk-confirmed" title="Confirmed"><span class="guest-name">Tim Ancona</span><span class="guest-ref">R0M0DLU</span></div><div class="guest-row bk-confirmed" title="Confirmed"><span class="guest-name">Yung-Hsiang Hsu</span><span class="guest-ref">RQEC1T1</span></div></div></td>
     </tr>
-    <tr class="" id="row-golf-2">
+    <tr class="" id="row-golf-2" data-avail="0">
       <td>24 Jan 2027</td>
       <td class="golf-code">BBK240127</td><td class="golf-code">OL24JAN27</td>
       <td>Barnbougle &amp; KI</td><td>Collins</td>
       <td class="num">8</td><td class="num">0</td><td class="num">$3,599</td><td class="num rev-cell">&ndash;</td><td class="num">8</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td><td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-golf-2')" aria-expanded="false" aria-controls="bk-golf-2"><span class="expand-icon">▶</span><span class="expand-label">1 booking</span></button></td>
     </tr>
-    <tr id="bk-golf-2" class="bookings-row" style="display:none;">
+    <tr id="bk-golf-2" class="bookings-row" data-avail="0" style="display:none;">
       <td colspan="13" class="bookings-cell"><div class="bookings-list"><div class="guest-row bk-confirmed" title="Confirmed"><span class="guest-name">Bradley Collins</span><span class="guest-ref">RDPBDSK</span></div></div></td>
     </tr>
-    <tr class="" id="row-golf-3">
+    <tr class="" id="row-golf-3" data-avail="1">
       <td>26 Jan 2027</td>
       <td class="golf-code">BBK260127</td><td class="golf-code">OL26JAN27</td>
       <td>Barnbougle &amp; KI</td><td>Nadelman</td>
       <td class="num">0</td><td class="num">9</td><td class="num">$3,599</td><td class="num rev-cell">$32,391</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-4">
+    <tr class="" id="row-golf-4" data-avail="0">
       <td>28 Jan 2027</td>
       <td class="golf-code">BBK280127</td><td class="golf-code">OL28JAN27</td>
       <td>Barnbougle Direct (Barnbougle &amp; KI)</td><td>Drew</td>
       <td class="num">9</td><td class="num">0</td><td class="num">$2,436</td><td class="num rev-cell">&ndash;</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td><td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-golf-4')" aria-expanded="false" aria-controls="bk-golf-4"><span class="expand-icon">▶</span><span class="expand-label">1 booking</span></button></td>
     </tr>
-    <tr id="bk-golf-4" class="bookings-row" style="display:none;">
+    <tr id="bk-golf-4" class="bookings-row" data-avail="0" style="display:none;">
       <td colspan="13" class="bookings-cell"><div class="bookings-list"><div class="guest-row bk-confirmed" title="Confirmed"><span class="guest-name">David Drew</span><span class="guest-ref">RHML3AB</span></div></div></td>
     </tr>
-    <tr class="last-row" id="row-golf-5">
+    <tr class="last-row" id="row-golf-5" data-avail="1">
       <td>30 Jan 2027</td>
       <td class="golf-code">BBK300127</td><td class="golf-code">OL30JAN27</td>
       <td>Barnbougle &amp; KI</td><td></td>
@@ -2146,275 +2161,275 @@
     </tbody>
   </table>
 </div>
-<div class="tour-block">
-  <div class="tour-name"><span class="tour-name-text">February 2027</span><span class="golf-desc">14 overlap departures | 38 open seats</span><span class="rev-badge">Revenue to sell $223,305</span></div>
+<div class="tour-block golf-block" data-avail-count="9">
+  <div class="tour-name"><span class="tour-name-text">February 2027</span><span class="golf-desc golf-desc-all">14 overlap departures | 40 open seats</span><span class="golf-desc golf-desc-avail">9 departures with availability | 40 open seats</span><span class="rev-badge">Revenue to sell $229,784</span></div>
   <table>
     <thead><tr><th>Departure date</th><th>Trip code</th><th>Overlap code</th><th>Itinerary</th><th>Booked under</th><th class="num">Sold</th><th class="num">Available</th><th class="num">Price pp</th><th class="num">Revenue to sell</th><th class="num">Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
     <tbody>
-    <tr class="" id="row-golf-6">
+    <tr class="" id="row-golf-6" data-avail="1">
       <td>1 Feb 2027</td>
       <td class="golf-code">BBK010227</td><td class="golf-code">OL01FEB27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">8</td><td class="num">$3,499</td><td class="num rev-cell">$27,992</td><td class="num">8</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-7">
+    <tr class="" id="row-golf-7" data-avail="1">
       <td>3 Feb 2027</td>
       <td class="golf-code">BBK030227</td><td class="golf-code">OL03FEB27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">9</td><td class="num">$3,499</td><td class="num rev-cell">$31,491</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-8">
+    <tr class="" id="row-golf-8" data-avail="0">
       <td>5 Feb 2027</td>
       <td class="golf-code">BBK050227</td><td class="golf-code">OL05FEB27</td>
       <td>Barnbougle &amp; KI</td><td>Barnard</td>
       <td class="num">8</td><td class="num">0</td><td class="num">$3,599</td><td class="num rev-cell">&ndash;</td><td class="num">8</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td><td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-golf-8')" aria-expanded="false" aria-controls="bk-golf-8"><span class="expand-icon">▶</span><span class="expand-label">1 booking</span></button></td>
     </tr>
-    <tr id="bk-golf-8" class="bookings-row" style="display:none;">
+    <tr id="bk-golf-8" class="bookings-row" data-avail="0" style="display:none;">
       <td colspan="13" class="bookings-cell"><div class="bookings-list"><div class="guest-row bk-confirmed" title="Confirmed"><span class="guest-name">Barnard Geoffrey</span><span class="guest-ref">R0PMTKZ</span></div></div></td>
     </tr>
-    <tr class="" id="row-golf-9">
+    <tr class="" id="row-golf-9" data-avail="0">
       <td>7 Feb 2027</td>
       <td class="golf-code">BBK070227</td><td class="golf-code">OL07FEB27</td>
       <td>Barnbougle &amp; KI</td><td>Ironside</td>
       <td class="num">16</td><td class="num">0</td><td class="num">$2,886</td><td class="num rev-cell">&ndash;</td><td class="num">16</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td><td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-golf-9')" aria-expanded="false" aria-controls="bk-golf-9"><span class="expand-icon">▶</span><span class="expand-label">1 booking</span></button></td>
     </tr>
-    <tr id="bk-golf-9" class="bookings-row" style="display:none;">
+    <tr id="bk-golf-9" class="bookings-row" data-avail="0" style="display:none;">
       <td colspan="13" class="bookings-cell"><div class="bookings-list"><div class="guest-row bk-confirmed" title="Confirmed"><span class="guest-name">Caitlin Darcy-Molloy</span><span class="guest-ref">RNRHRL4</span></div></div></td>
     </tr>
-    <tr class="" id="row-golf-10">
+    <tr class="" id="row-golf-10" data-avail="1">
       <td>9 Feb 2027</td>
       <td class="golf-code">BBK090227</td><td class="golf-code">OL09FEB27</td>
       <td>Barnbougle &amp; KI</td><td>Hammond / Davies</td>
       <td class="num">4</td><td class="num">4</td><td class="num">$3,599</td><td class="num rev-cell">$14,396</td><td class="num">8</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-mid" style="width:50%"></div></div></td><td class="fill-pct fill-mid">50% full</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-golf-10')" aria-expanded="false" aria-controls="bk-golf-10"><span class="expand-icon">▶</span><span class="expand-label">1 booking</span></button></td>
     </tr>
-    <tr id="bk-golf-10" class="bookings-row" style="display:none;">
+    <tr id="bk-golf-10" class="bookings-row" data-avail="1" style="display:none;">
       <td colspan="13" class="bookings-cell"><div class="bookings-list"><div class="guest-row bk-confirmed" title="Confirmed"><span class="guest-name">Peter Hammond</span><span class="guest-ref">R0BUMN0</span></div></div></td>
     </tr>
-    <tr class="" id="row-golf-11">
+    <tr class="" id="row-golf-11" data-avail="1">
       <td>11 Feb 2027</td>
       <td class="golf-code">BBK110227</td><td class="golf-code">OL11FEB27</td>
       <td>Barnbougle &amp; KI</td><td>Peters</td>
       <td class="num">6</td><td class="num">3</td><td class="num">$3,599</td><td class="num rev-cell">$10,797</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-mid" style="width:66%"></div></div></td><td class="fill-pct fill-mid">67% full</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-golf-11')" aria-expanded="false" aria-controls="bk-golf-11"><span class="expand-icon">▶</span><span class="expand-label">1 booking</span></button></td>
     </tr>
-    <tr id="bk-golf-11" class="bookings-row" style="display:none;">
+    <tr id="bk-golf-11" class="bookings-row" data-avail="1" style="display:none;">
       <td colspan="13" class="bookings-cell"><div class="bookings-list"><div class="guest-row bk-confirmed" title="Confirmed"><span class="guest-name">Adam Peters</span><span class="guest-ref">RTZWNHU</span></div></div></td>
     </tr>
-    <tr class="" id="row-golf-12">
+    <tr class="" id="row-golf-12" data-avail="0">
       <td>13 Feb 2027</td>
       <td class="golf-code">BBK130227</td><td class="golf-code">OL13FEB27</td>
       <td>Big 5</td><td>Stokes</td>
       <td class="num">8</td><td class="num">0</td><td class="num">$5,250</td><td class="num rev-cell">&ndash;</td><td class="num">8</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td><td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-golf-12')" aria-expanded="false" aria-controls="bk-golf-12"><span class="expand-icon">▶</span><span class="expand-label">1 booking</span></button></td>
     </tr>
-    <tr id="bk-golf-12" class="bookings-row" style="display:none;">
+    <tr id="bk-golf-12" class="bookings-row" data-avail="0" style="display:none;">
       <td colspan="13" class="bookings-cell"><div class="bookings-list"><div class="guest-row bk-confirmed" title="Confirmed"><span class="guest-name">Jennifer Stokes</span><span class="guest-ref">RXNZFSZ</span></div></div></td>
     </tr>
-    <tr class="" id="row-golf-13">
+    <tr class="" id="row-golf-13" data-avail="1">
       <td>15 Feb 2027</td>
       <td class="golf-code">BBK150227</td><td class="golf-code">OL15FEB27</td>
       <td>Barnbougle &amp; KI</td><td>Burks</td>
       <td class="num">1</td><td class="num">8</td><td class="num">$14,589</td><td class="num rev-cell">$116,712</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:11%"></div></div></td><td class="fill-pct fill-low">11% full</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-golf-13')" aria-expanded="false" aria-controls="bk-golf-13"><span class="expand-icon">▶</span><span class="expand-label">1 booking</span></button></td>
     </tr>
-    <tr id="bk-golf-13" class="bookings-row" style="display:none;">
+    <tr id="bk-golf-13" class="bookings-row" data-avail="1" style="display:none;">
       <td colspan="13" class="bookings-cell"><div class="bookings-list"><div class="guest-row bk-confirmed" title="Confirmed"><span class="guest-name">Goriza Zinzopoulos</span><span class="guest-ref">R0PFU65</span></div></div></td>
     </tr>
-    <tr class="" id="row-golf-14">
+    <tr class="" id="row-golf-14" data-avail="0">
       <td>17 Feb 2027</td>
       <td class="golf-code">BBK170227</td><td class="golf-code">OL17FEB27</td>
       <td>Barnbougle &amp; KI</td><td>Ryugasaki</td>
       <td class="num">8</td><td class="num">0</td><td class="num">$3,599</td><td class="num rev-cell">&ndash;</td><td class="num">8</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td><td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-golf-14')" aria-expanded="false" aria-controls="bk-golf-14"><span class="expand-icon">▶</span><span class="expand-label">1 booking</span></button></td>
     </tr>
-    <tr id="bk-golf-14" class="bookings-row" style="display:none;">
+    <tr id="bk-golf-14" class="bookings-row" data-avail="0" style="display:none;">
       <td colspan="13" class="bookings-cell"><div class="bookings-list"><div class="guest-row bk-confirmed" title="Confirmed"><span class="guest-name">Hideo Irie</span><span class="guest-ref">R2S9DW0</span></div></div></td>
     </tr>
-    <tr class="" id="row-golf-15">
+    <tr class="" id="row-golf-15" data-avail="1">
       <td>19 Feb 2027</td>
       <td class="golf-code">BBK190227</td><td class="golf-code">OL19FEB27</td>
       <td>Barnbougle &amp; KI</td><td>Davies / Gemes / Connolly</td>
-      <td class="num">6</td><td class="num">3</td><td class="num">$3,239</td><td class="num rev-cell">$9,717</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-mid" style="width:66%"></div></div></td><td class="fill-pct fill-mid">67% full</td>
-      <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-golf-15')" aria-expanded="false" aria-controls="bk-golf-15"><span class="expand-icon">▶</span><span class="expand-label">2 bookings</span></button></td>
+      <td class="num">4</td><td class="num">5</td><td class="num">$3,239</td><td class="num rev-cell">$16,196</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-mid" style="width:44%"></div></div></td><td class="fill-pct fill-mid">44% full</td>
+      <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-golf-15')" aria-expanded="false" aria-controls="bk-golf-15"><span class="expand-icon">▶</span><span class="expand-label">1 booking</span></button></td>
     </tr>
-    <tr id="bk-golf-15" class="bookings-row" style="display:none;">
-      <td colspan="13" class="bookings-cell"><div class="bookings-list"><div class="guest-row bk-confirmed" title="Confirmed"><span class="guest-name">Anthony Davies</span><span class="guest-ref">RQL0C6M</span></div><div class="guest-row bk-confirmed" title="Confirmed"><span class="guest-name">Rob Gemes</span><span class="guest-ref">RLPALEZ</span></div></div></td>
+    <tr id="bk-golf-15" class="bookings-row" data-avail="1" style="display:none;">
+      <td colspan="13" class="bookings-cell"><div class="bookings-list"><div class="guest-row bk-confirmed" title="Confirmed"><span class="guest-name">Anthony Davies</span><span class="guest-ref">RQL0C6M</span></div></div></td>
     </tr>
-    <tr class="" id="row-golf-16">
+    <tr class="" id="row-golf-16" data-avail="1">
       <td>21 Feb 2027</td>
       <td class="golf-code">BBK210227</td><td class="golf-code">OL21FEB27</td>
       <td>Big 5, BB, 7MB &amp; KI</td><td>Ireland</td>
       <td class="num">8</td><td class="num">1</td><td class="num">$4,926</td><td class="num rev-cell">$4,926</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-high" style="width:88%"></div></div></td><td class="fill-pct fill-high">89% full</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-golf-16')" aria-expanded="false" aria-controls="bk-golf-16"><span class="expand-icon">▶</span><span class="expand-label">1 booking</span></button></td>
     </tr>
-    <tr id="bk-golf-16" class="bookings-row" style="display:none;">
+    <tr id="bk-golf-16" class="bookings-row" data-avail="1" style="display:none;">
       <td colspan="13" class="bookings-cell"><div class="bookings-list"><div class="guest-row bk-confirmed" title="Confirmed"><span class="guest-name">Ned Ireland</span><span class="guest-ref">R05GUSK</span></div></div></td>
     </tr>
-    <tr class="" id="row-golf-17">
+    <tr class="" id="row-golf-17" data-avail="1">
       <td>23 Feb 2027</td>
       <td class="golf-code">BBK230227</td><td class="golf-code">OL23FEB27</td>
       <td>Barnbougle &amp; KI</td><td>Cheung / Moe</td>
       <td class="num">8</td><td class="num">1</td><td class="num">$3,599</td><td class="num rev-cell">$3,599</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-high" style="width:88%"></div></div></td><td class="fill-pct fill-high">89% full</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-golf-17')" aria-expanded="false" aria-controls="bk-golf-17"><span class="expand-icon">▶</span><span class="expand-label">2 bookings</span></button></td>
     </tr>
-    <tr id="bk-golf-17" class="bookings-row" style="display:none;">
+    <tr id="bk-golf-17" class="bookings-row" data-avail="1" style="display:none;">
       <td colspan="13" class="bookings-cell"><div class="bookings-list"><div class="guest-row bk-confirmed" title="Confirmed"><span class="guest-name">Jennifer Cheung</span><span class="guest-ref">RPYSS32</span></div><div class="guest-row bk-confirmed" title="Confirmed"><span class="guest-name">Richard Moe</span><span class="guest-ref">RFNY37Q</span></div></div></td>
     </tr>
-    <tr class="" id="row-golf-18">
+    <tr class="" id="row-golf-18" data-avail="0">
       <td>25 Feb 2027</td>
       <td class="golf-code">BBK250227</td><td class="golf-code">OL25FEB27</td>
       <td>Barnboulge Direct</td><td>Tubb</td>
       <td class="num">8</td><td class="num">0</td><td class="num">$2,439</td><td class="num rev-cell">&ndash;</td><td class="num">8</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td><td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-golf-18')" aria-expanded="false" aria-controls="bk-golf-18"><span class="expand-icon">▶</span><span class="expand-label">1 booking</span></button></td>
     </tr>
-    <tr id="bk-golf-18" class="bookings-row" style="display:none;">
+    <tr id="bk-golf-18" class="bookings-row" data-avail="0" style="display:none;">
       <td colspan="13" class="bookings-cell"><div class="bookings-list"><div class="guest-row bk-confirmed" title="Confirmed"><span class="guest-name">Christopher Tubb</span><span class="guest-ref">RF1FGLX</span></div></div></td>
     </tr>
-    <tr class="last-row" id="row-golf-19">
+    <tr class="last-row" id="row-golf-19" data-avail="1">
       <td>27 Feb 2027</td>
       <td class="golf-code">BBK270227</td><td class="golf-code">OL27FEB27</td>
       <td>Barnbougle &amp; KI</td><td>Daniels</td>
       <td class="num">8</td><td class="num">1</td><td class="num">$3,675</td><td class="num rev-cell">$3,675</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-high" style="width:88%"></div></div></td><td class="fill-pct fill-high">89% full</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-golf-19')" aria-expanded="false" aria-controls="bk-golf-19"><span class="expand-icon">▶</span><span class="expand-label">1 booking</span></button></td>
     </tr>
-    <tr id="bk-golf-19" class="bookings-row  last-row" style="display:none;">
+    <tr id="bk-golf-19" class="bookings-row  last-row" data-avail="1" style="display:none;">
       <td colspan="13" class="bookings-cell"><div class="bookings-list"><div class="guest-row bk-confirmed" title="Confirmed"><span class="guest-name">Gerrard Daniels</span><span class="guest-ref">RTEQ2ND</span></div></div></td>
     </tr>
     </tbody>
   </table>
 </div>
-<div class="tour-block">
-  <div class="tour-name"><span class="tour-name-text">March 2027</span><span class="golf-desc">14 overlap departures | 17 open seats</span><span class="rev-badge">Revenue to sell $64,085</span></div>
+<div class="tour-block golf-block" data-avail-count="6">
+  <div class="tour-name"><span class="tour-name-text">March 2027</span><span class="golf-desc golf-desc-all">14 overlap departures | 17 open seats</span><span class="golf-desc golf-desc-avail">6 departures with availability | 17 open seats</span><span class="rev-badge">Revenue to sell $64,085</span></div>
   <table>
     <thead><tr><th>Departure date</th><th>Trip code</th><th>Overlap code</th><th>Itinerary</th><th>Booked under</th><th class="num">Sold</th><th class="num">Available</th><th class="num">Price pp</th><th class="num">Revenue to sell</th><th class="num">Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
     <tbody>
-    <tr class="" id="row-golf-20">
+    <tr class="" id="row-golf-20" data-avail="0">
       <td>1 Mar 2027</td>
       <td class="golf-code">BBK010327</td><td class="golf-code">OL01MAR27</td>
       <td>Barnbougle &amp; KI</td><td>Martin</td>
       <td class="num">8</td><td class="num">0</td><td class="num">$3,599</td><td class="num rev-cell">&ndash;</td><td class="num">8</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td><td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-golf-20')" aria-expanded="false" aria-controls="bk-golf-20"><span class="expand-icon">▶</span><span class="expand-label">1 booking</span></button></td>
     </tr>
-    <tr id="bk-golf-20" class="bookings-row" style="display:none;">
+    <tr id="bk-golf-20" class="bookings-row" data-avail="0" style="display:none;">
       <td colspan="13" class="bookings-cell"><div class="bookings-list"><div class="guest-row bk-confirmed" title="Confirmed"><span class="guest-name">Shane Martin</span><span class="guest-ref">R8E1L0J</span></div></div></td>
     </tr>
-    <tr class="" id="row-golf-21">
+    <tr class="" id="row-golf-21" data-avail="1">
       <td>3 Mar 2027</td>
       <td class="golf-code">BBK030327</td><td class="golf-code">OL03MAR27</td>
       <td>Big 5</td><td>McMullen / Droffelaar</td>
       <td class="num">8</td><td class="num">1</td><td class="num">$5,250</td><td class="num rev-cell">$5,250</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-high" style="width:88%"></div></div></td><td class="fill-pct fill-high">89% full</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-golf-21')" aria-expanded="false" aria-controls="bk-golf-21"><span class="expand-icon">▶</span><span class="expand-label">1 booking</span></button></td>
     </tr>
-    <tr id="bk-golf-21" class="bookings-row" style="display:none;">
+    <tr id="bk-golf-21" class="bookings-row" data-avail="1" style="display:none;">
       <td colspan="13" class="bookings-cell"><div class="bookings-list"><div class="guest-row bk-confirmed" title="Confirmed"><span class="guest-name">Michael McMullen</span><span class="guest-ref">RMGPENZ</span></div></div></td>
     </tr>
-    <tr class="" id="row-golf-22">
+    <tr class="" id="row-golf-22" data-avail="0">
       <td>5 Mar 2027</td>
       <td class="golf-code">BBK050327</td><td class="golf-code">OL05MAR27</td>
       <td>Barnbougle &amp; KI</td><td>Rose</td>
       <td class="num">8</td><td class="num">0</td><td class="num">$3,919</td><td class="num rev-cell">&ndash;</td><td class="num">8</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td><td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-golf-22')" aria-expanded="false" aria-controls="bk-golf-22"><span class="expand-icon">▶</span><span class="expand-label">1 booking</span></button></td>
     </tr>
-    <tr id="bk-golf-22" class="bookings-row" style="display:none;">
+    <tr id="bk-golf-22" class="bookings-row" data-avail="0" style="display:none;">
       <td colspan="13" class="bookings-cell"><div class="bookings-list"><div class="guest-row bk-confirmed" title="Confirmed"><span class="guest-name">Peter John Rose</span><span class="guest-ref">R8SF2F1</span></div></div></td>
     </tr>
-    <tr class="" id="row-golf-23">
+    <tr class="" id="row-golf-23" data-avail="1">
       <td>7 Mar 2027</td>
       <td class="golf-code">BBK070327</td><td class="golf-code">OL07MAR27</td>
       <td>Barnbougle &amp; KI</td><td>Robinson</td>
       <td class="num">8</td><td class="num">1</td><td class="num">$3,599</td><td class="num rev-cell">$3,599</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-high" style="width:88%"></div></div></td><td class="fill-pct fill-high">89% full</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-golf-23')" aria-expanded="false" aria-controls="bk-golf-23"><span class="expand-icon">▶</span><span class="expand-label">1 booking</span></button></td>
     </tr>
-    <tr id="bk-golf-23" class="bookings-row" style="display:none;">
+    <tr id="bk-golf-23" class="bookings-row" data-avail="1" style="display:none;">
       <td colspan="13" class="bookings-cell"><div class="bookings-list"><div class="guest-row bk-confirmed" title="Confirmed"><span class="guest-name">Peter Robinson</span><span class="guest-ref">R1L0APR</span></div></div></td>
     </tr>
-    <tr class="" id="row-golf-24">
+    <tr class="" id="row-golf-24" data-avail="0">
       <td>9 Mar 2027</td>
       <td class="golf-code">BBK090327</td><td class="golf-code">OL09MAR27</td>
       <td>Barnbougle Direct</td><td>Roberts</td>
       <td class="num">8</td><td class="num">0</td><td class="num">$2,436</td><td class="num rev-cell">&ndash;</td><td class="num">8</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td><td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-golf-24')" aria-expanded="false" aria-controls="bk-golf-24"><span class="expand-icon">▶</span><span class="expand-label">1 booking</span></button></td>
     </tr>
-    <tr id="bk-golf-24" class="bookings-row" style="display:none;">
+    <tr id="bk-golf-24" class="bookings-row" data-avail="0" style="display:none;">
       <td colspan="13" class="bookings-cell"><div class="bookings-list"><div class="guest-row bk-confirmed" title="Confirmed"><span class="guest-name">Michael Roberts</span><span class="guest-ref">REGGD0P</span></div></div></td>
     </tr>
-    <tr class="" id="row-golf-25">
+    <tr class="" id="row-golf-25" data-avail="1">
       <td>11 Mar 2027</td>
       <td class="golf-code">BBK110327</td><td class="golf-code">OL11MAR27</td>
       <td>Barnbougle &amp; KI</td><td>Droffelaar / Turner</td>
       <td class="num">8</td><td class="num">1</td><td class="num">$3,599</td><td class="num rev-cell">$3,599</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-high" style="width:88%"></div></div></td><td class="fill-pct fill-high">89% full</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-golf-25')" aria-expanded="false" aria-controls="bk-golf-25"><span class="expand-icon">▶</span><span class="expand-label">3 bookings</span></button></td>
     </tr>
-    <tr id="bk-golf-25" class="bookings-row" style="display:none;">
+    <tr id="bk-golf-25" class="bookings-row" data-avail="1" style="display:none;">
       <td colspan="13" class="bookings-cell"><div class="bookings-list"><div class="guest-row bk-confirmed" title="Confirmed"><span class="guest-name">Luke Droffelaar</span><span class="guest-ref">RPQRR0E</span></div><div class="guest-row bk-confirmed" title="Confirmed"><span class="guest-name">Luke Droffelaar</span><span class="guest-ref">RAFVZEK</span></div><div class="guest-row bk-confirmed" title="Confirmed"><span class="guest-name">Richard Turner</span><span class="guest-ref">RHHWURC</span></div></div></td>
     </tr>
-    <tr class="" id="row-golf-26">
+    <tr class="" id="row-golf-26" data-avail="0">
       <td>13 Mar 2027</td>
       <td class="golf-code">BBK130327</td><td class="golf-code">OL13MAR27</td>
       <td>Barnbougle &amp; KI</td><td>Schutz / O&#x27;Brien</td>
       <td class="num">8</td><td class="num">0</td><td class="num">$3,599</td><td class="num rev-cell">&ndash;</td><td class="num">8</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td><td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-golf-26')" aria-expanded="false" aria-controls="bk-golf-26"><span class="expand-icon">▶</span><span class="expand-label">2 bookings</span></button></td>
     </tr>
-    <tr id="bk-golf-26" class="bookings-row" style="display:none;">
+    <tr id="bk-golf-26" class="bookings-row" data-avail="0" style="display:none;">
       <td colspan="13" class="bookings-cell"><div class="bookings-list"><div class="guest-row bk-confirmed" title="Confirmed"><span class="guest-name">Andrew Waters</span><span class="guest-ref">RK4JHNS</span></div><div class="guest-row bk-confirmed" title="Confirmed"><span class="guest-name">Mitchell O’Brien</span><span class="guest-ref">R9Q3ZWJ</span></div></div></td>
     </tr>
-    <tr class="" id="row-golf-27">
+    <tr class="" id="row-golf-27" data-avail="1">
       <td>15 Mar 2027</td>
       <td class="golf-code">BBK150327</td><td class="golf-code">OL15MAR27</td>
       <td>Big 5</td><td>Dodsworth</td>
       <td class="num">8</td><td class="num">1</td><td class="num">$5,250</td><td class="num rev-cell">$5,250</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-high" style="width:88%"></div></div></td><td class="fill-pct fill-high">89% full</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-golf-27')" aria-expanded="false" aria-controls="bk-golf-27"><span class="expand-icon">▶</span><span class="expand-label">1 booking</span></button></td>
     </tr>
-    <tr id="bk-golf-27" class="bookings-row" style="display:none;">
+    <tr id="bk-golf-27" class="bookings-row" data-avail="1" style="display:none;">
       <td colspan="13" class="bookings-cell"><div class="bookings-list"><div class="guest-row bk-confirmed" title="Confirmed"><span class="guest-name">Andrew Dodsworth</span><span class="guest-ref">RMAKGE7</span></div></div></td>
     </tr>
-    <tr class="" id="row-golf-28">
+    <tr class="" id="row-golf-28" data-avail="0">
       <td>17 Mar 2027</td>
       <td class="golf-code">BBK170327</td><td class="golf-code">OL17MAR27</td>
       <td>Barnbougle &amp; KI</td><td>Nugent</td>
       <td class="num">8</td><td class="num">0</td><td class="num">$3,209</td><td class="num rev-cell">&ndash;</td><td class="num">8</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td><td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-golf-28')" aria-expanded="false" aria-controls="bk-golf-28"><span class="expand-icon">▶</span><span class="expand-label">1 booking</span></button></td>
     </tr>
-    <tr id="bk-golf-28" class="bookings-row" style="display:none;">
+    <tr id="bk-golf-28" class="bookings-row" data-avail="0" style="display:none;">
       <td colspan="13" class="bookings-cell"><div class="bookings-list"><div class="guest-row bk-confirmed" title="Confirmed"><span class="guest-name">Jack Nugent</span><span class="guest-ref">R98VP5A</span></div></div></td>
     </tr>
-    <tr class="" id="row-golf-29">
+    <tr class="" id="row-golf-29" data-avail="0">
       <td>23 Mar 2027</td>
       <td class="golf-code">BBK230327</td><td class="golf-code">OL23MAR27</td>
       <td>Barnbougle &amp; KI</td><td>Stark</td>
       <td class="num">8</td><td class="num">0</td><td class="num">$3,599</td><td class="num rev-cell">&ndash;</td><td class="num">8</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td><td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-golf-29')" aria-expanded="false" aria-controls="bk-golf-29"><span class="expand-icon">▶</span><span class="expand-label">1 booking</span></button></td>
     </tr>
-    <tr id="bk-golf-29" class="bookings-row" style="display:none;">
+    <tr id="bk-golf-29" class="bookings-row" data-avail="0" style="display:none;">
       <td colspan="13" class="bookings-cell"><div class="bookings-list"><div class="guest-row bk-confirmed" title="Confirmed"><span class="guest-name">Greg Stark</span><span class="guest-ref">RWT0Z0H</span></div></div></td>
     </tr>
-    <tr class="" id="row-golf-30">
+    <tr class="" id="row-golf-30" data-avail="0">
       <td>25 Mar 2027</td>
       <td class="golf-code">BBK250327</td><td class="golf-code">OL25MAR27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">8</td><td class="num">0</td><td class="num">$3,499</td><td class="num rev-cell">&ndash;</td><td class="num">8</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td><td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-31">
+    <tr class="" id="row-golf-31" data-avail="0">
       <td>27 Mar 2027</td>
       <td class="golf-code">BBK270327</td><td class="golf-code">OL27MAR27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">&ndash;</td><td class="num">&ndash;</td><td class="num">&ndash;</td><td class="num">&ndash;</td><td class="num">&ndash;</td><td class="fill-cell"></td><td class="golf-opsonly">No live availability</td>
       <td class="expand-cell"></td>
     </tr>
-    <tr class="" id="row-golf-32">
+    <tr class="" id="row-golf-32" data-avail="1">
       <td>29 Mar 2027</td>
       <td class="golf-code">BBK290327</td><td class="golf-code">OL29MAR27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">4</td><td class="num">4</td><td class="num">$3,499</td><td class="num rev-cell">$13,996</td><td class="num">8</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-mid" style="width:50%"></div></div></td><td class="fill-pct fill-mid">50% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="last-row" id="row-golf-33">
+    <tr class="last-row" id="row-golf-33" data-avail="1">
       <td>31 Mar 2027</td>
       <td class="golf-code">BBK310327</td><td class="golf-code">OL31MAR27</td>
       <td>Barnbougle &amp; KI</td><td>Tenney</td>
@@ -2424,115 +2439,115 @@
     </tbody>
   </table>
 </div>
-<div class="tour-block">
-  <div class="tour-name"><span class="tour-name-text">April 2027</span><span class="golf-desc">14 overlap departures | 93 open seats</span><span class="rev-badge">Revenue to sell $328,058</span></div>
+<div class="tour-block golf-block" data-avail-count="14">
+  <div class="tour-name"><span class="tour-name-text">April 2027</span><span class="golf-desc golf-desc-all">14 overlap departures | 93 open seats</span><span class="golf-desc golf-desc-avail">14 departures with availability | 93 open seats</span><span class="rev-badge">Revenue to sell $328,058</span></div>
   <table>
     <thead><tr><th>Departure date</th><th>Trip code</th><th>Overlap code</th><th>Itinerary</th><th>Booked under</th><th class="num">Sold</th><th class="num">Available</th><th class="num">Price pp</th><th class="num">Revenue to sell</th><th class="num">Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
     <tbody>
-    <tr class="" id="row-golf-34">
+    <tr class="" id="row-golf-34" data-avail="1">
       <td>2 Apr 2027</td>
       <td class="golf-code">BBK020427</td><td class="golf-code">OL02APR27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">2</td><td class="num">6</td><td class="num">$3,499</td><td class="num rev-cell">$20,994</td><td class="num">8</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:25%"></div></div></td><td class="fill-pct fill-low">25% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-35">
+    <tr class="" id="row-golf-35" data-avail="1">
       <td>4 Apr 2027</td>
       <td class="golf-code">BBK040427</td><td class="golf-code">OL04APR27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">9</td><td class="num">$3,499</td><td class="num rev-cell">$31,491</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-36">
+    <tr class="" id="row-golf-36" data-avail="1">
       <td>6 Apr 2027</td>
       <td class="golf-code">BBK060427</td><td class="golf-code">OL06APR27</td>
       <td>Barnbougle &amp; KI</td><td>Britt</td>
       <td class="num">4</td><td class="num">4</td><td class="num">$3,599</td><td class="num rev-cell">$14,396</td><td class="num">8</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-mid" style="width:50%"></div></div></td><td class="fill-pct fill-mid">50% full</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-golf-36')" aria-expanded="false" aria-controls="bk-golf-36"><span class="expand-icon">▶</span><span class="expand-label">1 booking</span></button></td>
     </tr>
-    <tr id="bk-golf-36" class="bookings-row" style="display:none;">
+    <tr id="bk-golf-36" class="bookings-row" data-avail="1" style="display:none;">
       <td colspan="13" class="bookings-cell"><div class="bookings-list"><div class="guest-row bk-confirmed" title="Confirmed"><span class="guest-name">Michael Britt</span><span class="guest-ref">RS42MHX</span></div></div></td>
     </tr>
-    <tr class="" id="row-golf-37">
+    <tr class="" id="row-golf-37" data-avail="1">
       <td>8 Apr 2027</td>
       <td class="golf-code">BBK080427</td><td class="golf-code">OL08APR27</td>
       <td>Big 5 - BB, Hobart &amp; KI</td><td>Dummett</td>
       <td class="num">8</td><td class="num">1</td><td class="num">$5,250</td><td class="num rev-cell">$5,250</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-high" style="width:88%"></div></div></td><td class="fill-pct fill-high">89% full</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-golf-37')" aria-expanded="false" aria-controls="bk-golf-37"><span class="expand-icon">▶</span><span class="expand-label">1 booking</span></button></td>
     </tr>
-    <tr id="bk-golf-37" class="bookings-row" style="display:none;">
+    <tr id="bk-golf-37" class="bookings-row" data-avail="1" style="display:none;">
       <td colspan="13" class="bookings-cell"><div class="bookings-list"><div class="guest-row bk-confirmed" title="Confirmed"><span class="guest-name">Lance Dummett</span><span class="guest-ref">R79ADN3</span></div></div></td>
     </tr>
-    <tr class="" id="row-golf-38">
+    <tr class="" id="row-golf-38" data-avail="1">
       <td>10 Apr 2027</td>
       <td class="golf-code">BBK100427</td><td class="golf-code">OL10APR27</td>
       <td>Barnbougle &amp; KI</td><td>Dunn</td>
       <td class="num">4</td><td class="num">4</td><td class="num">$3,599</td><td class="num rev-cell">$14,396</td><td class="num">8</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-mid" style="width:50%"></div></div></td><td class="fill-pct fill-mid">50% full</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-golf-38')" aria-expanded="false" aria-controls="bk-golf-38"><span class="expand-icon">▶</span><span class="expand-label">1 booking</span></button></td>
     </tr>
-    <tr id="bk-golf-38" class="bookings-row" style="display:none;">
+    <tr id="bk-golf-38" class="bookings-row" data-avail="1" style="display:none;">
       <td colspan="13" class="bookings-cell"><div class="bookings-list"><div class="guest-row bk-confirmed" title="Confirmed"><span class="guest-name">David Dunn</span><span class="guest-ref">RK1M4MA</span></div></div></td>
     </tr>
-    <tr class="" id="row-golf-39">
+    <tr class="" id="row-golf-39" data-avail="1">
       <td>12 Apr 2027</td>
       <td class="golf-code">BBK120427</td><td class="golf-code">OL12APR27</td>
       <td>Barnbougle &amp; KI</td><td>Collins / Vollbon</td>
       <td class="num">16</td><td class="num">1</td><td class="num">$3,599</td><td class="num rev-cell">$3,599</td><td class="num">17</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-high" style="width:94%"></div></div></td><td class="fill-pct fill-high">94% full</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-golf-39')" aria-expanded="false" aria-controls="bk-golf-39"><span class="expand-icon">▶</span><span class="expand-label">2 bookings</span></button></td>
     </tr>
-    <tr id="bk-golf-39" class="bookings-row" style="display:none;">
+    <tr id="bk-golf-39" class="bookings-row" data-avail="1" style="display:none;">
       <td colspan="13" class="bookings-cell"><div class="bookings-list"><div class="guest-row bk-confirmed" title="Confirmed"><span class="guest-name">James Collins</span><span class="guest-ref">RUEWF0Z</span></div><div class="guest-row bk-confirmed" title="Confirmed"><span class="guest-name">Shane Charles Vollbon</span><span class="guest-ref">RXXKNX0</span></div></div></td>
     </tr>
-    <tr class="" id="row-golf-40">
+    <tr class="" id="row-golf-40" data-avail="1">
       <td>14 Apr 2027</td>
       <td class="golf-code">BBK140427</td><td class="golf-code">OL14APR27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">8</td><td class="num">$3,499</td><td class="num rev-cell">$27,992</td><td class="num">8</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-41">
+    <tr class="" id="row-golf-41" data-avail="1">
       <td>16 Apr 2027</td>
       <td class="golf-code">BBK160427</td><td class="golf-code">OL16APR27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">9</td><td class="num">$3,499</td><td class="num rev-cell">$31,491</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-42">
+    <tr class="" id="row-golf-42" data-avail="1">
       <td>18 Apr 2027</td>
       <td class="golf-code">BBK180427</td><td class="golf-code">OL18APR27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">8</td><td class="num">$3,499</td><td class="num rev-cell">$27,992</td><td class="num">8</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-43">
+    <tr class="" id="row-golf-43" data-avail="1">
       <td>20 Apr 2027</td>
       <td class="golf-code">BBK200427</td><td class="golf-code">OL20APR27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">9</td><td class="num">$3,499</td><td class="num rev-cell">$31,491</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-44">
+    <tr class="" id="row-golf-44" data-avail="1">
       <td>22 Apr 2027</td>
       <td class="golf-code">BBK220427</td><td class="golf-code">OL22APR27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">8</td><td class="num">$3,499</td><td class="num rev-cell">$27,992</td><td class="num">8</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-45">
+    <tr class="" id="row-golf-45" data-avail="1">
       <td>24 Apr 2027</td>
       <td class="golf-code">BBK240427</td><td class="golf-code">OL24APR27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">9</td><td class="num">$3,499</td><td class="num rev-cell">$31,491</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-46">
+    <tr class="" id="row-golf-46" data-avail="1">
       <td>26 Apr 2027</td>
       <td class="golf-code">BBK260427</td><td class="golf-code">OL26APR27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">8</td><td class="num">$3,499</td><td class="num rev-cell">$27,992</td><td class="num">8</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="last-row" id="row-golf-47">
+    <tr class="last-row" id="row-golf-47" data-avail="1">
       <td>28 Apr 2027</td>
       <td class="golf-code">BBK280427</td><td class="golf-code">OL28APR27</td>
       <td>Barnbougle &amp; KI</td><td></td>
@@ -2542,12 +2557,12 @@
     </tbody>
   </table>
 </div>
-<div class="tour-block">
-  <div class="tour-name"><span class="tour-name-text">September 2027</span><span class="golf-desc">1 overlap departure | 8 open seats</span><span class="rev-badge">Revenue to sell $28,792</span></div>
+<div class="tour-block golf-block" data-avail-count="1">
+  <div class="tour-name"><span class="tour-name-text">September 2027</span><span class="golf-desc golf-desc-all">1 overlap departure | 8 open seats</span><span class="golf-desc golf-desc-avail">1 departure with availability | 8 open seats</span><span class="rev-badge">Revenue to sell $28,792</span></div>
   <table>
     <thead><tr><th>Departure date</th><th>Trip code</th><th>Overlap code</th><th>Itinerary</th><th>Booked under</th><th class="num">Sold</th><th class="num">Available</th><th class="num">Price pp</th><th class="num">Revenue to sell</th><th class="num">Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
     <tbody>
-    <tr class="last-row" id="row-golf-48">
+    <tr class="last-row" id="row-golf-48" data-avail="1">
       <td>30 Sep 2027</td>
       <td class="golf-code">BBK300927</td><td class="golf-code">OL30SEP27</td>
       <td>Barnbougle &amp; KI</td><td></td>
@@ -2557,162 +2572,162 @@
     </tbody>
   </table>
 </div>
-<div class="tour-block">
-  <div class="tour-name"><span class="tour-name-text">October 2027</span><span class="golf-desc">22 overlap departures | 176 open seats</span><span class="rev-badge">Revenue to sell $631,324</span></div>
+<div class="tour-block golf-block" data-avail-count="21">
+  <div class="tour-name"><span class="tour-name-text">October 2027</span><span class="golf-desc golf-desc-all">22 overlap departures | 176 open seats</span><span class="golf-desc golf-desc-avail">21 departures with availability | 176 open seats</span><span class="rev-badge">Revenue to sell $631,324</span></div>
   <table>
     <thead><tr><th>Departure date</th><th>Trip code</th><th>Overlap code</th><th>Itinerary</th><th>Booked under</th><th class="num">Sold</th><th class="num">Available</th><th class="num">Price pp</th><th class="num">Revenue to sell</th><th class="num">Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
     <tbody>
-    <tr class="" id="row-golf-49">
+    <tr class="" id="row-golf-49" data-avail="1">
       <td>2 Oct 2027</td>
       <td class="golf-code">BBK021027</td><td class="golf-code">OL02OCT27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">9</td><td class="num">$3,599</td><td class="num rev-cell">$32,391</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-50">
+    <tr class="" id="row-golf-50" data-avail="1">
       <td>4 Oct 2027</td>
       <td class="golf-code">BBK041027</td><td class="golf-code">OL04OCT27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">8</td><td class="num">$3,599</td><td class="num rev-cell">$28,792</td><td class="num">8</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-51">
+    <tr class="" id="row-golf-51" data-avail="1">
       <td>6 Oct 2027</td>
       <td class="golf-code">BBK061027</td><td class="golf-code">OL06OCT27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">9</td><td class="num">$3,599</td><td class="num rev-cell">$32,391</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-52">
+    <tr class="" id="row-golf-52" data-avail="1">
       <td>8 Oct 2027</td>
       <td class="golf-code">BBK081027</td><td class="golf-code">OL08OCT27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">8</td><td class="num">$3,599</td><td class="num rev-cell">$28,792</td><td class="num">8</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-53">
+    <tr class="" id="row-golf-53" data-avail="1">
       <td>10 Oct 2027</td>
       <td class="golf-code">BBK101027</td><td class="golf-code">OL10OCT27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">9</td><td class="num">$3,599</td><td class="num rev-cell">$32,391</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-54">
+    <tr class="" id="row-golf-54" data-avail="1">
       <td>12 Oct 2027</td>
       <td class="golf-code">BB121027</td><td class="golf-code">OL12OCT27</td>
       <td>Barnbougle Direct</td><td>Curphey</td>
       <td class="num">6</td><td class="num">2</td><td class="num">$2,549</td><td class="num rev-cell">$5,098</td><td class="num">8</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-high" style="width:75%"></div></div></td><td class="fill-pct fill-high">75% full</td>
       <td class="expand-cell"><button class="expand-btn" onclick="toggleBookings('bk-golf-54')" aria-expanded="false" aria-controls="bk-golf-54"><span class="expand-icon">▶</span><span class="expand-label">1 booking</span></button></td>
     </tr>
-    <tr id="bk-golf-54" class="bookings-row" style="display:none;">
+    <tr id="bk-golf-54" class="bookings-row" data-avail="1" style="display:none;">
       <td colspan="13" class="bookings-cell"><div class="bookings-list"><div class="guest-row bk-confirmed" title="Confirmed"><span class="guest-name">Scott Curphey</span><span class="guest-ref">RBXEJNG</span></div></div></td>
     </tr>
-    <tr class="" id="row-golf-55">
+    <tr class="" id="row-golf-55" data-avail="1">
       <td>14 Oct 2027</td>
       <td class="golf-code">BBK141027</td><td class="golf-code">OL14OCT27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">9</td><td class="num">$3,599</td><td class="num rev-cell">$32,391</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-56">
+    <tr class="" id="row-golf-56" data-avail="1">
       <td>15 Oct 2027</td>
       <td class="golf-code">BBK151027</td><td class="golf-code">OL15OCT27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">9</td><td class="num">$3,599</td><td class="num rev-cell">$32,391</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-57">
+    <tr class="" id="row-golf-57" data-avail="1">
       <td>16 Oct 2027</td>
       <td class="golf-code">BBK161027</td><td class="golf-code">OL16OCT27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">8</td><td class="num">$3,599</td><td class="num rev-cell">$28,792</td><td class="num">8</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-58">
+    <tr class="" id="row-golf-58" data-avail="1">
       <td>17 Oct 2027</td>
       <td class="golf-code">BBK171027</td><td class="golf-code">OL17OCT27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">9</td><td class="num">$3,599</td><td class="num rev-cell">$32,391</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-59">
+    <tr class="" id="row-golf-59" data-avail="1">
       <td>19 Oct 2027</td>
       <td class="golf-code">BBK191027</td><td class="golf-code">OL19OCT27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">9</td><td class="num">$3,599</td><td class="num rev-cell">$32,391</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-60">
+    <tr class="" id="row-golf-60" data-avail="1">
       <td>20 Oct 2027</td>
       <td class="golf-code">BBK201027</td><td class="golf-code">OL20OCT27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">8</td><td class="num">$3,599</td><td class="num rev-cell">$28,792</td><td class="num">8</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-61">
+    <tr class="" id="row-golf-61" data-avail="1">
       <td>21 Oct 2027</td>
       <td class="golf-code">BBK211027</td><td class="golf-code">OL21OCT27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">9</td><td class="num">$3,599</td><td class="num rev-cell">$32,391</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-62">
+    <tr class="" id="row-golf-62" data-avail="1">
       <td>22 Oct 2027</td>
       <td class="golf-code">BBK221027</td><td class="golf-code">OL22OCT27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">9</td><td class="num">$3,599</td><td class="num rev-cell">$32,391</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-63">
+    <tr class="" id="row-golf-63" data-avail="1">
       <td>23 Oct 2027</td>
       <td class="golf-code">BBK231027</td><td class="golf-code">OL23OCT27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">9</td><td class="num">$3,599</td><td class="num rev-cell">$32,391</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-64">
+    <tr class="" id="row-golf-64" data-avail="1">
       <td>24 Oct 2027</td>
       <td class="golf-code">BBK241027</td><td class="golf-code">OL24OCT27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">8</td><td class="num">$3,599</td><td class="num rev-cell">$28,792</td><td class="num">8</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-65">
+    <tr class="" id="row-golf-65" data-avail="1">
       <td>25 Oct 2027</td>
       <td class="golf-code">BBK251027</td><td class="golf-code">OL25OCT27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">9</td><td class="num">$3,599</td><td class="num rev-cell">$32,391</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-66">
+    <tr class="" id="row-golf-66" data-avail="0">
       <td>26 Oct 2027</td>
       <td class="golf-code">BBK261027</td><td class="golf-code">OL26OCT27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">9</td><td class="num">0</td><td class="num">$3,599</td><td class="num rev-cell">&ndash;</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-full" style="width:100%"></div></div></td><td class="fill-pct fill-full">Sold out</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-67">
+    <tr class="" id="row-golf-67" data-avail="1">
       <td>27 Oct 2027</td>
       <td class="golf-code">BBK271027</td><td class="golf-code">OL27OCT27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">9</td><td class="num">$3,599</td><td class="num rev-cell">$32,391</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-68">
+    <tr class="" id="row-golf-68" data-avail="1">
       <td>28 Oct 2027</td>
       <td class="golf-code">BBK281027</td><td class="golf-code">OL28OCT27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">8</td><td class="num">$3,599</td><td class="num rev-cell">$28,792</td><td class="num">8</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-69">
+    <tr class="" id="row-golf-69" data-avail="1">
       <td>29 Oct 2027</td>
       <td class="golf-code">BBK291027</td><td class="golf-code">OL29OCT27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">9</td><td class="num">$3,599</td><td class="num rev-cell">$32,391</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="last-row" id="row-golf-70">
+    <tr class="last-row" id="row-golf-70" data-avail="1">
       <td>30 Oct 2027</td>
       <td class="golf-code">BBK301027</td><td class="golf-code">OL30OCT27</td>
       <td>Barnbougle &amp; KI</td><td></td>
@@ -2722,166 +2737,166 @@
     </tbody>
   </table>
 </div>
-<div class="tour-block">
-  <div class="tour-name"><span class="tour-name-text">November 2027</span><span class="golf-desc">23 overlap departures | 199 open seats</span><span class="rev-badge">Revenue to sell $716,201</span></div>
+<div class="tour-block golf-block" data-avail-count="23">
+  <div class="tour-name"><span class="tour-name-text">November 2027</span><span class="golf-desc golf-desc-all">23 overlap departures | 199 open seats</span><span class="golf-desc golf-desc-avail">23 departures with availability | 199 open seats</span><span class="rev-badge">Revenue to sell $716,201</span></div>
   <table>
     <thead><tr><th>Departure date</th><th>Trip code</th><th>Overlap code</th><th>Itinerary</th><th>Booked under</th><th class="num">Sold</th><th class="num">Available</th><th class="num">Price pp</th><th class="num">Revenue to sell</th><th class="num">Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
     <tbody>
-    <tr class="" id="row-golf-71">
+    <tr class="" id="row-golf-71" data-avail="1">
       <td>1 Nov 2027</td>
       <td class="golf-code">BBK011127</td><td class="golf-code">OL01NOV27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">8</td><td class="num">$3,599</td><td class="num rev-cell">$28,792</td><td class="num">8</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-72">
+    <tr class="" id="row-golf-72" data-avail="1">
       <td>3 Nov 2027</td>
       <td class="golf-code">BBK031127</td><td class="golf-code">OL03NOV27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">9</td><td class="num">$3,599</td><td class="num rev-cell">$32,391</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-73">
+    <tr class="" id="row-golf-73" data-avail="1">
       <td>5 Nov 2027</td>
       <td class="golf-code">BBK051127</td><td class="golf-code">OL05NOV27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">8</td><td class="num">$3,599</td><td class="num rev-cell">$28,792</td><td class="num">8</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-74">
+    <tr class="" id="row-golf-74" data-avail="1">
       <td>7 Nov 2027</td>
       <td class="golf-code">BBK071127</td><td class="golf-code">OL07NOV27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">9</td><td class="num">$3,599</td><td class="num rev-cell">$32,391</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-75">
+    <tr class="" id="row-golf-75" data-avail="1">
       <td>9 Nov 2027</td>
       <td class="golf-code">BBK091127</td><td class="golf-code">OL09NOV27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">8</td><td class="num">$3,599</td><td class="num rev-cell">$28,792</td><td class="num">8</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-76">
+    <tr class="" id="row-golf-76" data-avail="1">
       <td>10 Nov 2027</td>
       <td class="golf-code">BBK101127</td><td class="golf-code">OL10NOV27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">9</td><td class="num">$3,599</td><td class="num rev-cell">$32,391</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-77">
+    <tr class="" id="row-golf-77" data-avail="1">
       <td>11 Nov 2027</td>
       <td class="golf-code">BBK111127</td><td class="golf-code">OL11NOV27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">9</td><td class="num">$3,599</td><td class="num rev-cell">$32,391</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-78">
+    <tr class="" id="row-golf-78" data-avail="1">
       <td>12 Nov 2027</td>
       <td class="golf-code">BBK121127</td><td class="golf-code">OL12NOV27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">9</td><td class="num">$3,599</td><td class="num rev-cell">$32,391</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-79">
+    <tr class="" id="row-golf-79" data-avail="1">
       <td>13 Nov 2027</td>
       <td class="golf-code">BBK131127</td><td class="golf-code">OL13NOV27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">8</td><td class="num">$3,599</td><td class="num rev-cell">$28,792</td><td class="num">8</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-80">
+    <tr class="" id="row-golf-80" data-avail="1">
       <td>14 Nov 2027</td>
       <td class="golf-code">BBK141127</td><td class="golf-code">OL14NOV27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">9</td><td class="num">$3,599</td><td class="num rev-cell">$32,391</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-81">
+    <tr class="" id="row-golf-81" data-avail="1">
       <td>15 Nov 2027</td>
       <td class="golf-code">BBK151127</td><td class="golf-code">OL15NOV27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">9</td><td class="num">$3,599</td><td class="num rev-cell">$32,391</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-82">
+    <tr class="" id="row-golf-82" data-avail="1">
       <td>16 Nov 2027</td>
       <td class="golf-code">BBK161127</td><td class="golf-code">OL16NOV27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">9</td><td class="num">$3,599</td><td class="num rev-cell">$32,391</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-83">
+    <tr class="" id="row-golf-83" data-avail="1">
       <td>17 Nov 2027</td>
       <td class="golf-code">BBK171127</td><td class="golf-code">OL17NOV27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">8</td><td class="num">$3,599</td><td class="num rev-cell">$28,792</td><td class="num">8</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-84">
+    <tr class="" id="row-golf-84" data-avail="1">
       <td>18 Nov 2027</td>
       <td class="golf-code">BBK181127</td><td class="golf-code">OL18NOV27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">9</td><td class="num">$3,599</td><td class="num rev-cell">$32,391</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-85">
+    <tr class="" id="row-golf-85" data-avail="1">
       <td>19 Nov 2027</td>
       <td class="golf-code">BBK191127</td><td class="golf-code">OL19NOV27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">9</td><td class="num">$3,599</td><td class="num rev-cell">$32,391</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-86">
+    <tr class="" id="row-golf-86" data-avail="1">
       <td>20 Nov 2027</td>
       <td class="golf-code">BBK201127</td><td class="golf-code">OL20NOV27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">9</td><td class="num">$3,599</td><td class="num rev-cell">$32,391</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-87">
+    <tr class="" id="row-golf-87" data-avail="1">
       <td>21 Nov 2027</td>
       <td class="golf-code">BBK211127</td><td class="golf-code">OL21NOV27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">8</td><td class="num">$3,599</td><td class="num rev-cell">$28,792</td><td class="num">8</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-88">
+    <tr class="" id="row-golf-88" data-avail="1">
       <td>22 Nov 2027</td>
       <td class="golf-code">BBK221127</td><td class="golf-code">OL22NOV27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">9</td><td class="num">$3,599</td><td class="num rev-cell">$32,391</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-89">
+    <tr class="" id="row-golf-89" data-avail="1">
       <td>23 Nov 2027</td>
       <td class="golf-code">BBK231127</td><td class="golf-code">OL23NOV27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">9</td><td class="num">$3,599</td><td class="num rev-cell">$32,391</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-90">
+    <tr class="" id="row-golf-90" data-avail="1">
       <td>24 Nov 2027</td>
       <td class="golf-code">BBK241127</td><td class="golf-code">OL24NOV27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">9</td><td class="num">$3,599</td><td class="num rev-cell">$32,391</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-91">
+    <tr class="" id="row-golf-91" data-avail="1">
       <td>25 Nov 2027</td>
       <td class="golf-code">BBK251127</td><td class="golf-code">OL25NOV27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">8</td><td class="num">$3,599</td><td class="num rev-cell">$28,792</td><td class="num">8</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-92">
+    <tr class="" id="row-golf-92" data-avail="1">
       <td>27 Nov 2027</td>
       <td class="golf-code">BBK271127</td><td class="golf-code">OL27NOV27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">9</td><td class="num">$3,599</td><td class="num rev-cell">$32,391</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="last-row" id="row-golf-93">
+    <tr class="last-row" id="row-golf-93" data-avail="1">
       <td>29 Nov 2027</td>
       <td class="golf-code">BBK291127</td><td class="golf-code">OL29NOV27</td>
       <td>Barnbougle &amp; KI</td><td></td>
@@ -2891,47 +2906,47 @@
     </tbody>
   </table>
 </div>
-<div class="tour-block">
-  <div class="tour-name"><span class="tour-name-text">December 2027</span><span class="golf-desc">6 overlap departures | 35 open seats</span><span class="rev-badge">Revenue to sell $125,965</span></div>
+<div class="tour-block golf-block" data-avail-count="5">
+  <div class="tour-name"><span class="tour-name-text">December 2027</span><span class="golf-desc golf-desc-all">6 overlap departures | 35 open seats</span><span class="golf-desc golf-desc-avail">5 departures with availability | 35 open seats</span><span class="rev-badge">Revenue to sell $125,965</span></div>
   <table>
     <thead><tr><th>Departure date</th><th>Trip code</th><th>Overlap code</th><th>Itinerary</th><th>Booked under</th><th class="num">Sold</th><th class="num">Available</th><th class="num">Price pp</th><th class="num">Revenue to sell</th><th class="num">Capacity</th><th>Fill level</th><th></th><th></th></tr></thead>
     <tbody>
-    <tr class="" id="row-golf-94">
+    <tr class="" id="row-golf-94" data-avail="1">
       <td>2 Dec 2027</td>
       <td class="golf-code">BBK021227</td><td class="golf-code">OL02DEC27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">9</td><td class="num">$3,599</td><td class="num rev-cell">$32,391</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-95">
+    <tr class="" id="row-golf-95" data-avail="1">
       <td>4 Dec 2027</td>
       <td class="golf-code">BBK041227</td><td class="golf-code">OL04DEC27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">8</td><td class="num">$3,599</td><td class="num rev-cell">$28,792</td><td class="num">8</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-96">
+    <tr class="" id="row-golf-96" data-avail="1">
       <td>6 Dec 2027</td>
       <td class="golf-code">BBK061227</td><td class="golf-code">OL06DEC27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">8</td><td class="num">1</td><td class="num">$3,599</td><td class="num rev-cell">$3,599</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-high" style="width:88%"></div></div></td><td class="fill-pct fill-high">89% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-97">
+    <tr class="" id="row-golf-97" data-avail="1">
       <td>8 Dec 2027</td>
       <td class="golf-code">BBK081227</td><td class="golf-code">OL08DEC27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">8</td><td class="num">$3,599</td><td class="num rev-cell">$28,792</td><td class="num">8</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="" id="row-golf-98">
+    <tr class="" id="row-golf-98" data-avail="1">
       <td>10 Dec 2027</td>
       <td class="golf-code">BBK101227</td><td class="golf-code">OL10DEC27</td>
       <td>Barnbougle &amp; KI</td><td></td>
       <td class="num">0</td><td class="num">9</td><td class="num">$3,599</td><td class="num rev-cell">$32,391</td><td class="num">9</td><td class="fill-cell"><div class="fill-bar-wrap"><div class="fill-bar fill-low" style="width:0%"></div></div></td><td class="fill-pct fill-low">0% full</td>
       <td class="expand-cell"><span class="no-bookings">No bookings</span></td>
     </tr>
-    <tr class="last-row" id="row-golf-99">
+    <tr class="last-row" id="row-golf-99" data-avail="0">
       <td>12 Dec 2027</td>
       <td class="golf-code">BBK121227</td><td class="golf-code">OL12DEC27</td>
       <td>Barnbougle &amp; KI</td><td></td>
@@ -2961,6 +2976,12 @@ function setDivision(d) {
   document.getElementById('div-outback').classList.toggle('active', !golf);
   document.getElementById('div-golf').classList.toggle('active', golf);
   document.getElementById('page-title').textContent = golf ? 'Air Adventure Golf: Overlap Tours' : 'Air Adventure Outback — Seat Availability';
+}
+
+function toggleGolfAvail(on) {
+  const v = document.getElementById('golf-view');
+  v.classList.toggle('avail-only', on);
+  v.classList.toggle('none-avail', on && !v.querySelector('tr[data-avail="1"]'));
 }
 
 function copyAvailability(btn) {
